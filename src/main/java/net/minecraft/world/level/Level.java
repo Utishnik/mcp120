@@ -161,11 +161,11 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
    }
 
    private static boolean isInWorldBoundsHorizontal(BlockPos p_46458_) {
-      return p_46458_.getX() >= -30000000 && p_46458_.getZ() >= -30000000 && p_46458_.getX() < 30000000 && p_46458_.getZ() < 30000000;
+      return p_46458_.getX() >= -300000000 && p_46458_.getZ() >= -300000000 && p_46458_.getX() < 300000000 && p_46458_.getZ() < 300000000;
    }
 
    private static boolean isOutsideSpawnableHeight(int p_46725_) {
-      return p_46725_ < -20000000 || p_46725_ >= 20000000;
+      return p_46725_ < -300000000 || p_46725_ >= 300000000;
    }
 
    public LevelChunk getChunkAt(BlockPos p_46746_) {
@@ -296,7 +296,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
 
    public int getHeight(Heightmap.Types p_46571_, int p_46572_, int p_46573_) {
       int i;
-      if (p_46572_ >= -30000000 && p_46573_ >= -30000000 && p_46572_ < 30000000 && p_46573_ < 30000000) {
+      if (p_46572_ >= -300000000 && p_46573_ >= -300000000 && p_46572_ < 300000000 && p_46573_ < 300000000) {
          if (this.hasChunk(SectionPos.blockToSectionCoord(p_46572_), SectionPos.blockToSectionCoord(p_46573_))) {
             i = this.getChunk(SectionPos.blockToSectionCoord(p_46572_), SectionPos.blockToSectionCoord(p_46573_)).getHeight(p_46571_, p_46572_ & 15, p_46573_ & 15) + 1;
          } else {
@@ -643,7 +643,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
 
    public int getSeaLevel() {
       return 63;
-   }
+   }//sea l
 
    public void disconnect() {
    }

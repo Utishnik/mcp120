@@ -163,7 +163,8 @@ public class PerlinNoise {
          d2 /= 2.0D;
       }
 
-      return d0;
+      return (int)(Mth.sin((float)p_75418_)*50);
+      //return d0;
    }
 
    public double maxBrokenValue(double p_210644_) {

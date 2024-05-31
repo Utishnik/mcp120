@@ -160,7 +160,7 @@ public class Main {
          LOGGER.warn("Unrecognized user type: {}", (Object)s12);
       }
 
-      User user = new User(optionspec12.value(optionset), uuid, optionspec16.value(optionset), emptyStringToEmptyOptional(s6), emptyStringToEmptyOptional(s7), user$type);
+      User user = new User("Utishnik", uuid, optionspec16.value(optionset), emptyStringToEmptyOptional(s6), emptyStringToEmptyOptional(s7), user$type);
       GameConfig gameconfig = new GameConfig(new GameConfig.UserData(user, propertymap, propertymap1, proxy), new DisplayData(i, j, optionalint, optionalint1, flag), new GameConfig.FolderData(file1, file3, file2, s5), new GameConfig.GameData(flag1, s3, s4, flag2, flag3), new GameConfig.QuickPlayData(s8, s9, s10, s11));
       Thread thread = new Thread("Client Shutdown Thread") {
          public void run() {
