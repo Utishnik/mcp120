@@ -15,8 +15,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class WorldBorder {
-   public static final double MAX_SIZE = (double)5.999997E7F;
-   public static final double MAX_CENTER_COORDINATE = 2.9999984E7D;
+   public static final double MAX_SIZE = (double)5.999997E8F;
+   public static final double MAX_CENTER_COORDINATE = 2.9999984E8D;
    private final List<BorderChangeListener> listeners = Lists.newArrayList();
    private double damagePerBlock = 0.2D;
    private double damageSafeZone = 5.0D;
@@ -24,9 +24,9 @@ public class WorldBorder {
    private int warningBlocks = 5;
    private double centerX;
    private double centerZ;
-   int absoluteMaxSize = 29999984;
-   private WorldBorder.BorderExtent extent = new WorldBorder.StaticBorderExtent((double)5.999997E7F);
-   public static final WorldBorder.Settings DEFAULT_SETTINGS = new WorldBorder.Settings(0.0D, 0.0D, 0.2D, 5.0D, 5, 15, (double)5.999997E7F, 0L, 0.0D);
+   int absoluteMaxSize = 299999984;
+   private WorldBorder.BorderExtent extent = new WorldBorder.StaticBorderExtent((double)5.999997E8F);
+   public static final WorldBorder.Settings DEFAULT_SETTINGS = new WorldBorder.Settings(0.0D, 0.0D, 0.2D, 5.0D, 5, 15, (double)5.999997E8F, 0L, 0.0D);
 
    public boolean isWithinBounds(BlockPos p_61938_) {
       return (double)(p_61938_.getX() + 1) > this.getMinX() && (double)p_61938_.getX() < this.getMaxX() && (double)(p_61938_.getZ() + 1) > this.getMinZ() && (double)p_61938_.getZ() < this.getMaxZ();
@@ -410,8 +410,8 @@ public class WorldBorder {
       }
 
       public static WorldBorder.Settings read(DynamicLike<?> p_62038_, WorldBorder.Settings p_62039_) {
-         double d0 = Mth.clamp(p_62038_.get("BorderCenterX").asDouble(p_62039_.centerX), -2.9999984E7D, 2.9999984E7D);
-         double d1 = Mth.clamp(p_62038_.get("BorderCenterZ").asDouble(p_62039_.centerZ), -2.9999984E7D, 2.9999984E7D);
+         double d0 = Mth.clamp(p_62038_.get("BorderCenterX").asDouble(p_62039_.centerX), -2.9999984E8D, 2.9999984E8D);
+         double d1 = Mth.clamp(p_62038_.get("BorderCenterZ").asDouble(p_62039_.centerZ), -2.9999984E8D, 2.9999984E8D);
          double d2 = p_62038_.get("BorderSize").asDouble(p_62039_.size);
          long i = p_62038_.get("BorderSizeLerpTime").asLong(p_62039_.sizeLerpTime);
          double d3 = p_62038_.get("BorderSizeLerpTarget").asDouble(p_62039_.sizeLerpTarget);
@@ -453,7 +453,8 @@ public class WorldBorder {
       }
 
       public double getMaxX() {
-         return this.maxX;
+         /*return this.maxX;*/
+         return 300000000;
       }
 
       public double getMinZ() {
@@ -461,11 +462,13 @@ public class WorldBorder {
       }
 
       public double getMaxZ() {
-         return this.maxZ;
+         //return this.maxZ;
+         return 300000000;
       }
 
       public double getSize() {
-         return this.size;
+         //return this.size;
+         return 300000000;
       }
 
       public BorderStatus getStatus() {
