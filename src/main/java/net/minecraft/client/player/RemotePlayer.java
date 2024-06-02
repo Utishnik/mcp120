@@ -81,7 +81,7 @@ public class RemotePlayer extends AbstractClientPlayer {
 
    public void sendSystemMessage(Component p_234163_) {
       Minecraft minecraft = Minecraft.getInstance();
-      minecraft.gui.getChat().addMessage(p_234163_);
+      minecraft.gui.getChat().addMessage(p_234163_);//chat message sending!
    }
 
    public void recreateFromPacket(ClientboundAddEntityPacket p_301606_) {

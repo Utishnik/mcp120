@@ -120,7 +120,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
       });
       final DimensionType dimensiontype = p_270240_.value();
       this.dimension = p_270683_;
-      this.isClientSide = p_270904_;
+      this.isClientSide = p_270904_;//Is client?
       if (dimensiontype.coordinateScale() != 1.0D) {
          this.worldBorder = new WorldBorder() {
             public double getCenterX() {
