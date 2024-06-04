@@ -171,7 +171,7 @@ public class ClientLevel extends Level {
       this.clientLevelData = p_205506_;
       this.levelRenderer = p_205512_;
       this.effects = DimensionSpecialEffects.forType(p_205508_.value());
-      this.setDefaultSpawnPos(new BlockPos(8, 64, 8), 0.0F);
+      this.setDefaultSpawnPos(new BlockPos(8, 64, 8), 0.0F);//потом гляну подробнее но вроде дефолтная позиция спавна игрока в мире
       this.serverSimulationDistance = p_205510_;
       this.updateSkyBrightness();
       this.prepareWeather();
@@ -291,7 +291,7 @@ public class ClientLevel extends Level {
       }
    }
 
-   public void unload(LevelChunk p_104666_) {
+   public void unload(LevelChunk p_104666_) {//разгрузка чанка с клиенской стороны
       p_104666_.clearAllBlockEntities();
       this.chunkSource.getLightEngine().setLightEnabled(p_104666_.getPos(), false);
       this.entityStorage.stopTicking(p_104666_.getPos());

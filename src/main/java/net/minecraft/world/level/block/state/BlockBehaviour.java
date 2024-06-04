@@ -651,12 +651,12 @@ public abstract class BlockBehaviour implements FeatureElement {
          return this.getBlock().getShape(this.asState(), p_60652_, p_60653_, p_60654_);
       }
 
-      public VoxelShape getCollisionShape(BlockGetter p_60813_, BlockPos p_60814_) {
+      public VoxelShape getCollisionShape(BlockGetter p_60813_, BlockPos p_60814_) { // возвращет форму блока (вроде бы переопределенна почти для каждого блока
          return this.cache != null ? this.cache.collisionShape : this.getCollisionShape(p_60813_, p_60814_, CollisionContext.empty());
       }
 
       public VoxelShape getCollisionShape(BlockGetter p_60743_, BlockPos p_60744_, CollisionContext p_60745_) {
-         return this.getBlock().getCollisionShape(this.asState(), p_60743_, p_60744_, p_60745_);
+         return this.getBlock().getCollisionShape(this.asState()/*get blockstate у blockgetter*/, p_60743_, p_60744_, p_60745_);
       }
 
       public VoxelShape getBlockSupportShape(BlockGetter p_60817_, BlockPos p_60818_) {
@@ -863,7 +863,7 @@ public abstract class BlockBehaviour implements FeatureElement {
          return this.cache != null ? this.cache.isCollisionShapeFullBlock : this.getBlock().isCollisionShapeFullBlock(this.asState(), p_60839_, p_60840_);
       }
 
-      protected abstract BlockState asState();
+      protected abstract BlockState asState(); //возвращает сам blockstate
 
       public boolean requiresCorrectToolForDrops() {
          return this.requiresCorrectToolForDrops;

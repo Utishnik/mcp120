@@ -61,7 +61,7 @@ public class MinecartTNT extends AbstractMinecart {
 
    }
 
-   public boolean hurt(DamageSource p_38666_, float p_38667_) {
+   public boolean hurt(DamageSource p_38666_, float p_38667_) { //vzriv!
       Entity entity = p_38666_.getDirectEntity();
       if (entity instanceof AbstractArrow abstractarrow) {
          if (abstractarrow.isOnFire()) {

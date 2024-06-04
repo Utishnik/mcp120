@@ -164,7 +164,7 @@ public abstract class LavaFluid extends FlowingFluid {
          FluidState fluidstate = p_76220_.getFluidState(p_76221_);
          if (this.is(FluidTags.LAVA) && fluidstate.is(FluidTags.WATER)) {
             if (p_76222_.getBlock() instanceof LiquidBlock) {
-               p_76220_.setBlock(p_76221_, Blocks.STONE.defaultBlockState(), 3);
+               p_76220_.setBlock(p_76221_, Blocks.STONE.defaultBlockState(), 3);//create stone block iz za h2o i lavi
             }
 
             this.fizz(p_76220_, p_76221_);
@@ -205,7 +205,7 @@ public abstract class LavaFluid extends FlowingFluid {
    public static class Source extends LavaFluid {
       public int getAmount(FluidState p_76269_) {
          return 8;
-      }
+      }//ну типа у источника высшая высотаааааааааааааа
 
       public boolean isSource(FluidState p_76267_) {
          return true;

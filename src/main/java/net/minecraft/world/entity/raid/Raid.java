@@ -519,7 +519,7 @@ public class Raid {
                   raider1 = EntityType.PILLAGER.create(this.level);
                } else if (i >= this.getNumGroups(Difficulty.HARD)) {
                   if (k == 0) {
-                     raider1 = EntityType.EVOKER.create(this.level);
+                     raider1 = EntityType.EVOKER.create(this.level);//invaker dotA 2
                   } else {
                      raider1 = EntityType.VINDICATOR.create(this.level);
                   }

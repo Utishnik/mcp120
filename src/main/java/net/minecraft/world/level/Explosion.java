@@ -120,7 +120,7 @@ public class Explosion {
       }
    }
 
-   public void explode() {
+   public void explode() { //esho chto to so vzrivovm
       this.level.gameEvent(this.source, GameEvent.EXPLODE, new Vec3(this.x, this.y, this.z));
       Set<BlockPos> set = Sets.newHashSet();
       int i = 16;
@@ -144,7 +144,7 @@ public class Explosion {
                   for(float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
                      BlockPos blockpos = BlockPos.containing(d4, d6, d8);
                      BlockState blockstate = this.level.getBlockState(blockpos);
-                     FluidState fluidstate = this.level.getFluidState(blockpos);
+                     FluidState fluidstate = this.level.getFluidState(blockpos);//blokirovKA VZRIVA H2O ???
                      if (!this.level.isInWorldBounds(blockpos)) {
                         break;
                      }
@@ -219,13 +219,13 @@ public class Explosion {
 
    }
 
-   public void finalizeExplosion(boolean p_46076_) {
+   public void finalizeExplosion(boolean p_46076_) { //abstart vzriv nahui!!
       if (this.level.isClientSide) {
          this.level.playLocalSound(this.x, this.y, this.z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.2F) * 0.7F, false);
       }
 
       boolean flag = this.interactsWithBlocks();
-      if (p_46076_) {
+      if (p_46076_) { //gamerule na vzriv blockov
          if (!(this.radius < 2.0F) && flag) {
             this.level.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
          } else {

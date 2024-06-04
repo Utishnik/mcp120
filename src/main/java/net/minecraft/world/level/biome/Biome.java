@@ -116,7 +116,7 @@ public final class Biome {
 
    /** @deprecated */
    @Deprecated
-   private float getTemperature(BlockPos p_47506_) {
+   private float getTemperature(BlockPos p_47506_) { //get nahui temperaturraaa
       long i = p_47506_.asLong();
       Long2FloatLinkedOpenHashMap long2floatlinkedopenhashmap = this.temperatureCache.get();
       float f = long2floatlinkedopenhashmap.get(i);

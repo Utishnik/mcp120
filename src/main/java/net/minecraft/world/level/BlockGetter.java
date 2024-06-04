@@ -54,7 +54,7 @@ public interface BlockGetter extends LevelHeightAccessor {
       });
    }
 
-   default BlockHitResult clip(ClipContext p_45548_) {
+   default BlockHitResult clip(ClipContext p_45548_) { //hz
       return traverseBlocks(p_45548_.getFrom(), p_45548_.getTo(), p_45548_, (p_151359_, p_151360_) -> {
          BlockState blockstate = this.getBlockState(p_151360_);
          FluidState fluidstate = this.getFluidState(p_151360_);

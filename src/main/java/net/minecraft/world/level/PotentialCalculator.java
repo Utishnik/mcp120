@@ -14,7 +14,7 @@ public class PotentialCalculator {
 
    }
 
-   public double getPotentialEnergyChange(BlockPos p_47196_, double p_47197_) {
+   public double getPotentialEnergyChange(BlockPos p_47196_, double p_47197_) { //potom podrobnie glynu pohoodu cheto s yronom ot padenia
       if (p_47197_ == 0.0D) {
          return 0.0D;
       } else {

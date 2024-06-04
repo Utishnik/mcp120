@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class MinecartChest extends AbstractMinecartContainer {
+public class MinecartChest extends AbstractMinecartContainer { //chest
    public MinecartChest(EntityType<? extends MinecartChest> p_38487_, Level p_38488_) {
       super(p_38487_, p_38488_);
    }

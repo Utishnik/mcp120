@@ -130,7 +130,7 @@ public abstract class FlowingFluid extends Fluid {
    }
 
    private void spreadToSides(Level p_256644_, BlockPos p_76016_, FluidState p_76017_, BlockState p_76018_) {
-      int i = p_76017_.getAmount() - this.getDropOff(p_256644_);
+      int i = p_76017_.getAmount() - this.getDropOff(p_256644_);//getDropOff - для воды это константа - 1 а для лавы вроде либо 1 либо 2 там условие
       if (p_76017_.getValue(FALLING)) {
          i = 7;
       }
@@ -164,7 +164,7 @@ public abstract class FlowingFluid extends Fluid {
                ++j;
             }
 
-            i = Math.max(i, fluidstate.getAmount());
+            i = Math.max(i, fluidstate.getAmount());//получение высоты водяры
          }
       }
 
@@ -391,7 +391,7 @@ public abstract class FlowingFluid extends Fluid {
       return this.getTickDelay(p_75998_);
    }
 
-   public void tick(Level p_75995_, BlockPos p_75996_, FluidState p_75997_) {
+   public void tick(Level p_75995_, BlockPos p_75996_, FluidState p_75997_) { //tick vodi i lavi
       if (!p_75997_.isSource()) {
          FluidState fluidstate = this.getNewLiquid(p_75995_, p_75996_, p_75995_.getBlockState(p_75996_));
          int i = this.getSpreadDelay(p_75995_, p_75996_, p_75997_, fluidstate);

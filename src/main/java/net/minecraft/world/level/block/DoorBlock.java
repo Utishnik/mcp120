@@ -119,7 +119,7 @@ public class DoorBlock extends Block {
       p_52749_.setBlock(p_52750_.above(), p_52751_.setValue(HALF, DoubleBlockHalf.UPPER), 3);
    }
 
-   private DoorHingeSide getHinge(BlockPlaceContext p_52805_) {
+   private DoorHingeSide getHinge(BlockPlaceContext p_52805_) { //door huita
       BlockGetter blockgetter = p_52805_.getLevel();
       BlockPos blockpos = p_52805_.getClickedPos();
       Direction direction = p_52805_.getHorizontalDirection();

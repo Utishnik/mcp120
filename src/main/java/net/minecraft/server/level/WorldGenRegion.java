@@ -254,7 +254,7 @@ public class WorldGenRegion implements WorldGenLevel {
       }
    }
 
-   public boolean setBlock(BlockPos p_9539_, BlockState p_9540_, int p_9541_, int p_9542_) {
+   public boolean setBlock(BlockPos p_9539_, BlockState p_9540_, int p_9541_, int p_9542_) { //последние два параметра не используются
       if (!this.ensureCanWrite(p_9539_)) {
          return false;
       } else {
@@ -371,7 +371,7 @@ public class WorldGenRegion implements WorldGenLevel {
    }
 
    public int getHeight(Heightmap.Types p_9535_, int p_9536_, int p_9537_) {
-      return this.getChunk(SectionPos.blockToSectionCoord(p_9536_), SectionPos.blockToSectionCoord(p_9537_)).getHeight(p_9535_, p_9536_ & 15, p_9537_ & 15) + 1;
+      return this.getChunk(SectionPos.blockToSectionCoord(p_9536_), SectionPos.blockToSectionCoord(p_9537_)).getHeight(p_9535_, p_9536_ & 15, p_9537_ & 15) + 1;//БИТОВЫЕ операции для высоть получает только 5 бит(вроде)
    }
 
    public void playSound(@Nullable Player p_9528_, BlockPos p_9529_, SoundEvent p_9530_, SoundSource p_9531_, float p_9532_, float p_9533_) {

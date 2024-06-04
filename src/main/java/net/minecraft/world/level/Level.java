@@ -190,7 +190,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
       return this.setBlock(p_46601_, p_46602_, p_46603_, 512);
    }
 
-   public boolean setBlock(BlockPos p_46605_, BlockState p_46606_, int p_46607_, int p_46608_) {
+   public boolean setBlock(BlockPos p_46605_, BlockState p_46606_, int p_46607_/*bit mask?*/, int p_46608_) {
       if (this.isOutsideBuildHeight(p_46605_)) {
          return false;
       } else if (!this.isClientSide && this.isDebug()) {

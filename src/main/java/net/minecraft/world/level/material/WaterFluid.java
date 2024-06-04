@@ -117,6 +117,6 @@ public abstract class WaterFluid extends FlowingFluid {
 
       public boolean isSource(FluidState p_76483_) {
          return true;
-      }
+      }//проверяет является ли блок воды источником
    }
 }

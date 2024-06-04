@@ -38,7 +38,7 @@ public class PipeBlock extends Block {
       this.shapeByIndex = this.makeShapes(p_55159_);
    }
 
-   private VoxelShape[] makeShapes(float p_55162_) {
+   private VoxelShape[] makeShapes(float p_55162_) { // kakya nahui truba blyat
       float f = 0.5F - p_55162_;
       float f1 = 0.5F + p_55162_;
       VoxelShape voxelshape = Block.box((double)(f * 16.0F), (double)(f * 16.0F), (double)(f * 16.0F), (double)(f1 * 16.0F), (double)(f1 * 16.0F), (double)(f1 * 16.0F));
