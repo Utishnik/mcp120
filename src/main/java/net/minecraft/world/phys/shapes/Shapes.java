@@ -214,7 +214,7 @@ public final class Shapes {
       }
    }
 
-   public static boolean mergedFaceOccludes(VoxelShape p_83153_, VoxelShape p_83154_, Direction p_83155_) {
+   public static boolean mergedFaceOccludes(VoxelShape p_83153_, VoxelShape p_83154_, Direction p_83155_) { //
       if (p_83153_ != block() && p_83154_ != block()) {
          Direction.Axis direction$axis = p_83155_.getAxis();
          Direction.AxisDirection direction$axisdirection = p_83155_.getAxisDirection();

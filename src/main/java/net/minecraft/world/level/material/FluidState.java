@@ -55,7 +55,8 @@ public final class FluidState extends StateHolder<Fluid, FluidState> {
    }
 
    public int getAmount() {
-      return this.getType().getAmount(this);
+      /*return this.getType().getAmount(this);*/
+      return 1;
    }
 
    public boolean shouldRenderBackwardUpFace(BlockGetter p_76172_, BlockPos p_76173_) {

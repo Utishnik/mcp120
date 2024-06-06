@@ -2091,7 +2091,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
       this.setBlockDirty(p_109546_, (p_109549_ & 8) != 0);
    }
 
-   private void setBlockDirty(BlockPos p_109733_, boolean p_109734_) {
+   private void setBlockDirty(BlockPos p_109733_, boolean p_109734_) {//связанно с обновлением блока
       for(int i = p_109733_.getZ() - 1; i <= p_109733_.getZ() + 1; ++i) {
          for(int j = p_109733_.getX() - 1; j <= p_109733_.getX() + 1; ++j) {
             for(int k = p_109733_.getY() - 1; k <= p_109733_.getY() + 1; ++k) {

@@ -136,6 +136,9 @@ public enum Direction implements StringRepresentable {
          default:
             throw new IncompatibleClassChangeError();
       }
+      /*
+      quaternionf.rotationX((float)Math.PI/10);
+      qu*aternionf.rotationZ((float)Math.PI/5);   Вращаются шалкербоксы и как блоки и в инвенторе*/
 
       return quaternionf;
    }

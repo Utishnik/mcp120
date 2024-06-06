@@ -74,7 +74,7 @@ public class SectionPos extends Vec3i {
    }
 
    public static int blockToSectionCoord(int p_123172_) {
-      return p_123172_ >> 4;
+      return p_123172_ >> 4;//просто делится на 16
    }
 
    public static int blockToSectionCoord(double p_235866_) {

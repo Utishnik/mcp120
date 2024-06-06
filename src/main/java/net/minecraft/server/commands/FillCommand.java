@@ -73,13 +73,17 @@ public class FillCommand {
                if (blockinput != null) {
                   BlockEntity blockentity = serverlevel.getBlockEntity(blockpos);
                   Clearable.tryClear(blockentity);
+
                   if (blockinput.place(serverlevel, blockpos, 2)) {
                      list.add(blockpos.immutable());
                      ++k;
                   }
+
+
                }
             }
          }
+
 
          for(BlockPos blockpos1 : list) {
             Block block = serverlevel.getBlockState(blockpos1).getBlock();

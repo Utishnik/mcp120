@@ -100,7 +100,7 @@ public final class BelowZeroRetrogen {
       return !this.missingBedrock.isEmpty();
    }
 
-   public boolean hasBedrockHole(int p_198215_, int p_198216_) {
+   public boolean hasBedrockHole(int p_198215_, int p_198216_) {//bedrock dirki
       return this.missingBedrock.get((p_198216_ & 15) * 16 + (p_198215_ & 15));
    }
 

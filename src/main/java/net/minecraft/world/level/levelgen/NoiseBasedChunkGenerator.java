@@ -126,7 +126,7 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {
       p_224304_.add("NoiseRouter T: " + decimalformat.format(noiserouter.temperature().compute(densityfunction$singlepointcontext)) + " V: " + decimalformat.format(noiserouter.vegetation().compute(densityfunction$singlepointcontext)) + " C: " + decimalformat.format(noiserouter.continents().compute(densityfunction$singlepointcontext)) + " E: " + decimalformat.format(noiserouter.erosion().compute(densityfunction$singlepointcontext)) + " D: " + decimalformat.format(noiserouter.depth().compute(densityfunction$singlepointcontext)) + " W: " + decimalformat.format(d0) + " PV: " + decimalformat.format((double)NoiseRouterData.peaksAndValleys((float)d0)) + " AS: " + decimalformat.format(noiserouter.initialDensityWithoutJaggedness().compute(densityfunction$singlepointcontext)) + " N: " + decimalformat.format(noiserouter.finalDensity().compute(densityfunction$singlepointcontext)));
    }
 
-   private OptionalInt iterateNoiseColumn(LevelHeightAccessor p_224240_, RandomState p_224241_, int p_224242_, int p_224243_, @Nullable MutableObject<NoiseColumn> p_224244_, @Nullable Predicate<BlockState> p_224245_) {
+   private OptionalInt iterateNoiseColumn(LevelHeightAccessor p_224240_, RandomState p_224241_, int p_224242_, int p_224243_, @Nullable MutableObject<NoiseColumn> p_224244_, @Nullable Predicate<BlockState> p_224245_) {//еще что то шумное
       NoiseSettings noisesettings = this.settings.value().noiseSettings().clampToHeightAccessor(p_224240_);
       int i = noisesettings.getCellHeight();
       int j = noisesettings.minY();

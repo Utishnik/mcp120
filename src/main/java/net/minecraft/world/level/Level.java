@@ -168,7 +168,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
       return p_46725_ < -300000000 || p_46725_ >= 300000000;
    }
 
-   public LevelChunk getChunkAt(BlockPos p_46746_) {
+   public LevelChunk getChunkAt(BlockPos p_46746_) {//получение в каком чанке находится блок
       return this.getChunk(SectionPos.blockToSectionCoord(p_46746_.getX()), SectionPos.blockToSectionCoord(p_46746_.getZ()));
    }
 
@@ -186,41 +186,41 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
       }
    }
 
-   public boolean setBlock(BlockPos p_46601_, BlockState p_46602_, int p_46603_) {
-      return this.setBlock(p_46601_, p_46602_, p_46603_, 512);
+   public boolean setBlock(BlockPos p_46601_, BlockState p_46602_, int poebota) {
+      return this.setBlock(p_46601_, p_46602_, poebota, 512);
    }
 
-   public boolean setBlock(BlockPos p_46605_, BlockState p_46606_, int p_46607_/*bit mask?*/, int p_46608_) {
-      if (this.isOutsideBuildHeight(p_46605_)) {
+   public boolean setBlock(BlockPos p_46605_, BlockState p_46606_, int xxx1/*bit mask?*/, int p_46608_) {//короче он вроде работает через замену состояния блока(щас блоки становятся аметистами но с предыдущей тестурой)
+      if (this.isOutsideBuildHeight(p_46605_)) {//проверка на максимальную высоту строительства
          return false;
       } else if (!this.isClientSide && this.isDebug()) {
          return false;
       } else {
          LevelChunk levelchunk = this.getChunkAt(p_46605_);
          Block block = p_46606_.getBlock();
-         BlockState blockstate = levelchunk.setBlockState(p_46605_, p_46606_, (p_46607_ & 64) != 0);
+         BlockState blockstate = levelchunk.setBlockState(p_46605_, Blocks.AMETHYST_BLOCK.defaultBlockState(), (xxx1 & 64) != 0);
          if (blockstate == null) {
             return false;
          } else {
-            BlockState blockstate1 = this.getBlockState(p_46605_);
+            BlockState blockstate1 = /*this.getBlockState(p_46605_)*/Blocks.AMETHYST_BLOCK.defaultBlockState();
             if (blockstate1 == p_46606_) {
                if (blockstate != blockstate1) {
                   this.setBlocksDirty(p_46605_, blockstate, blockstate1);
                }
 
-               if ((p_46607_ & 2) != 0 && (!this.isClientSide || (p_46607_ & 4) == 0) && (this.isClientSide || levelchunk.getFullStatus() != null && levelchunk.getFullStatus().isOrAfter(FullChunkStatus.BLOCK_TICKING))) {
-                  this.sendBlockUpdated(p_46605_, blockstate, p_46606_, p_46607_);
+               if ((xxx1 & 2) != 0 && (!this.isClientSide || (xxx1 & 4) == 0) && (this.isClientSide || levelchunk.getFullStatus() != null && levelchunk.getFullStatus().isOrAfter(FullChunkStatus.BLOCK_TICKING))) {
+                  this.sendBlockUpdated(p_46605_, blockstate, p_46606_, xxx1);
                }
 
-               if ((p_46607_ & 1) != 0) {
+               if ((xxx1 & 1) != 0) {
                   this.blockUpdated(p_46605_, blockstate.getBlock());
                   if (!this.isClientSide && p_46606_.hasAnalogOutputSignal()) {
                      this.updateNeighbourForOutputSignal(p_46605_, block);
                   }
                }
 
-               if ((p_46607_ & 16) == 0 && p_46608_ > 0) {
-                  int i = p_46607_ & -34;
+               if ((xxx1 & 16) == 0 && p_46608_ > 0) {
+                  int i = xxx1 & -34;
                   blockstate.updateIndirectNeighbourShapes(this, p_46605_, i, p_46608_ - 1);
                   p_46606_.updateNeighbourShapes(this, p_46605_, i, p_46608_ - 1);
                   p_46606_.updateIndirectNeighbourShapes(this, p_46605_, i, p_46608_ - 1);

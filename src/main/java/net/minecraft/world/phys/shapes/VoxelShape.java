@@ -179,7 +179,7 @@ public abstract class VoxelShape {
       }
    }
 
-   public double collide(Direction.Axis p_83260_, AABB p_83261_, double p_83262_) {
+   public double collide(Direction.Axis p_83260_, AABB p_83261_, double p_83262_) { //наверное столкновение shape
       return this.collideX(AxisCycle.between(p_83260_, Direction.Axis.X), p_83261_, p_83262_);
    }
 

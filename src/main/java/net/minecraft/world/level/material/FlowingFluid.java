@@ -255,7 +255,7 @@ public abstract class FlowingFluid extends Fluid {
       return (short)((i + 128 & 255) << 8 | j + 128 & 255);
    }
 
-   protected int getSlopeDistance(LevelReader p_76027_, BlockPos p_76028_, int p_76029_, Direction p_76030_, BlockState p_76031_, BlockPos p_76032_, Short2ObjectMap<Pair<BlockState, FluidState>> p_76033_, Short2BooleanMap p_76034_) {
+   protected int getSlopeDistance(LevelReader p_76027_, BlockPos p_76028_, int zxc, Direction p_76030_, BlockState p_76031_, BlockPos p_76032_, Short2ObjectMap<Pair<BlockState, FluidState>> p_76033_, Short2BooleanMap p_76034_) {//рекурсия
       int i = 1000;
 
       for(Direction direction : Direction.Plane.HORIZONTAL) {
@@ -275,11 +275,11 @@ public abstract class FlowingFluid extends Fluid {
                   return this.isWaterHole(p_76027_, this.getFlowing(), blockpos, blockstate, blockpos1, blockstate1);
                });
                if (flag) {
-                  return p_76029_;
+                  return zxc;
                }
 
-               if (p_76029_ < this.getSlopeFindDistance(p_76027_)) {
-                  int j = this.getSlopeDistance(p_76027_, blockpos, p_76029_ + 1, direction.getOpposite(), blockstate, p_76032_, p_76033_, p_76034_);
+               if (zxc < this.getSlopeFindDistance(p_76027_)) {
+                  int j = this.getSlopeDistance(p_76027_, blockpos, zxc + 1, direction.getOpposite(), blockstate, p_76032_, p_76033_, p_76034_);
                   if (j < i) {
                      i = j;
                   }
@@ -392,7 +392,7 @@ public abstract class FlowingFluid extends Fluid {
    }
 
    public void tick(Level p_75995_, BlockPos p_75996_, FluidState p_75997_) { //tick vodi i lavi
-      if (!p_75997_.isSource()) {
+       if (!p_75997_.isSource()) {
          FluidState fluidstate = this.getNewLiquid(p_75995_, p_75996_, p_75995_.getBlockState(p_75996_));
          int i = this.getSpreadDelay(p_75995_, p_75996_, p_75997_, fluidstate);
          if (fluidstate.isEmpty()) {
@@ -407,7 +407,7 @@ public abstract class FlowingFluid extends Fluid {
          }
       }
 
-      this.spread(p_75995_, p_75996_, p_75997_);
+     this.spread(p_75995_, p_75996_, p_75997_);
    }
 
    protected static int getLegacyLevel(FluidState p_76093_) {
@@ -423,12 +423,12 @@ public abstract class FlowingFluid extends Fluid {
    }
 
    public float getOwnHeight(FluidState p_76048_) {
-      return (float)p_76048_.getAmount() / 9.0F;
+      return (float)p_76048_.getAmount() / 9.0F;//тю пиздят макс высота это 9 а не 8 как написаноe
    }
 
    public abstract int getAmount(FluidState p_164509_);
 
-   public VoxelShape getShape(FluidState p_76084_, BlockGetter p_76085_, BlockPos p_76086_) {
+   public VoxelShape getShape(FluidState p_76084_, BlockGetter p_76085_, BlockPos p_76086_) {//создание формы для жидкости зависит от ее высоты
       return p_76084_.getAmount() == 9 && hasSameAbove(p_76084_, p_76085_, p_76086_) ? Shapes.block() : this.shapes.computeIfAbsent(p_76084_, (p_76073_) -> {
          return Shapes.box(0.0D, 0.0D, 0.0D, 1.0D, (double)p_76073_.getHeight(p_76085_, p_76086_), 1.0D);
       });
