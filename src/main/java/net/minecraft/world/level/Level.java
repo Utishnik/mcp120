@@ -198,12 +198,12 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
       } else {
          LevelChunk levelchunk = this.getChunkAt(p_46605_);
          Block block = p_46606_.getBlock();
-         BlockState blockstate = levelchunk.setBlockState(p_46605_, Blocks.AMETHYST_BLOCK.defaultBlockState(), (xxx1 & 64) != 0);
+         BlockState blockstate = levelchunk.setBlockState(p_46605_, p_46606_, (xxx1 & 64) != 0);//майн не загружал новый мир из за того что в *2 сравнение не РАВЕНСТВО
          if (blockstate == null) {
             return false;
          } else {
-            BlockState blockstate1 = /*this.getBlockState(p_46605_)*/Blocks.AMETHYST_BLOCK.defaultBlockState();
-            if (blockstate1 == p_46606_) {
+            BlockState blockstate1 = this.getBlockState(p_46605_);
+            if (blockstate1 == p_46606_) { //*2
                if (blockstate != blockstate1) {
                   this.setBlocksDirty(p_46605_, blockstate, blockstate1);
                }

@@ -255,11 +255,11 @@ public abstract class FlowingFluid extends Fluid {
       return (short)((i + 128 & 255) << 8 | j + 128 & 255);
    }
 
-   protected int getSlopeDistance(LevelReader p_76027_, BlockPos p_76028_, int zxc, Direction p_76030_, BlockState p_76031_, BlockPos p_76032_, Short2ObjectMap<Pair<BlockState, FluidState>> p_76033_, Short2BooleanMap p_76034_) {//рекурсия
+   protected int getSlopeDistance(LevelReader p_76027_, BlockPos p_76028_, int zxc, Direction dir1, BlockState p_76031_, BlockPos p_76032_, Short2ObjectMap<Pair<BlockState, FluidState>> p_76033_, Short2BooleanMap p_76034_) {//рекурсия
       int i = 1000;
 
       for(Direction direction : Direction.Plane.HORIZONTAL) {
-         if (direction != p_76030_) {
+         if (direction != dir1) {
             BlockPos blockpos = p_76028_.relative(direction);
             short short1 = getCacheKey(p_76032_, blockpos);
             Pair<BlockState, FluidState> pair = p_76033_.computeIfAbsent(short1, (p_284932_) -> {

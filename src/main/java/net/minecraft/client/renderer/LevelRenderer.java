@@ -2256,7 +2256,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
       }
    }
 
-   public void levelEvent(int p_234305_, BlockPos p_234306_, int p_234307_) {
+   public void levelEvent(int p_234305_, BlockPos p_234306_, int p_234307_) {//eventi nahui
       RandomSource randomsource = this.level.random;
       switch (p_234305_) {
          case 1000:
