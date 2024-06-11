@@ -158,7 +158,7 @@ public record WorldDimensions(Registry<LevelStem> dimensions) {
       return false;
    }
 
-   private static boolean isStableEnd(LevelStem p_250720_) {
+   private static boolean isStableEnd(LevelStem p_250720_) {//использует шум энда
       if (p_250720_.type().is(BuiltinDimensionTypes.END)) {
          ChunkGenerator chunkgenerator = p_250720_.generator();
          if (chunkgenerator instanceof NoiseBasedChunkGenerator) {

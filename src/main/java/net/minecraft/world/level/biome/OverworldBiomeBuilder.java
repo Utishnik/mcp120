@@ -106,7 +106,7 @@ public final class OverworldBiomeBuilder {
 
    }
 
-   private void addInlandBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> p_187216_) {
+   private void addInlandBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> p_187216_) {//биомы в зависимости от климпта
       this.addMidSlice(p_187216_, Climate.Parameter.span(-1.0F, -0.93333334F));
       this.addHighSlice(p_187216_, Climate.Parameter.span(-0.93333334F, -0.7666667F));
       this.addPeaks(p_187216_, Climate.Parameter.span(-0.7666667F, -0.56666666F));
