@@ -63,7 +63,7 @@ public class NoiseRouterData {
       return ResourceKey.create(Registries.DENSITY_FUNCTION, new ResourceLocation(p_209537_));
    }
 
-   public static Holder<? extends DensityFunction> bootstrap(BootstapContext<DensityFunction> p_256220_) {
+   public static Holder<? extends DensityFunction> bootstrap(BootstapContext<DensityFunction> p_256220_) {//всякие шумы
       HolderGetter<NormalNoise.NoiseParameters> holdergetter = p_256220_.lookup(Registries.NOISE);
       HolderGetter<DensityFunction> holdergetter1 = p_256220_.lookup(Registries.DENSITY_FUNCTION);
       p_256220_.register(ZERO, DensityFunctions.zero());
@@ -266,7 +266,7 @@ public class NoiseRouterData {
       return slideEndLike(p_224506_, 0, 128);
    }
 
-   protected static NoiseRouter end(HolderGetter<DensityFunction> p_256079_) {
+   protected static NoiseRouter end(HolderGetter<DensityFunction> p_256079_) { // end шум
       DensityFunction densityfunction = DensityFunctions.cache2d(DensityFunctions.endIslands(0L));
       DensityFunction densityfunction1 = postProcess(slideEnd(getFunction(p_256079_, SLOPED_CHEESE_END)));
       return new NoiseRouter(DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), densityfunction, DensityFunctions.zero(), DensityFunctions.zero(), slideEnd(DensityFunctions.add(densityfunction, DensityFunctions.constant(-0.703125D))), densityfunction1, DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero());

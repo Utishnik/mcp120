@@ -34,7 +34,7 @@ public record NoiseSettings(int minY, int height, int noiseSizeHorizontal, int n
       }
    }
 
-   public static NoiseSettings create(int p_224526_, int p_224527_, int p_224528_, int p_224529_) {
+   public static NoiseSettings create(int p_224526_, int p_224527_, int p_224528_, int p_224529_) {//создает шумы
       NoiseSettings noisesettings = new NoiseSettings(p_224526_, p_224527_, p_224528_, p_224529_);
       guardY(noisesettings).error().ifPresent((p_158719_) -> {
          throw new IllegalStateException(p_158719_.message());

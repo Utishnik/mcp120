@@ -153,7 +153,7 @@ public class PortalForcer {
       for(int k2 = 0; k2 < 2; ++k2) {
          for(int l2 = 0; l2 < 3; ++l2) {
             blockpos$mutableblockpos.setWithOffset(blockpos, k2 * direction.getStepX(), l2, k2 * direction.getStepZ());
-            this.level.setBlock(blockpos$mutableblockpos, blockstate, 18);
+            this.level.setBlock(blockpos$mutableblockpos, blockstate, 18);//set nether portal
          }
       }
 

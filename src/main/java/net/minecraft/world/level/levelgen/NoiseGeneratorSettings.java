@@ -50,8 +50,8 @@ public record NoiseGeneratorSettings(NoiseSettings noiseSettings, BlockState def
       p_256365_.register(FLOATING_ISLANDS, floatingIslands(p_256365_));
    }
 
-   private static NoiseGeneratorSettings end(BootstapContext<?> p_256478_) {
-      return new NoiseGeneratorSettings(NoiseSettings.END_NOISE_SETTINGS, Blocks.END_STONE.defaultBlockState(), Blocks.AIR.defaultBlockState(), NoiseRouterData.end(p_256478_.lookup(Registries.DENSITY_FUNCTION)), SurfaceRuleData.end(), List.of(), 0, true, false, false, true);
+   private static NoiseGeneratorSettings end(BootstapContext<?> p_256478_) {//end gen
+      return new NoiseGeneratorSettings(NoiseSettings.END_NOISE_SETTINGS, Blocks.END_STONE.defaultBlockState(), Blocks.BEDROCK.defaultBlockState(), NoiseRouterData.end(p_256478_.lookup(Registries.DENSITY_FUNCTION)), SurfaceRuleData.end(), List.of(), 0, true, false, false, true);
    }
 
    private static NoiseGeneratorSettings nether(BootstapContext<?> p_256180_) {

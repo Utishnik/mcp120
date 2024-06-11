@@ -45,7 +45,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class PlayerRenderer extends LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
    public PlayerRenderer(EntityRendererProvider.Context p_174557_, boolean p_174558_) {
-      super(p_174557_, new PlayerModel<>(p_174557_.bakeLayer(p_174558_ ? ModelLayers.PLAYER_SLIM : ModelLayers.PLAYER), p_174558_), 0.5F);
+      super(p_174557_, new PlayerModel<>(p_174557_.bakeLayer(p_174558_ ? ModelLayers.PLAYER_SLIM : ModelLayers.PLAYER), p_174558_), 4.5F);
       this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidArmorModel(p_174557_.bakeLayer(p_174558_ ? ModelLayers.PLAYER_SLIM_INNER_ARMOR : ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidArmorModel(p_174557_.bakeLayer(p_174558_ ? ModelLayers.PLAYER_SLIM_OUTER_ARMOR : ModelLayers.PLAYER_OUTER_ARMOR)), p_174557_.getModelManager()));
       this.addLayer(new PlayerItemInHandLayer<>(this, p_174557_.getItemInHandRenderer()));
       this.addLayer(new ArrowLayer<>(p_174557_, this));
@@ -146,8 +146,8 @@ public class PlayerRenderer extends LivingEntityRenderer<AbstractClientPlayer, P
    }
 
    protected void scale(AbstractClientPlayer p_117798_, PoseStack p_117799_, float p_117800_) {
-      float f = 0.9375F;
-      p_117799_.scale(0.9375F, 0.9375F, 0.9375F);
+      float f = 8;
+      p_117799_.scale(f, f, f);
    }
 
    protected void renderNameTag(AbstractClientPlayer p_117808_, Component p_117809_, PoseStack p_117810_, MultiBufferSource p_117811_, int p_117812_) {

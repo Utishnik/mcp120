@@ -93,7 +93,7 @@ public class Camera {
       double d0 = (double)this.forwards.x() * p_90569_ + (double)this.up.x() * p_90570_ + (double)this.left.x() * p_90571_;
       double d1 = (double)this.forwards.y() * p_90569_ + (double)this.up.y() * p_90570_ + (double)this.left.y() * p_90571_;
       double d2 = (double)this.forwards.z() * p_90569_ + (double)this.up.z() * p_90570_ + (double)this.left.z() * p_90571_;
-      this.setPosition(new Vec3(this.position.x + d0, this.position.y + d1, this.position.z + d2));
+      this.setPosition(new Vec3(this.position.x+5+ d0, this.position.y + d1+10, this.position.z + d2));
    }
 
    protected void setRotation(float p_90573_, float p_90574_) {

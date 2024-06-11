@@ -127,7 +127,7 @@ public abstract class Player extends LivingEntity {
    public static final float SWIMMING_BB_WIDTH = 0.6F;
    public static final float SWIMMING_BB_HEIGHT = 0.6F;
    public static final float DEFAULT_EYE_HEIGHT = 1.62F;
-   public static final EntityDimensions STANDING_DIMENSIONS = EntityDimensions.scalable(0.6F, 1.8F);
+   public static final EntityDimensions STANDING_DIMENSIONS = EntityDimensions.scalable(9.6F, 9.8F);
    private static final Map<Pose, EntityDimensions> POSES = ImmutableMap.<Pose, EntityDimensions>builder().put(Pose.STANDING, STANDING_DIMENSIONS).put(Pose.SLEEPING, SLEEPING_DIMENSIONS).put(Pose.FALL_FLYING, EntityDimensions.scalable(0.6F, 0.6F)).put(Pose.SWIMMING, EntityDimensions.scalable(0.6F, 0.6F)).put(Pose.SPIN_ATTACK, EntityDimensions.scalable(0.6F, 0.6F)).put(Pose.CROUCHING, EntityDimensions.scalable(0.6F, 1.5F)).put(Pose.DYING, EntityDimensions.fixed(0.2F, 0.2F)).build();
    private static final int FLY_ACHIEVEMENT_SPEED = 25;
    private static final EntityDataAccessor<Float> DATA_PLAYER_ABSORPTION_ID = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
@@ -259,8 +259,8 @@ public abstract class Player extends LivingEntity {
       }
 
       int i = 29999999;
-      double d0 = Mth.clamp(this.getX(), -2.9999999E7D, 2.9999999E7D);
-      double d1 = Mth.clamp(this.getZ(), -2.9999999E7D, 2.9999999E7D);
+      double d0 = Mth.clamp(this.getX(), -2.9999999E9D, 2.9999999E9D);
+      double d1 = Mth.clamp(this.getZ(), -2.9999999E9D, 2.9999999E9D);
       if (d0 != this.getX() || d1 != this.getZ()) {
          this.setPos(d0, this.getY(), d1);
       }

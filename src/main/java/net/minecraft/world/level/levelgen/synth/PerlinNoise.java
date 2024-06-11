@@ -163,7 +163,7 @@ public class PerlinNoise {
          d2 /= 2.0D;
       }
 
-     // return (int)(Mth.sin((float)p_75418_)*50);
+      //return (int)(Mth.sin((float)p_75418_)*50);
       return d0;
    }
 

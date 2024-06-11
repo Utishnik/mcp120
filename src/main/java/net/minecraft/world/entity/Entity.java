@@ -514,7 +514,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
    }
 
    public void lavaHurt() {
-      if (!this.fireImmune()) {
+      if (!this.fireImmune()) {//короче я же хочу подлодки сделать и нужно 1)отрубить рендер в местах где типо не может быть лава 2)имунитет к огню
          this.setSecondsOnFire(15);
          if (this.hurt(this.damageSources().lava(), 4.0F)) {
             this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
@@ -573,7 +573,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
       return this.mainSupportingBlockPos.isPresent() && this.mainSupportingBlockPos.get().equals(p_287613_);
    }
 
-   protected void checkSupportingBlock(boolean p_289694_, @Nullable Vec3 p_289680_) {
+   protected void checkSupportingBlock(boolean p_289694_, @Nullable Vec3 p_289680_) {//чето с проверкой на земле ты или нет
       if (p_289694_) {
          AABB aabb = this.getBoundingBox();
          AABB aabb1 = new AABB(aabb.minX, aabb.minY - 1.0E-6D, aabb.minZ, aabb.maxX, aabb.minY, aabb.maxZ);
@@ -1025,7 +1025,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
 
    }
 
-   protected void waterSwimSound() {
+   protected void waterSwimSound() {//звуки воды
       Entity entity = Objects.requireNonNullElse(this.getControllingPassenger(), this);
       float f = entity == this ? 0.35F : 0.4F;
       Vec3 vec3 = entity.getDeltaMovement();
@@ -1193,7 +1193,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
 
    }
 
-   protected boolean updateInWaterStateAndDoFluidPushing() {
+   protected boolean updateInWaterStateAndDoFluidPushing() {//проверка типо тушет если ты в огне и в воду стал
       this.fluidHeight.clear();
       this.updateInWaterStateAndDoWaterCurrentPushing();
       double d0 = this.level().dimensionType().ultraWarm() ? 0.007D : 0.0023333333333333335D;
@@ -1313,7 +1313,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
 
    public boolean isInLava() {
       return !this.firstTick && this.fluidHeight.getDouble(FluidTags.LAVA) > 0.0D;
-   }
+   }//чето с лавой
 
    public void moveRelative(float p_19921_, Vec3 p_19922_) {
       Vec3 vec3 = getInputVector(p_19922_, p_19921_, this.getYRot());
@@ -1501,7 +1501,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
       return new Vec3(this.getX(), this.getEyeY(), this.getZ());
    }
 
-   public final Vec3 getEyePosition(float p_20300_) {
+   public final Vec3 getEyePosition(float p_20300_) {//с позицие глаз связано
       double d0 = Mth.lerp((double)p_20300_, this.xo, this.getX());
       double d1 = Mth.lerp((double)p_20300_, this.yo, this.getY()) + (double)this.getEyeHeight();
       double d2 = Mth.lerp((double)p_20300_, this.zo, this.getZ());
@@ -1883,7 +1883,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
       return this instanceof LivingEntity;
    }
 
-   public boolean startRiding(Entity p_19966_, boolean p_19967_) {
+   public boolean startRiding(Entity p_19966_, boolean p_19967_) {//задит на this.entity p_19966_
       if (p_19966_ == this.vehicle) {
          return false;
       } else if (!p_19966_.couldAcceptPassenger()) {
@@ -2447,7 +2447,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
    }
 
    @Nullable
-   public Entity changeDimension(ServerLevel p_20118_) {
+   public Entity changeDimension(ServerLevel p_20118_) { //чото с измерентями
       if (this.level() instanceof ServerLevel && !this.isRemoved()) {
          this.level().getProfiler().push("changeDimension");
          this.unRide();
@@ -2634,7 +2634,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
       return this.entityData.get(DATA_CUSTOM_NAME_VISIBLE);
    }
 
-   public final void teleportToWithTicket(double p_20325_, double p_20326_, double p_20327_) {
+   public final void teleportToWithTicket(double p_20325_, double p_20326_, double p_20327_) {//tp
       if (this.level() instanceof ServerLevel) {
          ChunkPos chunkpos = new ChunkPos(BlockPos.containing(p_20325_, p_20326_, p_20327_));
          ((ServerLevel)this.level()).getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 0, this.getId());
@@ -2643,6 +2643,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
       }
    }
 
+   //tp2
    public boolean teleportTo(ServerLevel p_265257_, double p_265407_, double p_265727_, double p_265410_, Set<RelativeMovement> p_265083_, float p_265573_, float p_265094_) {
       float f = Mth.clamp(p_265094_, -90.0F, 90.0F);
       if (p_265257_ == this.level()) {
@@ -3010,7 +3011,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
       this.yRotO = this.getYRot();
    }
 
-   public boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> p_204032_, double p_204033_) {
+   public boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> p_204032_, double p_204033_) {//что то с жидкостями
       if (this.touchingUnloadedChunk()) {
          return false;
       } else {

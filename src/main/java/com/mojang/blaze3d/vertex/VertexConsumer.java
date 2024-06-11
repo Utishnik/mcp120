@@ -102,7 +102,7 @@ public interface VertexConsumer {
             int l = aint[k];
             float f9 = bytebuffer.getFloat(16);
             float f10 = bytebuffer.getFloat(20);
-            Vector4f vector4f = matrix4f.transform(new Vector4f(f, f1, f2, 1.0F));
+            Vector4f vector4f = matrix4f.transform(new Vector4f(f, f1, f2, 1.0F));//тут можно вращать уменьшать блоки и тд
             this.vertex(vector4f.x(), vector4f.y(), vector4f.z(), f3, f4, f5, 1.0F, f9, f10, p_86003_, l, vector3f.x(), vector3f.y(), vector3f.z());
          }
       }

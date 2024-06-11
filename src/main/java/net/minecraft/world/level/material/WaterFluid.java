@@ -112,7 +112,7 @@ public abstract class WaterFluid extends FlowingFluid {
 
    public static class Source extends WaterFluid {
       public int getAmount(FluidState p_76485_) {
-         return p_76485_.getAmount();
+         return 9;
       }
 
       public boolean isSource(FluidState p_76483_) {

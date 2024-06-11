@@ -79,7 +79,7 @@ public class ObserverBlock extends DirectionalBlock {
       return p_55101_.getValue(POWERED) && p_55101_.getValue(FACING) == p_55104_ ? 15 : 0;
    }
 
-   public void onPlace(BlockState p_55132_, Level p_55133_, BlockPos p_55134_, BlockState p_55135_, boolean p_55136_) {
+   public void onPlace(BlockState p_55132_, Level p_55133_, BlockPos p_55134_, BlockState p_55135_, boolean p_55136_) { // проверка обсервера
       if (!p_55132_.is(p_55135_.getBlock())) {
          if (!p_55133_.isClientSide() && p_55132_.getValue(POWERED) && !p_55133_.getBlockTicks().hasScheduledTick(p_55134_, this)) {
             BlockState blockstate = p_55132_.setValue(POWERED, Boolean.valueOf(false));
