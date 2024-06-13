@@ -66,6 +66,7 @@ public class LiquidBlockRenderer {
       return !isFaceOccludedBySelf(p_203167_, p_203168_, p_203170_, p_203171_) && !isNeighborSameFluid(p_203169_, p_203172_);
    }
 
+   //render block
    public void tesselate(BlockAndTintGetter p_234370_, BlockPos p_234371_, VertexConsumer p_234372_, BlockState p_234373_, FluidState p_234374_) {
       boolean flag = p_234374_.is(FluidTags.LAVA);
       TextureAtlasSprite[] atextureatlassprite = flag ? this.lavaIcons : this.waterIcons;

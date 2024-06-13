@@ -363,7 +363,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
       }
    }
 
-   public void tickRain(Camera p_109694_) {
+   public void tickRain(Camera p_109694_) { //rain tick
       float f = this.minecraft.level.getRainLevel(1.0F) / (Minecraft.useFancyGraphics() ? 1.0F : 2.0F);
       if (!(f <= 0.0F)) {
          RandomSource randomsource = RandomSource.create((long)this.ticks * 312987231L);
@@ -1041,6 +1041,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
       }
 
       this.checkPoseStack(p_109600_);
+      //hit result
       HitResult hitresult = this.minecraft.hitResult;
       if (p_109603_ && hitresult != null && hitresult.getType() == HitResult.Type.BLOCK) {
          profilerfiller.popPush("outline");
@@ -1927,8 +1928,9 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
       }
    }
 
+   //это рендер то серой хуни хотарая отображет типо хит бокс блока
    private void renderHitOutline(PoseStack p_109638_, VertexConsumer p_109639_, Entity p_109640_, double p_109641_, double p_109642_, double p_109643_, BlockPos p_109644_, BlockState p_109645_) {
-      renderShape(p_109638_, p_109639_, p_109645_.getShape(this.level, p_109644_, CollisionContext.of(p_109640_)), (double)p_109644_.getX() - p_109641_, (double)p_109644_.getY() - p_109642_, (double)p_109644_.getZ() - p_109643_, 0.0F, 0.0F, 0.0F, 0.4F);
+      renderShape(p_109638_, p_109639_, p_109645_.getShape(this.level, p_109644_, CollisionContext.of(p_109640_)), (double)p_109644_.getX() - p_109641_, (double)p_109644_.getY() - p_109642_, (double)p_109644_.getZ() - p_109643_, 0.5F, 0.25F, 0.34F, 0.9F);
    }
 
    private static Vec3 mixColor(float p_286899_) {
@@ -1997,6 +1999,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
          f /= f3;
          f1 /= f3;
          f2 /= f3;
+         //color shape
          p_109784_.vertex(posestack$pose.pose(), (float)(p_234280_ + p_109786_), (float)(p_234281_ + p_109787_), (float)(p_234282_ + p_109788_)).color(p_109789_, p_109790_, p_109791_, p_109792_).normal(posestack$pose.normal(), f, f1, f2).endVertex();
          p_109784_.vertex(posestack$pose.pose(), (float)(p_234283_ + p_109786_), (float)(p_234284_ + p_109787_), (float)(p_234285_ + p_109788_)).color(p_109789_, p_109790_, p_109791_, p_109792_).normal(posestack$pose.normal(), f, f1, f2).endVertex();
       });

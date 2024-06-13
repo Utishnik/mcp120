@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 public class OpenAlUtil {
    private static final Logger LOGGER = LogUtils.getLogger();
 
-   private static String alErrorToString(int p_83783_) {
+   private static String alErrorToString(int p_83783_) { //error list 1
       switch (p_83783_) {
          case 40961:
             return "Invalid name parameter.";
@@ -40,7 +40,7 @@ public class OpenAlUtil {
       }
    }
 
-   private static String alcErrorToString(int p_83792_) {
+   private static String alcErrorToString(int p_83792_) {//error list 1
       switch (p_83792_) {
          case 40961:
             return "Invalid device.";

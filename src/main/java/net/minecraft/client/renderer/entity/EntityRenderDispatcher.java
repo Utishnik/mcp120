@@ -151,7 +151,7 @@ public class EntityRenderDispatcher implements ResourceManagerReloadListener {
                renderShadow(p_114391_, p_114392_, p_114385_, f, p_114390_, this.level, Math.min(entityrenderer.shadowRadius, 32.0F));
             }
          }
-
+         //f3+(не помню шо) рендер хит бокса у ентити
          if (this.renderHitBoxes && !p_114385_.isInvisible() && !Minecraft.getInstance().showOnlyReducedInfo()) {
             renderHitbox(p_114391_, p_114392_.getBuffer(RenderType.lines()), p_114385_, p_114390_);
          }
@@ -172,7 +172,7 @@ public class EntityRenderDispatcher implements ResourceManagerReloadListener {
 
    private static void renderHitbox(PoseStack p_114442_, VertexConsumer p_114443_, Entity p_114444_, float p_114445_) {
       AABB aabb = p_114444_.getBoundingBox().move(-p_114444_.getX(), -p_114444_.getY(), -p_114444_.getZ());
-      LevelRenderer.renderLineBox(p_114442_, p_114443_, aabb, 1.0F, 1.0F, 1.0F, 1.0F);
+      LevelRenderer.renderLineBox(p_114442_, p_114443_, aabb, 1.0F, 0.0F, 0.0F, 1.0F);
       if (p_114444_ instanceof EnderDragon) {
          double d0 = -Mth.lerp((double)p_114445_, p_114444_.xOld, p_114444_.getX());
          double d1 = -Mth.lerp((double)p_114445_, p_114444_.yOld, p_114444_.getY());
@@ -191,7 +191,7 @@ public class EntityRenderDispatcher implements ResourceManagerReloadListener {
 
       if (p_114444_ instanceof LivingEntity) {
          float f1 = 0.01F;
-         LevelRenderer.renderLineBox(p_114442_, p_114443_, aabb.minX, (double)(p_114444_.getEyeHeight() - 0.01F), aabb.minZ, aabb.maxX, (double)(p_114444_.getEyeHeight() + 0.01F), aabb.maxZ, 1.0F, 0.0F, 0.0F, 1.0F);
+         LevelRenderer.renderLineBox(p_114442_, p_114443_, aabb.minX, (double)(p_114444_.getEyeHeight() - 0.01F), aabb.minZ, aabb.maxX, (double)(p_114444_.getEyeHeight() + 0.01F), aabb.maxZ, 0.0F, 1.0F, 0.0F, 1.0F);
       }
 
       Entity entity = p_114444_.getVehicle();
@@ -199,7 +199,7 @@ public class EntityRenderDispatcher implements ResourceManagerReloadListener {
          float f = Math.min(entity.getBbWidth(), p_114444_.getBbWidth()) / 2.0F;
          float f2 = 0.0625F;
          Vec3 vec3 = entity.getPassengerRidingPosition(p_114444_).subtract(p_114444_.position());
-         LevelRenderer.renderLineBox(p_114442_, p_114443_, vec3.x - (double)f, vec3.y, vec3.z - (double)f, vec3.x + (double)f, vec3.y + 0.0625D, vec3.z + (double)f, 1.0F, 1.0F, 0.0F, 1.0F);
+         LevelRenderer.renderLineBox(p_114442_, p_114443_, vec3.x - (double)f, vec3.y, vec3.z - (double)f, vec3.x + (double)f, vec3.y + 0.0625D, vec3.z + (double)f, 1.0F, 0.0F, 0.0F, 1.0F);
       }
 
       Vec3 vec31 = p_114444_.getViewVector(p_114445_);
