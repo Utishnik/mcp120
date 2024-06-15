@@ -44,6 +44,7 @@ public class ModelBlockRenderer {
       boolean flag = Minecraft.useAmbientOcclusion() && p_234382_.getLightEmission() == 0 && p_234381_.useAmbientOcclusion();
       Vec3 vec3 = p_234382_.getOffset(p_234380_, p_234383_);
       p_234384_.translate(vec3.x, vec3.y, vec3.z);
+      //p_234384_.scale((float)0.25,(float)0.25,(float)0.25); изменяет размер по разным осям у блока
 
       try {
          if (flag) {
