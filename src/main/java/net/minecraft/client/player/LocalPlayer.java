@@ -564,6 +564,8 @@ public class LocalPlayer extends AbstractClientPlayer {
       this.minecraft.particleEngine.createTrackingEmitter(p_108665_, ParticleTypes.CRIT);
    }
 
+
+   //sho nahui
    public void magicCrit(Entity p_108710_) {
       this.minecraft.particleEngine.createTrackingEmitter(p_108710_, ParticleTypes.ENCHANTED_HIT);
    }

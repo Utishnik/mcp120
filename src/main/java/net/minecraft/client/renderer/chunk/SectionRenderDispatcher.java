@@ -565,6 +565,7 @@ public class SectionRenderDispatcher {
             }
          }
 
+         //что связаное с рендером разбираюсь
          private SectionRenderDispatcher.RenderSection.RebuildTask.CompileResults compile(float p_297372_, float p_300511_, float p_298415_, SectionBufferBuilderPack p_300020_) {
             SectionRenderDispatcher.RenderSection.RebuildTask.CompileResults sectionrenderdispatcher$rendersection$rebuildtask$compileresults = new SectionRenderDispatcher.RenderSection.RebuildTask.CompileResults();
             int i = 1;
@@ -594,7 +595,8 @@ public class SectionRenderDispatcher {
                   }
 
                   FluidState fluidstate = blockstate.getFluidState();
-                  if (!fluidstate.isEmpty()) {
+                  boolean testtt=false;//отрабает рендер воды(но она все еще рендеится елси ты под водой)
+                  if (!fluidstate.isEmpty() && testtt) {
                      RenderType rendertype = ItemBlockRenderTypes.getRenderLayer(fluidstate);
                      BufferBuilder bufferbuilder = p_300020_.builder(rendertype);
                      if (set.add(rendertype)) {

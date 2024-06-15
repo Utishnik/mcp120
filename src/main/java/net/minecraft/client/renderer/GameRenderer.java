@@ -876,7 +876,7 @@ public class GameRenderer implements AutoCloseable {
       MobEffectInstance mobeffectinstance = p_109109_.getEffect(MobEffects.NIGHT_VISION);
       return !mobeffectinstance.endsWithin(200) ? 1.0F : 0.7F + Mth.sin(((float)mobeffectinstance.getDuration() - p_109110_) * (float)Math.PI * 0.2F) * 0.3F;
    }
-
+//game render
    public void render(float p_109094_, long p_109095_, boolean p_109096_) {
       if (!this.minecraft.isWindowActive() && this.minecraft.options.pauseOnLostFocus && (!this.minecraft.options.touchscreen().get() || !this.minecraft.mouseHandler.isRightPressed())) {
          if (Util.getMillis() - this.lastActiveTime > 500L) {

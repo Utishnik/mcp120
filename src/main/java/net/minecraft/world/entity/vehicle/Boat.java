@@ -566,7 +566,7 @@ public class Boat extends Entity implements VariantHolder<Boat.Type> {
    }
 
    @Nullable
-   private Boat.Status isUnderwater() {
+   private Boat.Status isUnderwater() {//проверка под водой или нет
       AABB aabb = this.getBoundingBox();
       double d0 = aabb.maxY + 0.001D;
       int i = Mth.floor(aabb.minX);
@@ -871,7 +871,9 @@ public class Boat extends Entity implements VariantHolder<Boat.Type> {
    }
 
    public boolean isUnderWater() {
-      return this.status == Boat.Status.UNDER_WATER || this.status == Boat.Status.UNDER_FLOWING_WATER;
+      boolean testttt=false;
+      return testttt;
+      //return this.status == Boat.Status.UNDER_WATER || this.status == Boat.Status.UNDER_FLOWING_WATER;
    }
 
    public ItemStack getPickResult() {

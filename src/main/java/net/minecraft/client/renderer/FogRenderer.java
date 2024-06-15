@@ -163,6 +163,7 @@ public class FogRenderer {
       }
 
       float f7;
+      //render тумана под водой
       if (fogtype == FogType.WATER) {
          if (entity instanceof LocalPlayer) {
             f7 = ((LocalPlayer)entity).getWaterVision();

@@ -441,7 +441,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
       this.updateSwimming();
       if (this.level().isClientSide) {
          this.clearFire();
-      } else if (this.remainingFireTicks > 0) {
+      } else if (this.remainingFireTicks > 0) { //отсчет тиков (из за этого при заходи дается временный имунетет)
          if (this.fireImmune()) {
             this.setRemainingFireTicks(this.remainingFireTicks - 4);
             if (this.remainingFireTicks < 0) {
@@ -1244,6 +1244,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
 
    }
 
+   //чето общее с игроком слаймама и ентити вроде просто партиклы
    protected void doWaterSplashEffect() {
       Entity entity = Objects.requireNonNullElse(this.getControllingPassenger(), this);
       float f = entity == this ? 0.2F : 0.9F;
@@ -1883,7 +1884,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
       return this instanceof LivingEntity;
    }
 
-   public boolean startRiding(Entity p_19966_, boolean p_19967_) {//задит на this.entity p_19966_
+   public boolean startRiding(Entity p_19966_, boolean p_19967_) {//садит на this.entity p_19966_
       if (p_19966_ == this.vehicle) {
          return false;
       } else if (!p_19966_.couldAcceptPassenger()) {

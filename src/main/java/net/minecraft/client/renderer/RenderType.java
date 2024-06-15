@@ -20,6 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class RenderType extends RenderStateShard {
+   //тоже что то с рендером
    private static final int BYTES_IN_INT = 4;
    private static final int MEGABYTE = 1048576;
    public static final int BIG_BUFFER_SIZE = 2097152;

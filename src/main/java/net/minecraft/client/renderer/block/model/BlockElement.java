@@ -46,7 +46,7 @@ public class BlockElement {
 
    }
 
-   private float[] uvsByFace(Direction p_111321_) {
+   private float[] uvsByFace(Direction p_111321_) { //render block
       switch (p_111321_) {
          case DOWN:
             return new float[]{this.from.x(), 16.0F - this.to.z(), this.to.x(), 16.0F - this.from.z()};

@@ -510,6 +510,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
 
    }
 
+   //may
    public void doEntityOutline() {
       if (this.shouldShowEntityOutlines()) {
          RenderSystem.enableBlend();
@@ -819,6 +820,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
       this.sectionOcclusionGraph.onSectionCompiled(p_301248_);
    }
 
+   //fignya kakarto frustum
    private void captureFrustum(Matrix4f p_253756_, Matrix4f p_253787_, double p_254187_, double p_253833_, double p_254547_, Frustum p_253954_) {
       this.capturedFrustum = p_253954_;
       Matrix4f matrix4f = new Matrix4f(p_253787_);
@@ -852,7 +854,8 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
       this.cullingFrustum.prepare(d0, d1, d2);
    }
 
-   public void renderLevel(PoseStack p_109600_, float p_109601_, long p_109602_, boolean p_109603_, Camera p_109604_, GameRenderer p_109605_, LightTexture p_109606_, Matrix4f p_254120_) {
+   public void renderLevel(PoseStack p_109600_, float p_109601_, long p_109602_, boolean p_109603_, Camera p_109604_, GameRenderer p_109605_, LightTexture p_109606_, Matrix4f p_254120_)
+   {
       RenderSystem.setShaderGameTime(this.level.getGameTime(), p_109601_);
       this.blockEntityRenderDispatcher.prepare(this.level, p_109604_, this.minecraft.hitResult);
       this.entityRenderDispatcher.prepare(this.level, p_109604_, this.minecraft.crosshairPickEntity);
@@ -1606,6 +1609,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
       }
    }
 
+   //render oblaka
    public void renderClouds(PoseStack p_254145_, Matrix4f p_254537_, float p_254364_, double p_253843_, double p_253663_, double p_253795_) {
       float f = this.level.effects().getCloudHeight();
       if (!Float.isNaN(f)) {
