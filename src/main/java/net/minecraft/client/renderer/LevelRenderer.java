@@ -392,8 +392,13 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
                   double d2 = voxelshape.max(Direction.Axis.Y, d0, d1);
                   double d3 = (double)fluidstate.getHeight(levelreader, blockpos1);
                   double d4 = Math.max(d2, d3);
-                  ParticleOptions particleoptions = !fluidstate.is(FluidTags.LAVA) && !blockstate.is(Blocks.MAGMA_BLOCK) && !CampfireBlock.isLitCampfire(blockstate) ? ParticleTypes.RAIN : ParticleTypes.SMOKE;
-                  this.minecraft.level.addParticle(particleoptions, (double)blockpos1.getX() + d0, (double)blockpos1.getY() + d4, (double)blockpos1.getZ() + d1, 0.0D, 0.0D, 0.0D);
+                  //проверка типо партиклы дождя не рендерятся на лаве и магма блоке
+                  boolean testtt=false;
+                  if(testtt)
+                  {
+                     ParticleOptions particleoptions = !fluidstate.is(FluidTags.LAVA) && !blockstate.is(Blocks.MAGMA_BLOCK) && !CampfireBlock.isLitCampfire(blockstate) ? ParticleTypes.RAIN : ParticleTypes.SMOKE;
+                     this.minecraft.level.addParticle(particleoptions, (double)blockpos1.getX() + d0, (double)blockpos1.getY() + d4, (double)blockpos1.getZ() + d1, 0.0D, 0.0D, 0.0D);
+                  }
                }
             }
          }
