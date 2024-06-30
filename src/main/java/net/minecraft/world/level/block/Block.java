@@ -331,7 +331,7 @@ public class Block extends BlockBehaviour implements ItemLike {
       return this.explosionResistance;
    }
 
-   public void wasExploded(Level p_49844_, BlockPos p_49845_, Explosion p_49846_) {
+   public void wasExploded(Level p_49844_, BlockPos p_49845_, Explosion p_49846_) { //типо из за взрыва сам взрывается тнт например
    }
 
    public void stepOn(Level p_152431_, BlockPos p_152432_, BlockState p_152433_, Entity p_152434_) {

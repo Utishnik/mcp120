@@ -672,7 +672,7 @@ public class OverworldBiomes {
       BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder(p_256253_, p_255644_);
       globalOverworldGeneration(biomegenerationsettings$builder);
       BiomeDefaultFeatures.addPlainGrass(biomegenerationsettings$builder);
-      BiomeDefaultFeatures.addDefaultOres(biomegenerationsettings$builder, true);
+      BiomeDefaultFeatures.addDefaultOres(biomegenerationsettings$builder, true);//генерация руда
       BiomeDefaultFeatures.addDefaultSoftDisks(biomegenerationsettings$builder);
       BiomeDefaultFeatures.addPlainVegetation(biomegenerationsettings$builder);
       BiomeDefaultFeatures.addDefaultMushrooms(biomegenerationsettings$builder);
@@ -682,6 +682,8 @@ public class OverworldBiomes {
       return biome(true, 0.8F, 0.4F, mobspawnsettings$builder, biomegenerationsettings$builder, music);
    }
 
+
+//dik pik
    public static Biome deepDark(HolderGetter<PlacedFeature> p_256073_, HolderGetter<ConfiguredWorldCarver<?>> p_256212_) {
       MobSpawnSettings.Builder mobspawnsettings$builder = new MobSpawnSettings.Builder();
       BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder(p_256073_, p_256212_);

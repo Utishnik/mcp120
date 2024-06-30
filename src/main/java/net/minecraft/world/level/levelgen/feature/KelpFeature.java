@@ -15,7 +15,7 @@ public class KelpFeature extends Feature<NoneFeatureConfiguration> {
       super(p_66219_);
    }
 
-   public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159956_) {
+   public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159956_) { //ламинарии
       int i = 0;
       WorldGenLevel worldgenlevel = p_159956_.level();
       BlockPos blockpos = p_159956_.origin();

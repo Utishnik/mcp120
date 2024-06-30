@@ -122,6 +122,7 @@ public final class OverworldBiomeBuilder {
       this.addMidSlice(p_187216_, Climate.Parameter.span(0.93333334F, 1.0F));
    }
 
+   //генерация биома
    private void addPeaks(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> p_187178_, Climate.Parameter p_187179_) {
       for(int i = 0; i < this.temperatures.length; ++i) {
          Climate.Parameter climate$parameter = this.temperatures[i];

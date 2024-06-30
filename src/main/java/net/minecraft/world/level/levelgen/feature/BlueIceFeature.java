@@ -51,7 +51,7 @@ public class BlueIceFeature extends Feature<NoneFeatureConfiguration> {
                      for(Direction direction1 : Direction.values()) {
                         BlockState blockstate1 = worldgenlevel.getBlockState(blockpos1.relative(direction1));
                         if (blockstate1.is(Blocks.BLUE_ICE)) {
-                           worldgenlevel.setBlock(blockpos1, Blocks.BLUE_ICE.defaultBlockState(), 2);
+                           worldgenlevel.setBlock(blockpos1, Blocks.BLUE_ICE.defaultBlockState(), 2);//устнавливает синий лед при генерации мира
                            break;
                         }
                      }

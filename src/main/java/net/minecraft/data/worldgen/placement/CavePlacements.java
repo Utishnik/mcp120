@@ -87,6 +87,6 @@ public class CavePlacements {
       PlacementUtils.register(p_256565_, AMETHYST_GEODE, holder15, RarityFilter.onAverageOnceEvery(24), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(30)), BiomeFilter.biome());
       PlacementUtils.register(p_256565_, SCULK_PATCH_DEEP_DARK, holder16, CountPlacement.of(ConstantInt.of(256)), InSquarePlacement.spread(), PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT, BiomeFilter.biome());
       PlacementUtils.register(p_256565_, SCULK_PATCH_ANCIENT_CITY, holder17);
-      PlacementUtils.register(p_256565_, SCULK_VEIN, holder18, CountPlacement.of(UniformInt.of(204, 250)), InSquarePlacement.spread(), PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT, BiomeFilter.biome());
+      PlacementUtils.register(p_256565_, SCULK_VEIN, holder18, CountPlacement.of(UniformInt.of(204, 250)), InSquarePlacement.spread(), PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT, BiomeFilter.biome());//типо  спавнятся в горах макс террариан высота
    }
 }

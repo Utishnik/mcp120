@@ -109,7 +109,7 @@ public class Raid {
       this.level = p_37693_;
       this.active = true;
       this.raidCooldownTicks = 300;
-      this.raidEvent.setProgress(0.0F);
+      this.raidEvent.setProgress(0.0F);//прогресс рейда
       this.center = p_37694_;
       this.numGroups = this.getNumGroups(p_37693_.getDifficulty());
       this.status = Raid.RaidStatus.ONGOING;

@@ -121,7 +121,7 @@ public class Explosion {
    }
 
    public void explode() { //esho chto to so vzrivovm
-      this.level.gameEvent(this.source, GameEvent.EXPLODE, new Vec3(this.x, this.y, this.z));
+      this.level.gameEvent(this.source, GameEvent.EXPLODE, new Vec3(this.x, this.y, this.z));//записует гей ивент
       Set<BlockPos> set = Sets.newHashSet();
       int i = 16;
 
@@ -144,12 +144,12 @@ public class Explosion {
                   for(float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
                      BlockPos blockpos = BlockPos.containing(d4, d6, d8);
                      BlockState blockstate = this.level.getBlockState(blockpos);
-                     FluidState fluidstate = this.level.getFluidState(blockpos);//blokirovKA VZRIVA H2O ???
-                     if (!this.level.isInWorldBounds(blockpos)) {
+                     FluidState fluidstate = this.level.getFluidState(blockpos);//blokirovKA VZRIVA H2O ??? бля если чо у пустой жидкости лава и воды ресистент 100 одинковвй
+                     if (!this.level.isInWorldBounds(blockpos)) {//за барьером типо нет взрива
                         break;
                      }
 
-                     Optional<Float> optional = this.damageCalculator.getBlockExplosionResistance(this, this.level, blockpos, blockstate, fluidstate);
+                     Optional<Float> optional = this.damageCalculator.getBlockExplosionResistance(this, this.level, blockpos, blockstate, fluidstate);//получает защиту блока от взрыва
                      if (optional.isPresent()) {
                         f -= (optional.get() + 0.3F) * 0.3F;
                      }
@@ -236,7 +236,7 @@ public class Explosion {
       if (flag) {
          ObjectArrayList<Pair<ItemStack, BlockPos>> objectarraylist = new ObjectArrayList<>();
          boolean flag1 = this.getIndirectSourceEntity() instanceof Player;
-         Util.shuffle(this.toBlow, this.level.random);
+         Util.shuffle(this.toBlow, this.level.random);//to blow это блоки которые записаны как типо взорваные
 
          for(BlockPos blockpos : this.toBlow) {
             BlockState blockstate = this.level.getBlockState(blockpos);

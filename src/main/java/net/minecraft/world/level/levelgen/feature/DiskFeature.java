@@ -27,7 +27,7 @@ public class DiskFeature extends Feature<DiskConfiguration> {
       for(BlockPos blockpos1 : BlockPos.betweenClosed(blockpos.offset(-l, 0, -l), blockpos.offset(l, 0, l))) {
          int i1 = blockpos1.getX() - blockpos.getX();
          int j1 = blockpos1.getZ() - blockpos.getZ();
-         if (i1 * i1 + j1 * j1 <= l * l) {
+         if (i1 * i1 + j1 * j1 <= l * l) {//это такая типо залупа из блоков
             flag |= this.placeColumn(diskconfiguration, worldgenlevel, randomsource, j, k, blockpos$mutableblockpos.set(blockpos1));
          }
       }
@@ -39,7 +39,7 @@ public class DiskFeature extends Feature<DiskConfiguration> {
       boolean flag = false;
 
       for(int i = p_224999_; i > p_225000_; --i) {
-         p_225001_.setY(i);
+         p_225001_.setY(i);//генерация каких то дисков
          if (p_224996_.target().test(p_224997_, p_225001_)) {
             BlockState blockstate = p_224996_.stateProvider().getState(p_224997_, p_224998_, p_225001_);
             p_224997_.setBlock(p_225001_, blockstate, 2);
