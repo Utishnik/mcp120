@@ -66,13 +66,13 @@ public class PoiManager extends SectionStorage<PoiSection> {
       });
    }
 
-   public Stream<PoiRecord> getInSquare(Predicate<Holder<PoiType>> p_27167_, BlockPos p_27168_, int p_27169_, PoiManager.Occupancy p_27170_) {
-      int i = Math.floorDiv(p_27169_, 16) + 1;
+   public Stream<PoiRecord> getInSquare(Predicate<Holder<PoiType>> p_27167_, BlockPos p_27168_, int findrad, PoiManager.Occupancy p_27170_) {
+      int i = Math.floorDiv(findrad, 16) + 1;
       return ChunkPos.rangeClosed(new ChunkPos(p_27168_), i).flatMap((p_217938_) -> {
          return this.getInChunk(p_27167_, p_217938_, p_27170_);
       }).filter((p_217971_) -> {
          BlockPos blockpos = p_217971_.getPos();
-         return Math.abs(blockpos.getX() - p_27168_.getX()) <= p_27169_ && Math.abs(blockpos.getZ() - p_27168_.getZ()) <= p_27169_;
+         return Math.abs(blockpos.getX() - p_27168_.getX()) <= findrad && Math.abs(blockpos.getZ() - p_27168_.getZ()) <= findrad;
       });
    }
 
@@ -251,7 +251,7 @@ public class PoiManager extends SectionStorage<PoiSection> {
       });
    }
 
-   final class DistanceTracker extends SectionTracker {
+   final class DistanceTracker extends SectionTracker {//свзяанно с isvillage который связанны с рейдами
       private final Long2ByteMap levels = new Long2ByteOpenHashMap();
 
       protected DistanceTracker() {

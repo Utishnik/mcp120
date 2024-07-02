@@ -14,7 +14,7 @@ public class FloatGoal extends Goal {
    }
 
    public boolean canUse() {
-      return this.mob.isInWater() && this.mob.getFluidHeight(FluidTags.WATER) > this.mob.getFluidJumpThreshold() || this.mob.isInLava();
+      return this.mob.isInWater() && this.mob.getFluidHeight(FluidTags.WATER) > this.mob.getFluidJumpThreshold() || this.mob.isInLava();//чето необычное типо тру если в воде и высоты воды не нулевая и типо еще если он не прыгает в воде и не в лаве
    }
 
    public boolean requiresUpdateEveryTick() {

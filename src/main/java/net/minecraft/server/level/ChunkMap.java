@@ -118,7 +118,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
    private final ChunkGeneratorStructureState chunkGeneratorState;
    private final Supplier<DimensionDataStorage> overworldDataStorage;
    private final PoiManager poiManager;
-   final LongSet toDrop = new LongOpenHashSet();
+   final LongSet toDrop = new LongOpenHashSet();//дроп
    private boolean modified;
    private final ChunkTaskPriorityQueueSorter queueSorter;
    private final ProcessorHandle<ChunkTaskPriorityQueueSorter.Message<Runnable>> worldgenMailbox;

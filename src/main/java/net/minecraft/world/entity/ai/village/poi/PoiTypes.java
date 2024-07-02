@@ -82,7 +82,7 @@ public class PoiTypes {
       return TYPE_BY_STATE.containsKey(p_254440_);
    }
 
-   public static PoiType bootstrap(Registry<PoiType> p_218083_) {
+   public static PoiType bootstrap(Registry<PoiType> p_218083_) {//типы жителей
       register(p_218083_, ARMORER, getBlockStates(Blocks.BLAST_FURNACE), 1, 1);
       register(p_218083_, BUTCHER, getBlockStates(Blocks.SMOKER), 1, 1);
       register(p_218083_, CARTOGRAPHER, getBlockStates(Blocks.CARTOGRAPHY_TABLE), 1, 1);
