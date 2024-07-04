@@ -354,6 +354,8 @@ public class WalkNodeEvaluator extends NodeEvaluator {
       }
    }
 
+
+//типо тип блоков при поиски пути
    public BlockPathTypes getBlockPathTypes(BlockGetter p_265227_, int p_265066_, int p_265537_, int p_265771_, EnumSet<BlockPathTypes> p_265263_, BlockPathTypes p_265458_, BlockPos p_265515_) {
       for(int i = 0; i < this.entityWidth; ++i) {
          for(int j = 0; j < this.entityHeight; ++j) {
@@ -476,7 +478,7 @@ public class WalkNodeEvaluator extends NodeEvaluator {
       return p_77610_;
    }
 
-   protected static BlockPathTypes getBlockPathTypeRaw(BlockGetter p_77644_, BlockPos p_77645_) {
+   protected static BlockPathTypes getBlockPathTypeRaw(BlockGetter p_77644_, BlockPos p_77645_) { //тут через case можно оптимизировать
       BlockState blockstate = p_77644_.getBlockState(p_77645_);
       Block block = blockstate.getBlock();
       if (blockstate.isAir()) {

@@ -308,7 +308,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
    public void spawnAnim() {
       if (this.level().isClientSide) {
          for(int i = 0; i < 20; ++i) {
-            double d0 = this.random.nextGaussian() * 0.02D;
+            double d0 = this.random.nextGaussian() * 0.02D;//гаусовое распределенеие ???????????????????????????????????????????????????????????
             double d1 = this.random.nextGaussian() * 0.02D;
             double d2 = this.random.nextGaussian() * 0.02D;
             double d3 = 10.0D;
@@ -564,7 +564,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
       if (flag && this.canHoldItem(p_255842_)) {
          double d0 = (double)this.getEquipmentDropChance(equipmentslot);
          if (!itemstack.isEmpty() && (double)Math.max(this.random.nextFloat() - 0.1F, 0.0F) < d0) {
-            this.spawnAtLocation(itemstack);
+            this.spawnAtLocation(itemstack);//выкидывает свою вещь
          }
 
          if (equipmentslot.isArmor() && p_255842_.getCount() > 1) {
@@ -937,7 +937,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
 
                flag = false;
                if (itemstack.isEmpty()) {
-                  Item item = getEquipmentForSlot(equipmentslot, i);
+                  Item item = getEquipmentForSlot(equipmentslot, i);//типо мобу рандом броня дается
                   if (item != null) {
                      this.setItemSlot(equipmentslot, new ItemStack(item));
                   }
@@ -1114,7 +1114,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
             }
          }
 
-         if (itemstack.getItem() instanceof SpawnEggItem) {
+         if (itemstack.getItem() instanceof SpawnEggItem) { //spawn моба через яйцо
             if (this.level() instanceof ServerLevel) {
                SpawnEggItem spawneggitem = (SpawnEggItem)itemstack.getItem();
                Optional<Mob> optional = spawneggitem.spawnOffspringFromSpawnEgg(p_21500_, this, (EntityType<? extends Mob>)this.getType(), (ServerLevel)this.level(), this.position(), itemstack);
@@ -1369,7 +1369,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
       return aabb.inflate(DEFAULT_ATTACK_REACH, 0.0D, DEFAULT_ATTACK_REACH);
    }
 
-   public boolean doHurtTarget(Entity p_21372_) {
+   public boolean doHurtTarget(Entity p_21372_) { //урон моба вроде
       float f = (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
       float f1 = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
       if (p_21372_ instanceof LivingEntity) {
@@ -1379,7 +1379,7 @@ public abstract class Mob extends LivingEntity implements Targeting {
 
       int i = EnchantmentHelper.getFireAspect(this);
       if (i > 0) {
-         p_21372_.setSecondsOnFire(i * 4);
+         p_21372_.setSecondsOnFire(i * 4);//заговор огня
       }
 
       boolean flag = p_21372_.hurt(this.damageSources().mobAttack(this), f);
