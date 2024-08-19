@@ -284,7 +284,6 @@ public abstract class ChunkGenerator {
             for(LevelChunkSection levelchunksection : chunkaccess.getSections()) {
                levelchunksection.getBiomes().getAll(set::add);
             }
-
          });
          set.retainAll(this.biomeSource.possibleBiomes());
          int j = list.size();

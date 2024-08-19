@@ -62,7 +62,7 @@ public class OreFeature extends Feature<OreConfiguration> {
          float f = (float)k / (float)j;
          double d0 = Mth.lerp((double)f, p_225175_, p_225176_);
          double d1 = Mth.lerp((double)f, p_225179_, p_225180_);
-         double d2 = Mth.lerp((double)f, p_225177_, p_225178_);
+         double d2 = Mth.lerp((double)f, p_225177_, p_225178_);//можно вынести за цикл => оптимизация
          double d3 = p_225173_.nextDouble() * (double)j / 16.0D;
          double d4 = ((double)(Mth.sin((float)Math.PI * f) + 1.0F) * d3 + 1.0D) / 2.0D;
          adouble[k * 4 + 0] = d0;
@@ -73,7 +73,7 @@ public class OreFeature extends Feature<OreConfiguration> {
 
       for(int l3 = 0; l3 < j - 1; ++l3) {
          if (!(adouble[l3 * 4 + 3] <= 0.0D)) {
-            for(int i4 = l3 + 1; i4 < j; ++i4) {
+            for(int i4 = l3 + 1; i4 < j; ++i4) {//i4 всегда больше i3 => оптимизация
                if (!(adouble[i4 * 4 + 3] <= 0.0D)) {
                   double d8 = adouble[l3 * 4 + 0] - adouble[i4 * 4 + 0];
                   double d10 = adouble[l3 * 4 + 1] - adouble[i4 * 4 + 1];
@@ -91,7 +91,7 @@ public class OreFeature extends Feature<OreConfiguration> {
          }
       }
 
-      try (BulkSectionAccess bulksectionaccess = new BulkSectionAccess(p_225172_)) {
+      try (BulkSectionAccess bulksectionaccess = new BulkSectionAccess(p_225172_)) {//где catch сука
          for(int j4 = 0; j4 < j; ++j4) {
             double d9 = adouble[j4 * 4 + 3];
             if (!(d9 < 0.0D)) {
@@ -107,7 +107,7 @@ public class OreFeature extends Feature<OreConfiguration> {
 
                for(int i2 = k4; i2 <= j1; ++i2) {
                   double d5 = ((double)i2 + 0.5D - d11) / d9;
-                  if (d5 * d5 < 1.0D) {
+                  if (d5 * d5 < 1.0D) {//тут много раз использется d5*d5 => оптимизация
                      for(int j2 = l; j2 <= k1; ++j2) {
                         double d6 = ((double)j2 + 0.5D - d13) / d9;
                         if (d5 * d5 + d6 * d6 < 1.0D) {
