@@ -28,8 +28,9 @@ public interface LevelHeightAccessor {
       return this.isOutsideBuildHeight(p_151571_.getY());
    }
 
-   default boolean isOutsideBuildHeight(int p_151563_) {
+   default boolean isOutsideBuildHeight(int p_151563_) {//true если пытаещься построить там где нельзя
       return p_151563_ < this.getMinBuildHeight() || p_151563_ >= this.getMaxBuildHeight();
+      //return false; если такое сделать и построить высоко то вылетит майн
    }
 
    default int getSectionIndex(int p_151565_) {

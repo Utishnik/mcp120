@@ -21,7 +21,7 @@ public class LakeFeature extends Feature<LakeFeature.Configuration> {
       super(p_66259_);
    }
 
-   public boolean place(FeaturePlaceContext<LakeFeature.Configuration> p_159958_) {
+   public boolean place(FeaturePlaceContext<LakeFeature.Configuration> p_159958_) {//чето еще
       BlockPos blockpos = p_159958_.origin();
       WorldGenLevel worldgenlevel = p_159958_.level();
       RandomSource randomsource = p_159958_.random();

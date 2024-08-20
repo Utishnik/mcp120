@@ -71,7 +71,7 @@ public record DimensionType(OptionalLong fixedTime, boolean hasSkyLight, boolean
 
       return Level.RESOURCE_KEY_CODEC.parse(p_63912_);
    }
-//изменение коордианат при телепортации
+//изменение коордианат при телепортации в портале
    public static double getTeleportationScale(DimensionType p_63909_, DimensionType p_63910_) {
       double d0 = p_63909_.coordinateScale();
       double d1 = p_63910_.coordinateScale();

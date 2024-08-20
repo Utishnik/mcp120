@@ -204,7 +204,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          } else {
             BlockState blockstate1 = this.getBlockState(p_46605_);
             if (blockstate1 == p_46606_) { //*2
-               if (blockstate != blockstate1) {
+               if (blockstate != blockstate1) { //OPTIMIZTACIYA короче в файле ModelManager проверка иф
+                  // начале ее можно как то в отдльную функцию и типо в параметры добавить флаг и так целую проверку сыкономим
                   this.setBlocksDirty(p_46605_, blockstate, blockstate1);
                }
 

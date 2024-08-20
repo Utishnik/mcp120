@@ -909,7 +909,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
    }
 
    public void sendBlockUpdated(BlockPos p_8755_, BlockState p_8756_, BlockState p_8757_, int p_8758_) {
-      if (this.isUpdatingNavigations) {
+      if (this.isUpdatingNavigations) { //вроде обновляется навигация у мобов
          String s = "recursive call to sendBlockUpdated";
          Util.logAndPauseIfInIde("recursive call to sendBlockUpdated", new IllegalStateException("recursive call to sendBlockUpdated"));
       }

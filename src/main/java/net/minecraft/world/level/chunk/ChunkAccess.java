@@ -422,7 +422,7 @@ public abstract class ChunkAccess implements BlockGetter, BiomeManager.NoiseBiom
       }
    }
 
-   public void fillBiomesFromNoise(BiomeResolver p_187638_, Climate.Sampler p_187639_) {
+   public void fillBiomesFromNoise(BiomeResolver p_187638_, Climate.Sampler p_187639_) {//заполнение биома по шуму
       ChunkPos chunkpos = this.getPos();
       int i = QuartPos.fromBlock(chunkpos.getMinBlockX());
       int j = QuartPos.fromBlock(chunkpos.getMinBlockZ());

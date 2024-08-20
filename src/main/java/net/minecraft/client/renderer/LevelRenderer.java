@@ -2122,14 +2122,14 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
       for(int i = p_109497_ - 1; i <= p_109500_ + 1; ++i) {
          for(int j = p_109495_ - 1; j <= p_109498_ + 1; ++j) {
             for(int k = p_109496_ - 1; k <= p_109499_ + 1; ++k) {
-               this.setSectionDirty(SectionPos.blockToSectionCoord(j), SectionPos.blockToSectionCoord(k), SectionPos.blockToSectionCoord(i));
+               this.setSectionDirty(SectionPos.blockToSectionCoord(j), SectionPos.blockToSectionCoord(k), SectionPos.blockToSectionCoord(i));//возмно можно оптимизровать найти позицую типо как то прибовлять жадые 16 итераций
             }
          }
       }
 
    }
 
-   public void setBlockDirty(BlockPos p_109722_, BlockState p_109723_, BlockState p_109724_) {
+   public void setBlockDirty(BlockPos p_109722_, BlockState p_109723_, BlockState p_109724_) {//
       if (this.minecraft.getModelManager().requiresRender(p_109723_, p_109724_)) {
          this.setBlocksDirty(p_109722_.getX(), p_109722_.getY(), p_109722_.getZ(), p_109722_.getX(), p_109722_.getY(), p_109722_.getZ());
       }
@@ -2148,10 +2148,10 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
    }
 
    public void setSectionDirty(int p_109771_, int p_109772_, int p_109773_) {
-      this.setSectionDirty(p_109771_, p_109772_, p_109773_, false);
+      this.setSectionDirty(p_109771_, p_109772_, p_109773_, false);//бля как будто если убрать эту ебаную иерархию хотя бы при компиляции то в майн можно на % 20-30 ускорить слишком много ее
    }
 
-   private void setSectionDirty(int p_109502_, int p_109503_, int p_109504_, boolean p_109505_) {
+   private void setSectionDirty(int p_109502_, int p_109503_, int p_109504_, boolean p_109505_) { //это тоже можно вроде оптимизировать всего два использывания сделать вызов на прямую без доп функции
       this.viewArea.setDirty(p_109502_, p_109503_, p_109504_, p_109505_);
    }
 

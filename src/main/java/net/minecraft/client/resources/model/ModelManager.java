@@ -199,7 +199,7 @@ public class ModelManager implements PreparableReloadListener, AutoCloseable {
       p_251960_.endTick();
    }
 
-   public boolean requiresRender(BlockState p_119416_, BlockState p_119417_) {
+   public boolean requiresRender(BlockState p_119416_, BlockState p_119417_) {//страная фигня
       if (p_119416_ == p_119417_) {
          return false;
       } else {

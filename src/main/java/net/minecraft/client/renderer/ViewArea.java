@@ -15,7 +15,7 @@ public class ViewArea {
    protected final LevelRenderer levelRenderer;
    protected final Level level;
    protected int sectionGridSizeY;
-   protected int sectionGridSizeX;
+   protected int sectionGridSizeX;//о четь интересное
    protected int sectionGridSizeZ;
    private int viewDistance;
    public SectionRenderDispatcher.RenderSection[] sections;
@@ -100,16 +100,16 @@ public class ViewArea {
 
    }
 
-   public void setDirty(int p_110860_, int p_110861_, int p_110862_, boolean p_110863_) {
+   public void setDirty(int p_110860_, int p_110861_, int p_110862_, boolean p_110863_) {//это из set block в лвл сюда приходим
       int i = Math.floorMod(p_110860_, this.sectionGridSizeX);
       int j = Math.floorMod(p_110861_ - this.level.getMinSection(), this.sectionGridSizeY);
-      int k = Math.floorMod(p_110862_, this.sectionGridSizeZ);
-      SectionRenderDispatcher.RenderSection sectionrenderdispatcher$rendersection = this.sections[this.getSectionIndex(i, j, k)];
+      int k = Math.floorMod(p_110862_, this.sectionGridSizeZ);//sectionGridSizeZ это дальность виденья * 2 + 1
+      SectionRenderDispatcher.RenderSection sectionrenderdispatcher$rendersection = this.sections[this.getSectionIndex(i, j, k)];//о вот что array секция
       sectionrenderdispatcher$rendersection.setDirty(p_110863_);
    }
 
    @Nullable
-   protected SectionRenderDispatcher.RenderSection getRenderSectionAt(BlockPos p_299271_) {
+   protected SectionRenderDispatcher.RenderSection getRenderSectionAt(BlockPos p_299271_) {//нада чекнуть
       int i = Mth.floorDiv(p_299271_.getY() - this.level.getMinBuildHeight(), 16);
       if (i >= 0 && i < this.sectionGridSizeY) {
          int j = Mth.positiveModulo(Mth.floorDiv(p_299271_.getX(), 16), this.sectionGridSizeX);

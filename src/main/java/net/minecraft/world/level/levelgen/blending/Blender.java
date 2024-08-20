@@ -237,7 +237,7 @@ public class Blender {
       }
    }
 
-   public static void generateBorderTicks(WorldGenRegion p_197032_, ChunkAccess p_197033_) {
+   public static void generateBorderTicks(WorldGenRegion p_197032_, ChunkAccess p_197033_) {//чо эта такое
       ChunkPos chunkpos = p_197033_.getPos();
       boolean flag = p_197033_.isOldNoiseGeneration();
       BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();

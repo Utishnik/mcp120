@@ -79,7 +79,7 @@ public class ProtoChunk extends ChunkAccess {
       }
    }
 
-   public FluidState getFluidState(BlockPos p_63239_) {
+   public FluidState getFluidState(BlockPos p_63239_) {//состояние мачи
       int i = p_63239_.getY();
       if (this.isOutsideBuildHeight(i)) {
          return Fluids.EMPTY.defaultFluidState();
@@ -95,7 +95,7 @@ public class ProtoChunk extends ChunkAccess {
       int j = p_63217_.getY();
       int k = p_63217_.getZ();
       /*if (j >= this.getMinBuildHeight() && j < this.getMaxBuildHeight())*/ {
-         int l = this.getSectionIndex(j);
+         int l = this.getSectionIndex(j);//получает секцию в чанке по высоте блока
          LevelChunkSection levelchunksection = this.getSection(l);
          boolean flag = levelchunksection.hasOnlyAir();
          if (flag && p_63218_.is(Blocks.AIR)) {
