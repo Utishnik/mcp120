@@ -111,7 +111,7 @@ public interface LevelReader extends BlockAndTintGetter, CollisionGetter, Signal
 
    /** @deprecated */
    @Deprecated
-   default float getLightLevelDependentMagicValue(BlockPos p_220418_) {
+   default float getLightLevelDependentMagicValue(BlockPos p_220418_) {//уровень света
       float f = (float)this.getMaxLocalRawBrightness(p_220418_) / 15.0F;
       float f1 = f / (4.0F - 3.0F * f);
       return Mth.lerp(this.dimensionType().ambientLight(), f1, 1.0F);
@@ -138,7 +138,7 @@ public interface LevelReader extends BlockAndTintGetter, CollisionGetter, Signal
       return this.getFluidState(p_46802_).is(FluidTags.WATER);
    }
 
-   default boolean containsAnyLiquid(AABB p_46856_) {
+   default boolean containsAnyLiquid(AABB p_46856_) { //что то с блоками
       int i = Mth.floor(p_46856_.minX);
       int j = Mth.ceil(p_46856_.maxX);
       int k = Mth.floor(p_46856_.minY);
@@ -165,8 +165,8 @@ public interface LevelReader extends BlockAndTintGetter, CollisionGetter, Signal
       return this.getMaxLocalRawBrightness(p_46804_, this.getSkyDarken());
    }
 
-   default int getMaxLocalRawBrightness(BlockPos p_46850_, int p_46851_) {
-      return p_46850_.getX() >= -30000000 && p_46850_.getZ() >= -30000000 && p_46850_.getX() < 30000000 && p_46850_.getZ() < 30000000 ? this.getRawBrightness(p_46850_, p_46851_) : 15;
+   default int getMaxLocalRawBrightness(BlockPos p_46850_, int p_46851_) { // аааааа сучка как ты со мной разговариваешь
+      return p_46850_.getX() >= -300000000 && p_46850_.getZ() >= -300000000 && p_46850_.getX() < 300000000 && p_46850_.getZ() < 300000000 ? this.getRawBrightness(p_46850_, p_46851_) : 15;
    }
 
    /** @deprecated */

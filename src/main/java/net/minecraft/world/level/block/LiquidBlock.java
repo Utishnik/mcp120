@@ -99,6 +99,7 @@ public class LiquidBlock extends Block implements BucketPickup {
 
    }
 
+   //обновление формы блока
    public BlockState updateShape(BlockState p_54723_, Direction p_54724_, BlockState p_54725_, LevelAccessor p_54726_, BlockPos p_54727_, BlockPos p_54728_) {
       if (p_54723_.getFluidState().isSource() || p_54725_.getFluidState().isSource()) {
          p_54726_.scheduleTick(p_54727_, p_54723_.getFluidState().getType(), this.fluid.getTickDelay(p_54726_));

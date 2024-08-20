@@ -94,7 +94,7 @@ public class ProtoChunk extends ChunkAccess {
       int i = p_63217_.getX();
       int j = p_63217_.getY();
       int k = p_63217_.getZ();
-      if (j >= this.getMinBuildHeight() && j < this.getMaxBuildHeight()) {
+      /*if (j >= this.getMinBuildHeight() && j < this.getMaxBuildHeight())*/ {
          int l = this.getSectionIndex(j);
          LevelChunkSection levelchunksection = this.getSection(l);
          boolean flag = levelchunksection.hasOnlyAir();
@@ -141,9 +141,10 @@ public class ProtoChunk extends ChunkAccess {
 
             return blockstate;
          }
-      } else {
-         return Blocks.VOID_AIR.defaultBlockState();
       }
+      /*else {
+         return Blocks.VOID_AIR.defaultBlockState();
+      }*/
    }
 
    public void setBlockEntity(BlockEntity p_156488_) {

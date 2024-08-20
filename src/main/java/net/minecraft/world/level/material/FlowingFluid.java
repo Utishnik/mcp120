@@ -182,7 +182,7 @@ public abstract class FlowingFluid extends Fluid {
       if (!fluidstate2.isEmpty() && fluidstate2.getType().isSame(this) && this.canPassThroughWall(Direction.UP, p_256464_, p_76037_, p_76038_, blockpos1, blockstate2)) {
          return this.getFlowing(8, true);
       } else {
-         int k = /*i - this.getDropOff(p_256464_)*/0;
+         int k = /*i - this.getDropOff(p_256464_)*/0;//хахаха яч только щас вспомнил по идие у меня в мире не должно быть
          return k <= 0 ? Fluids.EMPTY.defaultFluidState() : this.getFlowing(k, false);
       }
    }

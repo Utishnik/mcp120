@@ -121,7 +121,7 @@ public class OreFeature extends Feature<OreConfiguration> {
                                     if (p_225172_.ensureCanWrite(blockpos$mutableblockpos)) {
                                        LevelChunkSection levelchunksection = bulksectionaccess.getSection(blockpos$mutableblockpos);
                                        if (levelchunksection != null) {
-                                          int i3 = SectionPos.sectionRelative(i2);
+                                          int i3 = SectionPos.sectionRelative(i2);//чуть позже чекну
                                           int j3 = SectionPos.sectionRelative(j2);
                                           int k3 = SectionPos.sectionRelative(k2);
                                           BlockState blockstate = levelchunksection.getBlockState(i3, j3, k3);
@@ -152,7 +152,7 @@ public class OreFeature extends Feature<OreConfiguration> {
    public static boolean canPlaceOre(BlockState p_225187_, Function<BlockPos, BlockState> p_225188_, RandomSource p_225189_, OreConfiguration p_225190_, OreConfiguration.TargetBlockState p_225191_, BlockPos.MutableBlockPos p_225192_) {
       if (!p_225191_.target.test(p_225187_, p_225189_)) {
          return false;
-      } else if (shouldSkipAirCheck(p_225189_, p_225190_.discardChanceOnAirExposure)) {
+      } else if (shouldSkipAirCheck(p_225189_, p_225190_.discardChanceOnAirExposure)) {//проверка воздуха для руды
          return true;
       } else {
          return !isAdjacentToAir(p_225188_, p_225192_);

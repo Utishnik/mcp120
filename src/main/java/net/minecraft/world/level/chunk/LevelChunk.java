@@ -187,7 +187,7 @@ public class LevelChunk extends ChunkAccess {
       return this.getFluidState(p_62895_.getX(), p_62895_.getY(), p_62895_.getZ());
    }
 
-   public FluidState getFluidState(int p_62815_, int p_62816_, int p_62817_) {
+   public FluidState getFluidState(int p_62815_, int p_62816_, int p_62817_) { // с  водярой чекну позже
       try {
          int i = this.getSectionIndex(p_62816_);
          if (i >= 0 && i < this.sections.length) {
@@ -437,6 +437,7 @@ public class LevelChunk extends ChunkAccess {
       return false;
    }
 
+   //с пакетами чото
    public void replaceWithPacketData(FriendlyByteBuf p_187972_, CompoundTag p_187973_, Consumer<ClientboundLevelChunkPacketData.BlockEntityTagOutput> p_187974_) {
       this.clearAllBlockEntities();
 
@@ -490,7 +491,7 @@ public class LevelChunk extends ChunkAccess {
                BlockState blockstate = this.getBlockState(blockpos);
                FluidState fluidstate = blockstate.getFluidState();
                if (!fluidstate.isEmpty()) {
-                  fluidstate.tick(this.level, blockpos);
+                  fluidstate.tick(this.level, blockpos);//тик мачи
                }
 
                if (!(blockstate.getBlock() instanceof LiquidBlock)) {

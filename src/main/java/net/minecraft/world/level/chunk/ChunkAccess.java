@@ -307,7 +307,7 @@ public abstract class ChunkAccess implements BlockGetter, BiomeManager.NoiseBiom
    public void findBlocks(Predicate<BlockState> p_285343_, BiConsumer<BlockPos, BlockState> p_285030_) {
       BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-      for(int i = this.getMinSection(); i < this.getMaxSection(); ++i) {
+      for(int i = this.getMinSection(); i < this.getMaxSection(); ++i) {//мы тут по секциям этерируемся
          LevelChunkSection levelchunksection = this.getSection(this.getSectionIndexFromSectionY(i));
          if (levelchunksection.maybeHas(p_285343_)) {
             BlockPos blockpos = SectionPos.of(this.chunkPos, i).origin();
@@ -315,9 +315,9 @@ public abstract class ChunkAccess implements BlockGetter, BiomeManager.NoiseBiom
             for(int j = 0; j < 16; ++j) {
                for(int k = 0; k < 16; ++k) {
                   for(int l = 0; l < 16; ++l) {
-                     BlockState blockstate = levelchunksection.getBlockState(l, j, k);
+                     BlockState blockstate = levelchunksection.getBlockState(l, j, k);//типо секция это 16 на 16 на 16
                      if (p_285343_.test(blockstate)) {
-                        p_285030_.accept(blockpos$mutableblockpos.setWithOffset(blockpos, l, j, k), blockstate);
+                        p_285030_.accept(blockpos$mutableblockpos.setWithOffset(blockpos, l, j, k), blockstate);//мы позицию блока в вектор превратили
                      }
                   }
                }
