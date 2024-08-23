@@ -36,14 +36,14 @@ public record DimensionType(OptionalLong fixedTime, boolean hasSkyLight, boolean
    public static final float[] MOON_BRIGHTNESS_PER_PHASE = new float[]{1.0F, 0.75F, 0.5F, 0.25F, 0.0F, 0.25F, 0.5F, 0.75F};
    public static final Codec<Holder<DimensionType>> CODEC = RegistryFileCodec.create(Registries.DIMENSION_TYPE, DIRECT_CODEC);
 
-   public DimensionType {
+   public DimensionType {//проверка на макс высоту типо если меньше секции чанка то нельзя
       if (height < 16) {
          throw new IllegalStateException("height has to be at least 16");
       } else if (minY + height > MAX_Y + 1) {
          throw new IllegalStateException("min_y + height cannot be higher than: " + (MAX_Y + 1));
       } else if (logicalHeight > height) {
          throw new IllegalStateException("logical_height cannot be higher than height");
-      } else if (height % 16 != 0) {
+      } else if (height % 16 != 0) {//тип если у мира есть кусок меньше секции
          throw new IllegalStateException("height has to be multiple of 16");
       } else if (minY % 16 != 0) {
          throw new IllegalStateException("min_y has to be a multiple of 16");

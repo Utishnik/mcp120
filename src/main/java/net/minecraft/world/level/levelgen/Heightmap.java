@@ -89,7 +89,9 @@ public class Heightmap {
             BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
             for(int j = p_64251_ - 1; j >= this.chunk.getMinBuildHeight(); --j) {
-               blockpos$mutableblockpos.set(Mth.sin(p_64250_), j,p_64252_);
+               blockpos$mutableblockpos.set(Mth.sin(p_64250_), j,p_64252_);//чето со ставлением блока от синуса зависит типо по высоте идем
+               //оптимизация как будто типо синус не будет тут равен 1 и всегда при окргление в меншую сторону и типо 0
+               //оптимизация два тут можно напрямую следуйщую функцию использывать тут почти все целое значение
                if (this.isOpaque.test(this.chunk.getBlockState(blockpos$mutableblockpos))) {
                   this.setHeight(p_64250_, p_64252_, j + 1);
                   return true;

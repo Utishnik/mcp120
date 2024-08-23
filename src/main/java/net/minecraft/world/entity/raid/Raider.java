@@ -107,7 +107,7 @@ public abstract class Raider extends PatrollingMonster {
       this.noActionTime += 2;
    }
 
-   public void die(DamageSource p_37847_) {
+   public void die(DamageSource p_37847_) {//тоже переопределение
       if (this.level() instanceof ServerLevel) {
          Entity entity = p_37847_.getEntity();
          Raid raid = this.getCurrentRaid();
@@ -291,7 +291,7 @@ public abstract class Raider extends PatrollingMonster {
          return this.mob.getCurrentRaid() == null && this.mob.isPatrolling() && this.mob.getTarget() != null && !this.mob.isAggressive() && (livingentity == null || livingentity.getType() != EntityType.PLAYER);
       }
 
-      public void start() {
+      public void start() {//переопределение функций для goal
          super.start();
          this.mob.getNavigation().stop();
 
@@ -301,7 +301,7 @@ public abstract class Raider extends PatrollingMonster {
 
       }
 
-      public void stop() {
+      public void stop() {//это не остановка чего то
          super.stop();
          LivingEntity livingentity = this.mob.getTarget();
          if (livingentity != null) {

@@ -209,7 +209,7 @@ public class LevelChunk extends ChunkAccess {
    }
 
    @Nullable
-   public BlockState setBlockState(BlockPos p_62865_, BlockState p_62866_, boolean p_62867_) {
+   public BlockState setBlockState(BlockPos p_62865_, BlockState p_62866_, boolean p_62867_) { //надо чекнуть хорошо
       int i = p_62865_.getY();
       LevelChunkSection levelchunksection = this.getSection(this.getSectionIndex(i));
       boolean flag = levelchunksection.hasOnlyAir();
