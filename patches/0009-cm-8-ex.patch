@@ -1,0 +1,25 @@
+From 39bdbf1bd30bec3feaa2ab90ee72693425eef7dd Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Tue, 11 Jun 2024 15:44:56 +0300
+Subject: [PATCH 09/22] cm 8 ex
+
+---
+ .../minecraft/world/level/levelgen/presets/WorldPresets.java    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/presets/WorldPresets.java b/src/main/java/net/minecraft/world/level/levelgen/presets/WorldPresets.java
+index 87ddbc6..eb4a958 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/presets/WorldPresets.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/presets/WorldPresets.java
+@@ -91,7 +91,7 @@ public class WorldPresets {
+          Holder.Reference<MultiNoiseBiomeSourceParameterList> reference = this.multiNoiseBiomeSourceParameterLists.getOrThrow(MultiNoiseBiomeSourceParameterLists.NETHER);
+          this.netherStem = new LevelStem(holder, new NoiseBasedChunkGenerator(MultiNoiseBiomeSource.createFromPreset(reference), holder1));
+          Holder<DimensionType> holder2 = holdergetter.getOrThrow(BuiltinDimensionTypes.END);
+-         Holder<NoiseGeneratorSettings> holder3 = this.noiseSettings.getOrThrow(NoiseGeneratorSettings.END);
++         Holder<NoiseGeneratorSettings> holder3 = this.noiseSettings.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
+          this.endStem = new LevelStem(holder2, new NoiseBasedChunkGenerator(TheEndBiomeSource.create(this.biomes), holder1));//тоже исрлльзует шум энда
+       }
+ 
+-- 
+2.34.1
+

@@ -1,0 +1,53 @@
+From 7c6b89caa5be6339814b8f1507062511f4227f94 Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Sun, 2 Jun 2024 21:57:35 +0300
+Subject: [PATCH 03/22] cm3
+
+---
+ src/main/java/net/minecraft/client/player/RemotePlayer.java   | 2 +-
+ src/main/java/net/minecraft/world/level/Level.java            | 2 +-
+ src/main/java/net/minecraft/world/level/block/ChainBlock.java | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/client/player/RemotePlayer.java b/src/main/java/net/minecraft/client/player/RemotePlayer.java
+index 4ad0413..9e995df 100644
+--- a/src/main/java/net/minecraft/client/player/RemotePlayer.java
++++ b/src/main/java/net/minecraft/client/player/RemotePlayer.java
+@@ -81,7 +81,7 @@ public class RemotePlayer extends AbstractClientPlayer {
+ 
+    public void sendSystemMessage(Component p_234163_) {
+       Minecraft minecraft = Minecraft.getInstance();
+-      minecraft.gui.getChat().addMessage(p_234163_);
++      minecraft.gui.getChat().addMessage(p_234163_);//chat message sending!
+    }
+ 
+    public void recreateFromPacket(ClientboundAddEntityPacket p_301606_) {
+diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
+index d11fdf0..25224e5 100644
+--- a/src/main/java/net/minecraft/world/level/Level.java
++++ b/src/main/java/net/minecraft/world/level/Level.java
+@@ -120,7 +120,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+       });
+       final DimensionType dimensiontype = p_270240_.value();
+       this.dimension = p_270683_;
+-      this.isClientSide = p_270904_;
++      this.isClientSide = p_270904_;//Is client?
+       if (dimensiontype.coordinateScale() != 1.0D) {
+          this.worldBorder = new WorldBorder() {
+             public double getCenterX() {
+diff --git a/src/main/java/net/minecraft/world/level/block/ChainBlock.java b/src/main/java/net/minecraft/world/level/block/ChainBlock.java
+index abde38c..cfc500c 100644
+--- a/src/main/java/net/minecraft/world/level/block/ChainBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/ChainBlock.java
+@@ -21,7 +21,7 @@ public class ChainBlock extends RotatedPillarBlock implements SimpleWaterloggedB
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    protected static final float AABB_MIN = 6.5F;
+    protected static final float AABB_MAX = 9.5F;
+-   protected static final VoxelShape Y_AXIS_AABB = Block.box(6.5D, 0.0D, 6.5D, 9.5D, 16.0D, 9.5D);
++   protected static final VoxelShape Y_AXIS_AABB = Block.box(6.5D, 0.0D, 6.5D, 9.5D, 16.0D, 9.5D);//chain block voxel
+    protected static final VoxelShape Z_AXIS_AABB = Block.box(6.5D, 6.5D, 0.0D, 9.5D, 9.5D, 16.0D);
+    protected static final VoxelShape X_AXIS_AABB = Block.box(0.0D, 6.5D, 6.5D, 16.0D, 9.5D, 9.5D);
+ 
+-- 
+2.34.1
+

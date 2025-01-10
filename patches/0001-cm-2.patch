@@ -1,0 +1,91 @@
+From d469233bc4996baf8ef21b7a129af308bf6e552b Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Fri, 31 May 2024 17:57:42 +0300
+Subject: [PATCH 01/22] cm 2
+
+---
+ src/main/java/net/minecraft/client/main/Main.java         | 2 +-
+ src/main/java/net/minecraft/core/BlockPos.java            | 2 +-
+ src/main/java/net/minecraft/world/level/Level.java        | 8 ++++----
+ .../minecraft/world/level/levelgen/synth/PerlinNoise.java | 3 ++-
+ 4 files changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/client/main/Main.java b/src/main/java/net/minecraft/client/main/Main.java
+index 54d1fe2..5019eda 100644
+--- a/src/main/java/net/minecraft/client/main/Main.java
++++ b/src/main/java/net/minecraft/client/main/Main.java
+@@ -160,7 +160,7 @@ public class Main {
+          LOGGER.warn("Unrecognized user type: {}", (Object)s12);
+       }
+ 
+-      User user = new User(optionspec12.value(optionset), uuid, optionspec16.value(optionset), emptyStringToEmptyOptional(s6), emptyStringToEmptyOptional(s7), user$type);
++      User user = new User("Utishnik", uuid, optionspec16.value(optionset), emptyStringToEmptyOptional(s6), emptyStringToEmptyOptional(s7), user$type);
+       GameConfig gameconfig = new GameConfig(new GameConfig.UserData(user, propertymap, propertymap1, proxy), new DisplayData(i, j, optionalint, optionalint1, flag), new GameConfig.FolderData(file1, file3, file2, s5), new GameConfig.GameData(flag1, s3, s4, flag2, flag3), new GameConfig.QuickPlayData(s8, s9, s10, s11));
+       Thread thread = new Thread("Client Shutdown Thread") {
+          public void run() {
+diff --git a/src/main/java/net/minecraft/core/BlockPos.java b/src/main/java/net/minecraft/core/BlockPos.java
+index 83924e3..fb40b51 100644
+--- a/src/main/java/net/minecraft/core/BlockPos.java
++++ b/src/main/java/net/minecraft/core/BlockPos.java
+@@ -37,7 +37,7 @@ public class BlockPos extends Vec3i {
+    }).stable();
+    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final BlockPos ZERO = new BlockPos(0, 0, 0);
+-   private static final int PACKED_X_LENGTH = 1 + Mth.log2(Mth.smallestEncompassingPowerOfTwo(30000000));
++   private static final int PACKED_X_LENGTH = 1 + Mth.log2(Mth.smallestEncompassingPowerOfTwo(309000000));
+    private static final int PACKED_Z_LENGTH = PACKED_X_LENGTH;
+    public static final int PACKED_Y_LENGTH = 64 - PACKED_X_LENGTH - PACKED_Z_LENGTH;
+    private static final long PACKED_X_MASK = (1L << PACKED_X_LENGTH) - 1L;
+diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
+index f1cf843..d11fdf0 100644
+--- a/src/main/java/net/minecraft/world/level/Level.java
++++ b/src/main/java/net/minecraft/world/level/Level.java
+@@ -161,11 +161,11 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+    }
+ 
+    private static boolean isInWorldBoundsHorizontal(BlockPos p_46458_) {
+-      return p_46458_.getX() >= -30000000 && p_46458_.getZ() >= -30000000 && p_46458_.getX() < 30000000 && p_46458_.getZ() < 30000000;
++      return p_46458_.getX() >= -300000000 && p_46458_.getZ() >= -300000000 && p_46458_.getX() < 300000000 && p_46458_.getZ() < 300000000;
+    }
+ 
+    private static boolean isOutsideSpawnableHeight(int p_46725_) {
+-      return p_46725_ < -20000000 || p_46725_ >= 20000000;
++      return p_46725_ < -300000000 || p_46725_ >= 300000000;
+    }
+ 
+    public LevelChunk getChunkAt(BlockPos p_46746_) {
+@@ -296,7 +296,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+ 
+    public int getHeight(Heightmap.Types p_46571_, int p_46572_, int p_46573_) {
+       int i;
+-      if (p_46572_ >= -30000000 && p_46573_ >= -30000000 && p_46572_ < 30000000 && p_46573_ < 30000000) {
++      if (p_46572_ >= -300000000 && p_46573_ >= -300000000 && p_46572_ < 300000000 && p_46573_ < 300000000) {
+          if (this.hasChunk(SectionPos.blockToSectionCoord(p_46572_), SectionPos.blockToSectionCoord(p_46573_))) {
+             i = this.getChunk(SectionPos.blockToSectionCoord(p_46572_), SectionPos.blockToSectionCoord(p_46573_)).getHeight(p_46571_, p_46572_ & 15, p_46573_ & 15) + 1;
+          } else {
+@@ -643,7 +643,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+ 
+    public int getSeaLevel() {
+       return 63;
+-   }
++   }//sea l
+ 
+    public void disconnect() {
+    }
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
+index fabcd93..fecb827 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
+@@ -163,7 +163,8 @@ public class PerlinNoise {
+          d2 /= 2.0D;
+       }
+ 
+-      return d0;
++      return (int)(Mth.sin((float)p_75418_)*50);
++      //return d0;
+    }
+ 
+    public double maxBrokenValue(double p_210644_) {
+-- 
+2.34.1
+

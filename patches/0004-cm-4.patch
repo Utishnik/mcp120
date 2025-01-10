@@ -1,0 +1,352 @@
+From b2c8bc3a3354a18785e40cead33052dccade2d7f Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Tue, 4 Jun 2024 16:32:08 +0300
+Subject: [PATCH 04/22] =?UTF-8?q?cm=204=20=D0=A0=D0=B0=D0=B7=D0=B1=D0=B8?=
+ =?UTF-8?q?=D1=80=D0=B0=D1=8E=D1=81=D1=8C=20=D1=81=20=D0=B6=D0=B8=D0=B4?=
+ =?UTF-8?q?=D0=BA=D0=BE=D1=81=D1=82=D1=8F=D0=BC=D0=B8?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../net/minecraft/client/multiplayer/ClientLevel.java     | 4 ++--
+ .../java/net/minecraft/server/level/WorldGenRegion.java   | 4 ++--
+ src/main/java/net/minecraft/world/entity/animal/Cow.java  | 2 +-
+ src/main/java/net/minecraft/world/entity/raid/Raid.java   | 2 +-
+ .../net/minecraft/world/entity/vehicle/MinecartChest.java | 2 +-
+ .../net/minecraft/world/entity/vehicle/MinecartTNT.java   | 2 +-
+ src/main/java/net/minecraft/world/level/BlockGetter.java  | 2 +-
+ src/main/java/net/minecraft/world/level/Explosion.java    | 8 ++++----
+ src/main/java/net/minecraft/world/level/Level.java        | 2 +-
+ .../net/minecraft/world/level/PotentialCalculator.java    | 2 +-
+ src/main/java/net/minecraft/world/level/biome/Biome.java  | 2 +-
+ .../java/net/minecraft/world/level/block/DoorBlock.java   | 2 +-
+ .../java/net/minecraft/world/level/block/LevelEvent.java  | 2 +-
+ .../java/net/minecraft/world/level/block/PipeBlock.java   | 2 +-
+ .../minecraft/world/level/block/state/BlockBehaviour.java | 6 +++---
+ .../net/minecraft/world/level/material/FlowingFluid.java  | 6 +++---
+ .../net/minecraft/world/level/material/LavaFluid.java     | 4 ++--
+ .../net/minecraft/world/level/material/WaterFluid.java    | 2 +-
+ 18 files changed, 28 insertions(+), 28 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/client/multiplayer/ClientLevel.java b/src/main/java/net/minecraft/client/multiplayer/ClientLevel.java
+index 12e8de3..4e28083 100644
+--- a/src/main/java/net/minecraft/client/multiplayer/ClientLevel.java
++++ b/src/main/java/net/minecraft/client/multiplayer/ClientLevel.java
+@@ -171,7 +171,7 @@ public class ClientLevel extends Level {
+       this.clientLevelData = p_205506_;
+       this.levelRenderer = p_205512_;
+       this.effects = DimensionSpecialEffects.forType(p_205508_.value());
+-      this.setDefaultSpawnPos(new BlockPos(8, 64, 8), 0.0F);
++      this.setDefaultSpawnPos(new BlockPos(8, 64, 8), 0.0F);//потом гляну подробнее но вроде дефолтная позиция спавна игрока в мире
+       this.serverSimulationDistance = p_205510_;
+       this.updateSkyBrightness();
+       this.prepareWeather();
+@@ -291,7 +291,7 @@ public class ClientLevel extends Level {
+       }
+    }
+ 
+-   public void unload(LevelChunk p_104666_) {
++   public void unload(LevelChunk p_104666_) {//разгрузка чанка с клиенской стороны
+       p_104666_.clearAllBlockEntities();
+       this.chunkSource.getLightEngine().setLightEnabled(p_104666_.getPos(), false);
+       this.entityStorage.stopTicking(p_104666_.getPos());
+diff --git a/src/main/java/net/minecraft/server/level/WorldGenRegion.java b/src/main/java/net/minecraft/server/level/WorldGenRegion.java
+index 2ece18c..691a93d 100644
+--- a/src/main/java/net/minecraft/server/level/WorldGenRegion.java
++++ b/src/main/java/net/minecraft/server/level/WorldGenRegion.java
+@@ -254,7 +254,7 @@ public class WorldGenRegion implements WorldGenLevel {
+       }
+    }
+ 
+-   public boolean setBlock(BlockPos p_9539_, BlockState p_9540_, int p_9541_, int p_9542_) {
++   public boolean setBlock(BlockPos p_9539_, BlockState p_9540_, int p_9541_, int p_9542_) { //последние два параметра не используются
+       if (!this.ensureCanWrite(p_9539_)) {
+          return false;
+       } else {
+@@ -371,7 +371,7 @@ public class WorldGenRegion implements WorldGenLevel {
+    }
+ 
+    public int getHeight(Heightmap.Types p_9535_, int p_9536_, int p_9537_) {
+-      return this.getChunk(SectionPos.blockToSectionCoord(p_9536_), SectionPos.blockToSectionCoord(p_9537_)).getHeight(p_9535_, p_9536_ & 15, p_9537_ & 15) + 1;
++      return this.getChunk(SectionPos.blockToSectionCoord(p_9536_), SectionPos.blockToSectionCoord(p_9537_)).getHeight(p_9535_, p_9536_ & 15, p_9537_ & 15) + 1;//БИТОВЫЕ операции для высоть получает только 5 бит(вроде)
+    }
+ 
+    public void playSound(@Nullable Player p_9528_, BlockPos p_9529_, SoundEvent p_9530_, SoundSource p_9531_, float p_9532_, float p_9533_) {
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Cow.java b/src/main/java/net/minecraft/world/entity/animal/Cow.java
+index fbda969..f18a380 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Cow.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Cow.java
+@@ -50,7 +50,7 @@ public class Cow extends Animal {
+    }
+ 
+    public static AttributeSupplier.Builder createAttributes() {
+-      return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, (double)0.2F);
++      return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 10.0D).add(Attributes.MOVEMENT_SPEED, (double)0.2F);//hp carovi
+    }
+ 
+    protected SoundEvent getAmbientSound() {
+diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+index 7c5a3b4..d602e72 100644
+--- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
++++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+@@ -519,7 +519,7 @@ public class Raid {
+                   raider1 = EntityType.PILLAGER.create(this.level);
+                } else if (i >= this.getNumGroups(Difficulty.HARD)) {
+                   if (k == 0) {
+-                     raider1 = EntityType.EVOKER.create(this.level);
++                     raider1 = EntityType.EVOKER.create(this.level);//invaker dotA 2
+                   } else {
+                      raider1 = EntityType.VINDICATOR.create(this.level);
+                   }
+diff --git a/src/main/java/net/minecraft/world/entity/vehicle/MinecartChest.java b/src/main/java/net/minecraft/world/entity/vehicle/MinecartChest.java
+index ef3fdd4..b8b4cbc 100644
+--- a/src/main/java/net/minecraft/world/entity/vehicle/MinecartChest.java
++++ b/src/main/java/net/minecraft/world/entity/vehicle/MinecartChest.java
+@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.ChestBlock;
+ import net.minecraft.world.level.block.state.BlockState;
+ import net.minecraft.world.level.gameevent.GameEvent;
+ 
+-public class MinecartChest extends AbstractMinecartContainer {
++public class MinecartChest extends AbstractMinecartContainer { //chest
+    public MinecartChest(EntityType<? extends MinecartChest> p_38487_, Level p_38488_) {
+       super(p_38487_, p_38488_);
+    }
+diff --git a/src/main/java/net/minecraft/world/entity/vehicle/MinecartTNT.java b/src/main/java/net/minecraft/world/entity/vehicle/MinecartTNT.java
+index c239aeb..a63c62f 100644
+--- a/src/main/java/net/minecraft/world/entity/vehicle/MinecartTNT.java
++++ b/src/main/java/net/minecraft/world/entity/vehicle/MinecartTNT.java
+@@ -61,7 +61,7 @@ public class MinecartTNT extends AbstractMinecart {
+ 
+    }
+ 
+-   public boolean hurt(DamageSource p_38666_, float p_38667_) {
++   public boolean hurt(DamageSource p_38666_, float p_38667_) { //vzriv!
+       Entity entity = p_38666_.getDirectEntity();
+       if (entity instanceof AbstractArrow abstractarrow) {
+          if (abstractarrow.isOnFire()) {
+diff --git a/src/main/java/net/minecraft/world/level/BlockGetter.java b/src/main/java/net/minecraft/world/level/BlockGetter.java
+index 855027d..5550b8d 100644
+--- a/src/main/java/net/minecraft/world/level/BlockGetter.java
++++ b/src/main/java/net/minecraft/world/level/BlockGetter.java
+@@ -54,7 +54,7 @@ public interface BlockGetter extends LevelHeightAccessor {
+       });
+    }
+ 
+-   default BlockHitResult clip(ClipContext p_45548_) {
++   default BlockHitResult clip(ClipContext p_45548_) { //hz
+       return traverseBlocks(p_45548_.getFrom(), p_45548_.getTo(), p_45548_, (p_151359_, p_151360_) -> {
+          BlockState blockstate = this.getBlockState(p_151360_);
+          FluidState fluidstate = this.getFluidState(p_151360_);
+diff --git a/src/main/java/net/minecraft/world/level/Explosion.java b/src/main/java/net/minecraft/world/level/Explosion.java
+index c23bcef..9162c4f 100644
+--- a/src/main/java/net/minecraft/world/level/Explosion.java
++++ b/src/main/java/net/minecraft/world/level/Explosion.java
+@@ -120,7 +120,7 @@ public class Explosion {
+       }
+    }
+ 
+-   public void explode() {
++   public void explode() { //esho chto to so vzrivovm
+       this.level.gameEvent(this.source, GameEvent.EXPLODE, new Vec3(this.x, this.y, this.z));
+       Set<BlockPos> set = Sets.newHashSet();
+       int i = 16;
+@@ -144,7 +144,7 @@ public class Explosion {
+                   for(float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
+                      BlockPos blockpos = BlockPos.containing(d4, d6, d8);
+                      BlockState blockstate = this.level.getBlockState(blockpos);
+-                     FluidState fluidstate = this.level.getFluidState(blockpos);
++                     FluidState fluidstate = this.level.getFluidState(blockpos);//blokirovKA VZRIVA H2O ???
+                      if (!this.level.isInWorldBounds(blockpos)) {
+                         break;
+                      }
+@@ -219,13 +219,13 @@ public class Explosion {
+ 
+    }
+ 
+-   public void finalizeExplosion(boolean p_46076_) {
++   public void finalizeExplosion(boolean p_46076_) { //abstart vzriv nahui!!
+       if (this.level.isClientSide) {
+          this.level.playLocalSound(this.x, this.y, this.z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.2F) * 0.7F, false);
+       }
+ 
+       boolean flag = this.interactsWithBlocks();
+-      if (p_46076_) {
++      if (p_46076_) { //gamerule na vzriv blockov
+          if (!(this.radius < 2.0F) && flag) {
+             this.level.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
+          } else {
+diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
+index 25224e5..342e437 100644
+--- a/src/main/java/net/minecraft/world/level/Level.java
++++ b/src/main/java/net/minecraft/world/level/Level.java
+@@ -190,7 +190,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+       return this.setBlock(p_46601_, p_46602_, p_46603_, 512);
+    }
+ 
+-   public boolean setBlock(BlockPos p_46605_, BlockState p_46606_, int p_46607_, int p_46608_) {
++   public boolean setBlock(BlockPos p_46605_, BlockState p_46606_, int p_46607_/*bit mask?*/, int p_46608_) {
+       if (this.isOutsideBuildHeight(p_46605_)) {
+          return false;
+       } else if (!this.isClientSide && this.isDebug()) {
+diff --git a/src/main/java/net/minecraft/world/level/PotentialCalculator.java b/src/main/java/net/minecraft/world/level/PotentialCalculator.java
+index a6d949a..b3557fb 100644
+--- a/src/main/java/net/minecraft/world/level/PotentialCalculator.java
++++ b/src/main/java/net/minecraft/world/level/PotentialCalculator.java
+@@ -14,7 +14,7 @@ public class PotentialCalculator {
+ 
+    }
+ 
+-   public double getPotentialEnergyChange(BlockPos p_47196_, double p_47197_) {
++   public double getPotentialEnergyChange(BlockPos p_47196_, double p_47197_) { //potom podrobnie glynu pohoodu cheto s yronom ot padenia
+       if (p_47197_ == 0.0D) {
+          return 0.0D;
+       } else {
+diff --git a/src/main/java/net/minecraft/world/level/biome/Biome.java b/src/main/java/net/minecraft/world/level/biome/Biome.java
+index f50ae05..d8cb87e 100644
+--- a/src/main/java/net/minecraft/world/level/biome/Biome.java
++++ b/src/main/java/net/minecraft/world/level/biome/Biome.java
+@@ -116,7 +116,7 @@ public final class Biome {
+ 
+    /** @deprecated */
+    @Deprecated
+-   private float getTemperature(BlockPos p_47506_) {
++   private float getTemperature(BlockPos p_47506_) { //get nahui temperaturraaa
+       long i = p_47506_.asLong();
+       Long2FloatLinkedOpenHashMap long2floatlinkedopenhashmap = this.temperatureCache.get();
+       float f = long2floatlinkedopenhashmap.get(i);
+diff --git a/src/main/java/net/minecraft/world/level/block/DoorBlock.java b/src/main/java/net/minecraft/world/level/block/DoorBlock.java
+index 1e57995..efc7d98 100644
+--- a/src/main/java/net/minecraft/world/level/block/DoorBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/DoorBlock.java
+@@ -119,7 +119,7 @@ public class DoorBlock extends Block {
+       p_52749_.setBlock(p_52750_.above(), p_52751_.setValue(HALF, DoubleBlockHalf.UPPER), 3);
+    }
+ 
+-   private DoorHingeSide getHinge(BlockPlaceContext p_52805_) {
++   private DoorHingeSide getHinge(BlockPlaceContext p_52805_) { //door huita
+       BlockGetter blockgetter = p_52805_.getLevel();
+       BlockPos blockpos = p_52805_.getClickedPos();
+       Direction direction = p_52805_.getHorizontalDirection();
+diff --git a/src/main/java/net/minecraft/world/level/block/LevelEvent.java b/src/main/java/net/minecraft/world/level/block/LevelEvent.java
+index 4633d60..05e9e72 100644
+--- a/src/main/java/net/minecraft/world/level/block/LevelEvent.java
++++ b/src/main/java/net/minecraft/world/level/block/LevelEvent.java
+@@ -67,4 +67,4 @@ public class LevelEvent {
+    public static final int PARTICLES_SCULK_SHRIEK = 3007;
+    public static final int PARTICLES_AND_SOUND_BRUSH_BLOCK_COMPLETE = 3008;
+    public static final int PARTICLES_EGG_CRACK = 3009;
+-}
+\ No newline at end of file
++} //event list
+\ No newline at end of file
+diff --git a/src/main/java/net/minecraft/world/level/block/PipeBlock.java b/src/main/java/net/minecraft/world/level/block/PipeBlock.java
+index c40ec1a..d17c1f0 100644
+--- a/src/main/java/net/minecraft/world/level/block/PipeBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/PipeBlock.java
+@@ -38,7 +38,7 @@ public class PipeBlock extends Block {
+       this.shapeByIndex = this.makeShapes(p_55159_);
+    }
+ 
+-   private VoxelShape[] makeShapes(float p_55162_) {
++   private VoxelShape[] makeShapes(float p_55162_) { // kakya nahui truba blyat
+       float f = 0.5F - p_55162_;
+       float f1 = 0.5F + p_55162_;
+       VoxelShape voxelshape = Block.box((double)(f * 16.0F), (double)(f * 16.0F), (double)(f * 16.0F), (double)(f1 * 16.0F), (double)(f1 * 16.0F), (double)(f1 * 16.0F));
+diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
+index 901954e..78f19ea 100644
+--- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
++++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
+@@ -651,12 +651,12 @@ public abstract class BlockBehaviour implements FeatureElement {
+          return this.getBlock().getShape(this.asState(), p_60652_, p_60653_, p_60654_);
+       }
+ 
+-      public VoxelShape getCollisionShape(BlockGetter p_60813_, BlockPos p_60814_) {
++      public VoxelShape getCollisionShape(BlockGetter p_60813_, BlockPos p_60814_) { // возвращет форму блока (вроде бы переопределенна почти для каждого блока
+          return this.cache != null ? this.cache.collisionShape : this.getCollisionShape(p_60813_, p_60814_, CollisionContext.empty());
+       }
+ 
+       public VoxelShape getCollisionShape(BlockGetter p_60743_, BlockPos p_60744_, CollisionContext p_60745_) {
+-         return this.getBlock().getCollisionShape(this.asState(), p_60743_, p_60744_, p_60745_);
++         return this.getBlock().getCollisionShape(this.asState()/*get blockstate у blockgetter*/, p_60743_, p_60744_, p_60745_);
+       }
+ 
+       public VoxelShape getBlockSupportShape(BlockGetter p_60817_, BlockPos p_60818_) {
+@@ -863,7 +863,7 @@ public abstract class BlockBehaviour implements FeatureElement {
+          return this.cache != null ? this.cache.isCollisionShapeFullBlock : this.getBlock().isCollisionShapeFullBlock(this.asState(), p_60839_, p_60840_);
+       }
+ 
+-      protected abstract BlockState asState();
++      protected abstract BlockState asState(); //возвращает сам blockstate
+ 
+       public boolean requiresCorrectToolForDrops() {
+          return this.requiresCorrectToolForDrops;
+diff --git a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
+index dadb3df..09d218b 100644
+--- a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
++++ b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
+@@ -130,7 +130,7 @@ public abstract class FlowingFluid extends Fluid {
+    }
+ 
+    private void spreadToSides(Level p_256644_, BlockPos p_76016_, FluidState p_76017_, BlockState p_76018_) {
+-      int i = p_76017_.getAmount() - this.getDropOff(p_256644_);
++      int i = p_76017_.getAmount() - this.getDropOff(p_256644_);//getDropOff - для воды это константа - 1 а для лавы вроде либо 1 либо 2 там условие
+       if (p_76017_.getValue(FALLING)) {
+          i = 7;
+       }
+@@ -164,7 +164,7 @@ public abstract class FlowingFluid extends Fluid {
+                ++j;
+             }
+ 
+-            i = Math.max(i, fluidstate.getAmount());
++            i = Math.max(i, fluidstate.getAmount());//получение высоты водяры
+          }
+       }
+ 
+@@ -391,7 +391,7 @@ public abstract class FlowingFluid extends Fluid {
+       return this.getTickDelay(p_75998_);
+    }
+ 
+-   public void tick(Level p_75995_, BlockPos p_75996_, FluidState p_75997_) {
++   public void tick(Level p_75995_, BlockPos p_75996_, FluidState p_75997_) { //tick vodi i lavi
+       if (!p_75997_.isSource()) {
+          FluidState fluidstate = this.getNewLiquid(p_75995_, p_75996_, p_75995_.getBlockState(p_75996_));
+          int i = this.getSpreadDelay(p_75995_, p_75996_, p_75997_, fluidstate);
+diff --git a/src/main/java/net/minecraft/world/level/material/LavaFluid.java b/src/main/java/net/minecraft/world/level/material/LavaFluid.java
+index e201bc2..f3aa6e6 100644
+--- a/src/main/java/net/minecraft/world/level/material/LavaFluid.java
++++ b/src/main/java/net/minecraft/world/level/material/LavaFluid.java
+@@ -164,7 +164,7 @@ public abstract class LavaFluid extends FlowingFluid {
+          FluidState fluidstate = p_76220_.getFluidState(p_76221_);
+          if (this.is(FluidTags.LAVA) && fluidstate.is(FluidTags.WATER)) {
+             if (p_76222_.getBlock() instanceof LiquidBlock) {
+-               p_76220_.setBlock(p_76221_, Blocks.STONE.defaultBlockState(), 3);
++               p_76220_.setBlock(p_76221_, Blocks.STONE.defaultBlockState(), 3);//create stone block iz za h2o i lavi
+             }
+ 
+             this.fizz(p_76220_, p_76221_);
+@@ -205,7 +205,7 @@ public abstract class LavaFluid extends FlowingFluid {
+    public static class Source extends LavaFluid {
+       public int getAmount(FluidState p_76269_) {
+          return 8;
+-      }
++      }//ну типа у источника высшая высотаааааааааааааа
+ 
+       public boolean isSource(FluidState p_76267_) {
+          return true;
+diff --git a/src/main/java/net/minecraft/world/level/material/WaterFluid.java b/src/main/java/net/minecraft/world/level/material/WaterFluid.java
+index 9d1e35e..4975772 100644
+--- a/src/main/java/net/minecraft/world/level/material/WaterFluid.java
++++ b/src/main/java/net/minecraft/world/level/material/WaterFluid.java
+@@ -117,6 +117,6 @@ public abstract class WaterFluid extends FlowingFluid {
+ 
+       public boolean isSource(FluidState p_76483_) {
+          return true;
+-      }
++      }//проверяет является ли блок воды источником
+    }
+ }
+\ No newline at end of file
+-- 
+2.34.1
+

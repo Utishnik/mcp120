@@ -1,0 +1,95 @@
+From b11131623c41cc37417bad82444e7f9e09e43ce5 Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Sat, 24 Aug 2024 00:24:15 +0300
+Subject: [PATCH 22/22] save
+
+---
+ src/main/java/net/minecraft/world/entity/raid/Raider.java   | 6 +++---
+ .../java/net/minecraft/world/level/chunk/LevelChunk.java    | 2 +-
+ .../net/minecraft/world/level/dimension/DimensionType.java  | 4 ++--
+ .../java/net/minecraft/world/level/levelgen/Heightmap.java  | 4 +++-
+ 4 files changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/world/entity/raid/Raider.java b/src/main/java/net/minecraft/world/entity/raid/Raider.java
+index 8a6b14b..bc58641 100644
+--- a/src/main/java/net/minecraft/world/entity/raid/Raider.java
++++ b/src/main/java/net/minecraft/world/entity/raid/Raider.java
+@@ -107,7 +107,7 @@ public abstract class Raider extends PatrollingMonster {
+       this.noActionTime += 2;
+    }
+ 
+-   public void die(DamageSource p_37847_) {
++   public void die(DamageSource p_37847_) {//тоже переопределение
+       if (this.level() instanceof ServerLevel) {
+          Entity entity = p_37847_.getEntity();
+          Raid raid = this.getCurrentRaid();
+@@ -291,7 +291,7 @@ public abstract class Raider extends PatrollingMonster {
+          return this.mob.getCurrentRaid() == null && this.mob.isPatrolling() && this.mob.getTarget() != null && !this.mob.isAggressive() && (livingentity == null || livingentity.getType() != EntityType.PLAYER);
+       }
+ 
+-      public void start() {
++      public void start() {//переопределение функций для goal
+          super.start();
+          this.mob.getNavigation().stop();
+ 
+@@ -301,7 +301,7 @@ public abstract class Raider extends PatrollingMonster {
+ 
+       }
+ 
+-      public void stop() {
++      public void stop() {//это не остановка чего то
+          super.stop();
+          LivingEntity livingentity = this.mob.getTarget();
+          if (livingentity != null) {
+diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+index ac69cdc..b752ed4 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
++++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+@@ -209,7 +209,7 @@ public class LevelChunk extends ChunkAccess {
+    }
+ 
+    @Nullable
+-   public BlockState setBlockState(BlockPos p_62865_, BlockState p_62866_, boolean p_62867_) {
++   public BlockState setBlockState(BlockPos p_62865_, BlockState p_62866_, boolean p_62867_) { //надо чекнуть хорошо
+       int i = p_62865_.getY();
+       LevelChunkSection levelchunksection = this.getSection(this.getSectionIndex(i));
+       boolean flag = levelchunksection.hasOnlyAir();
+diff --git a/src/main/java/net/minecraft/world/level/dimension/DimensionType.java b/src/main/java/net/minecraft/world/level/dimension/DimensionType.java
+index 363fa96..75a5b6e 100644
+--- a/src/main/java/net/minecraft/world/level/dimension/DimensionType.java
++++ b/src/main/java/net/minecraft/world/level/dimension/DimensionType.java
+@@ -36,14 +36,14 @@ public record DimensionType(OptionalLong fixedTime, boolean hasSkyLight, boolean
+    public static final float[] MOON_BRIGHTNESS_PER_PHASE = new float[]{1.0F, 0.75F, 0.5F, 0.25F, 0.0F, 0.25F, 0.5F, 0.75F};
+    public static final Codec<Holder<DimensionType>> CODEC = RegistryFileCodec.create(Registries.DIMENSION_TYPE, DIRECT_CODEC);
+ 
+-   public DimensionType {
++   public DimensionType {//проверка на макс высоту типо если меньше секции чанка то нельзя
+       if (height < 16) {
+          throw new IllegalStateException("height has to be at least 16");
+       } else if (minY + height > MAX_Y + 1) {
+          throw new IllegalStateException("min_y + height cannot be higher than: " + (MAX_Y + 1));
+       } else if (logicalHeight > height) {
+          throw new IllegalStateException("logical_height cannot be higher than height");
+-      } else if (height % 16 != 0) {
++      } else if (height % 16 != 0) {//тип если у мира есть кусок меньше секции
+          throw new IllegalStateException("height has to be multiple of 16");
+       } else if (minY % 16 != 0) {
+          throw new IllegalStateException("min_y has to be a multiple of 16");
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/Heightmap.java b/src/main/java/net/minecraft/world/level/levelgen/Heightmap.java
+index d5b27a3..85a60dd 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/Heightmap.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/Heightmap.java
+@@ -89,7 +89,9 @@ public class Heightmap {
+             BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+ 
+             for(int j = p_64251_ - 1; j >= this.chunk.getMinBuildHeight(); --j) {
+-               blockpos$mutableblockpos.set(Mth.sin(p_64250_), j,p_64252_);
++               blockpos$mutableblockpos.set(Mth.sin(p_64250_), j,p_64252_);//чето со ставлением блока от синуса зависит типо по высоте идем
++               //оптимизация как будто типо синус не будет тут равен 1 и всегда при окргление в меншую сторону и типо 0
++               //оптимизация два тут можно напрямую следуйщую функцию использывать тут почти все целое значение
+                if (this.isOpaque.test(this.chunk.getBlockState(blockpos$mutableblockpos))) {
+                   this.setHeight(p_64250_, p_64252_, j + 1);
+                   return true;
+-- 
+2.34.1
+

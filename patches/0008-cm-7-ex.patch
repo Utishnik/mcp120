@@ -1,0 +1,67 @@
+From 0fad516bc889a75f9095618963daeb7da16c782c Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Tue, 11 Jun 2024 15:34:10 +0300
+Subject: [PATCH 08/22] cm 7 ex
+
+---
+ .../net/minecraft/world/level/biome/OverworldBiomeBuilder.java  | 2 +-
+ .../minecraft/world/level/levelgen/NoiseGeneratorSettings.java  | 2 +-
+ .../net/minecraft/world/level/levelgen/WorldDimensions.java     | 2 +-
+ .../minecraft/world/level/levelgen/presets/WorldPresets.java    | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/world/level/biome/OverworldBiomeBuilder.java b/src/main/java/net/minecraft/world/level/biome/OverworldBiomeBuilder.java
+index 40a000f..54887d0 100644
+--- a/src/main/java/net/minecraft/world/level/biome/OverworldBiomeBuilder.java
++++ b/src/main/java/net/minecraft/world/level/biome/OverworldBiomeBuilder.java
+@@ -106,7 +106,7 @@ public final class OverworldBiomeBuilder {
+ 
+    }
+ 
+-   private void addInlandBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> p_187216_) {
++   private void addInlandBiomes(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> p_187216_) {//биомы в зависимости от климпта
+       this.addMidSlice(p_187216_, Climate.Parameter.span(-1.0F, -0.93333334F));
+       this.addHighSlice(p_187216_, Climate.Parameter.span(-0.93333334F, -0.7666667F));
+       this.addPeaks(p_187216_, Climate.Parameter.span(-0.7666667F, -0.56666666F));
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/NoiseGeneratorSettings.java b/src/main/java/net/minecraft/world/level/levelgen/NoiseGeneratorSettings.java
+index 1e29390..caaf201 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/NoiseGeneratorSettings.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/NoiseGeneratorSettings.java
+@@ -59,7 +59,7 @@ public record NoiseGeneratorSettings(NoiseSettings noiseSettings, BlockState def
+    }
+ 
+    private static NoiseGeneratorSettings overworld(BootstapContext<?> p_256460_, boolean p_256427_, boolean p_256318_) {
+-      return new NoiseGeneratorSettings(NoiseSettings.OVERWORLD_NOISE_SETTINGS, Blocks.STONE.defaultBlockState(), Blocks.WATER.defaultBlockState(), NoiseRouterData.overworld(p_256460_.lookup(Registries.DENSITY_FUNCTION), p_256460_.lookup(Registries.NOISE), p_256318_, p_256427_), SurfaceRuleData.overworld(), (new OverworldBiomeBuilder()).spawnTarget(), 63, false, true, true, false);
++      return new NoiseGeneratorSettings(NoiseSettings.OVERWORLD_NOISE_SETTINGS, Blocks.STONE.defaultBlockState(), Blocks.LAVA.defaultBlockState(), NoiseRouterData.overworld(p_256460_.lookup(Registries.DENSITY_FUNCTION), p_256460_.lookup(Registries.NOISE), p_256318_, p_256427_), SurfaceRuleData.overworld(), (new OverworldBiomeBuilder()).spawnTarget(), 63, false, true, true, false);
+      // return new NoiseGeneratorSettings(NoiseSettings.END_NOISE_SETTINGS, Blocks.END_STONE.defaultBlockState(), Blocks.AIR.defaultBlockState(), NoiseRouterData.end(p_256460_.lookup(Registries.DENSITY_FUNCTION)), SurfaceRuleData.end(), List.of(), 0, true, false, false, true);
+    }
+ 
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/WorldDimensions.java b/src/main/java/net/minecraft/world/level/levelgen/WorldDimensions.java
+index 00d86d2..aededcd 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/WorldDimensions.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/WorldDimensions.java
+@@ -158,7 +158,7 @@ public record WorldDimensions(Registry<LevelStem> dimensions) {
+       return false;
+    }
+ 
+-   private static boolean isStableEnd(LevelStem p_250720_) {
++   private static boolean isStableEnd(LevelStem p_250720_) {//использует шум энда
+       if (p_250720_.type().is(BuiltinDimensionTypes.END)) {
+          ChunkGenerator chunkgenerator = p_250720_.generator();
+          if (chunkgenerator instanceof NoiseBasedChunkGenerator) {
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/presets/WorldPresets.java b/src/main/java/net/minecraft/world/level/levelgen/presets/WorldPresets.java
+index 5fedae7..87ddbc6 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/presets/WorldPresets.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/presets/WorldPresets.java
+@@ -92,7 +92,7 @@ public class WorldPresets {
+          this.netherStem = new LevelStem(holder, new NoiseBasedChunkGenerator(MultiNoiseBiomeSource.createFromPreset(reference), holder1));
+          Holder<DimensionType> holder2 = holdergetter.getOrThrow(BuiltinDimensionTypes.END);
+          Holder<NoiseGeneratorSettings> holder3 = this.noiseSettings.getOrThrow(NoiseGeneratorSettings.END);
+-         this.endStem = new LevelStem(holder2, new NoiseBasedChunkGenerator(TheEndBiomeSource.create(this.biomes), holder3));
++         this.endStem = new LevelStem(holder2, new NoiseBasedChunkGenerator(TheEndBiomeSource.create(this.biomes), holder1));//тоже исрлльзует шум энда
+       }
+ 
+       private LevelStem makeOverworld(ChunkGenerator p_226488_) {
+-- 
+2.34.1
+

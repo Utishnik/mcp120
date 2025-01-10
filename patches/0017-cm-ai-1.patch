@@ -1,0 +1,84 @@
+From f28af787fea9dd5b6e4d81b74089ee8ec19123e5 Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Tue, 2 Jul 2024 23:43:33 +0300
+Subject: [PATCH 17/22] cm ai 1
+
+---
+ src/main/java/net/minecraft/server/level/ChunkMap.java    | 2 +-
+ .../net/minecraft/world/entity/ai/goal/FloatGoal.java     | 2 +-
+ .../minecraft/world/entity/ai/village/poi/PoiManager.java | 8 ++++----
+ .../minecraft/world/entity/ai/village/poi/PoiTypes.java   | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
+index 58f49dc..1281b14 100644
+--- a/src/main/java/net/minecraft/server/level/ChunkMap.java
++++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
+@@ -118,7 +118,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+    private final ChunkGeneratorStructureState chunkGeneratorState;
+    private final Supplier<DimensionDataStorage> overworldDataStorage;
+    private final PoiManager poiManager;
+-   final LongSet toDrop = new LongOpenHashSet();
++   final LongSet toDrop = new LongOpenHashSet();//дроп
+    private boolean modified;
+    private final ChunkTaskPriorityQueueSorter queueSorter;
+    private final ProcessorHandle<ChunkTaskPriorityQueueSorter.Message<Runnable>> worldgenMailbox;
+diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/FloatGoal.java b/src/main/java/net/minecraft/world/entity/ai/goal/FloatGoal.java
+index 1a9dcfc..4b403ae 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/goal/FloatGoal.java
++++ b/src/main/java/net/minecraft/world/entity/ai/goal/FloatGoal.java
+@@ -14,7 +14,7 @@ public class FloatGoal extends Goal {
+    }
+ 
+    public boolean canUse() {
+-      return this.mob.isInWater() && this.mob.getFluidHeight(FluidTags.WATER) > this.mob.getFluidJumpThreshold() || this.mob.isInLava();
++      return this.mob.isInWater() && this.mob.getFluidHeight(FluidTags.WATER) > this.mob.getFluidJumpThreshold() || this.mob.isInLava();//чето необычное типо тру если в воде и высоты воды не нулевая и типо еще если он не прыгает в воде и не в лаве
+    }
+ 
+    public boolean requiresUpdateEveryTick() {
+diff --git a/src/main/java/net/minecraft/world/entity/ai/village/poi/PoiManager.java b/src/main/java/net/minecraft/world/entity/ai/village/poi/PoiManager.java
+index aa67e49..5614653 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/village/poi/PoiManager.java
++++ b/src/main/java/net/minecraft/world/entity/ai/village/poi/PoiManager.java
+@@ -66,13 +66,13 @@ public class PoiManager extends SectionStorage<PoiSection> {
+       });
+    }
+ 
+-   public Stream<PoiRecord> getInSquare(Predicate<Holder<PoiType>> p_27167_, BlockPos p_27168_, int p_27169_, PoiManager.Occupancy p_27170_) {
+-      int i = Math.floorDiv(p_27169_, 16) + 1;
++   public Stream<PoiRecord> getInSquare(Predicate<Holder<PoiType>> p_27167_, BlockPos p_27168_, int findrad, PoiManager.Occupancy p_27170_) {
++      int i = Math.floorDiv(findrad, 16) + 1;
+       return ChunkPos.rangeClosed(new ChunkPos(p_27168_), i).flatMap((p_217938_) -> {
+          return this.getInChunk(p_27167_, p_217938_, p_27170_);
+       }).filter((p_217971_) -> {
+          BlockPos blockpos = p_217971_.getPos();
+-         return Math.abs(blockpos.getX() - p_27168_.getX()) <= p_27169_ && Math.abs(blockpos.getZ() - p_27168_.getZ()) <= p_27169_;
++         return Math.abs(blockpos.getX() - p_27168_.getX()) <= findrad && Math.abs(blockpos.getZ() - p_27168_.getZ()) <= findrad;
+       });
+    }
+ 
+@@ -251,7 +251,7 @@ public class PoiManager extends SectionStorage<PoiSection> {
+       });
+    }
+ 
+-   final class DistanceTracker extends SectionTracker {
++   final class DistanceTracker extends SectionTracker {//свзяанно с isvillage который связанны с рейдами
+       private final Long2ByteMap levels = new Long2ByteOpenHashMap();
+ 
+       protected DistanceTracker() {
+diff --git a/src/main/java/net/minecraft/world/entity/ai/village/poi/PoiTypes.java b/src/main/java/net/minecraft/world/entity/ai/village/poi/PoiTypes.java
+index a2ec38a..68a6d5c 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/village/poi/PoiTypes.java
++++ b/src/main/java/net/minecraft/world/entity/ai/village/poi/PoiTypes.java
+@@ -82,7 +82,7 @@ public class PoiTypes {
+       return TYPE_BY_STATE.containsKey(p_254440_);
+    }
+ 
+-   public static PoiType bootstrap(Registry<PoiType> p_218083_) {
++   public static PoiType bootstrap(Registry<PoiType> p_218083_) {//типы жителей
+       register(p_218083_, ARMORER, getBlockStates(Blocks.BLAST_FURNACE), 1, 1);
+       register(p_218083_, BUTCHER, getBlockStates(Blocks.SMOKER), 1, 1);
+       register(p_218083_, CARTOGRAPHER, getBlockStates(Blocks.CARTOGRAPHY_TABLE), 1, 1);
+-- 
+2.34.1
+

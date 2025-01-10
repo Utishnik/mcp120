@@ -1,0 +1,43 @@
+From c39bd50ff819bebea839e1d6c3484a63c60996bd Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Sat, 22 Jun 2024 21:40:14 +0300
+Subject: [PATCH 15/22] micro pencil
+
+---
+ src/main/java/net/minecraft/world/entity/raid/Raid.java | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+index d602e72..42c432c 100644
+--- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
++++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+@@ -329,7 +329,7 @@ public class Raid {
+             int k = 0;
+ 
+             while(this.shouldSpawnGroup()) {
+-               BlockPos blockpos = this.waveSpawnPos.isPresent() ? this.waveSpawnPos.get() : this.findRandomSpawnPos(k, 20);
++               BlockPos blockpos = this.waveSpawnPos.isPresent() ? this.waveSpawnPos.get() : this.findRandomSpawnPos(k, 20);//спавн группы
+                if (blockpos != null) {
+                   this.started = true;
+                   this.spawnGroup(blockpos);
+@@ -359,7 +359,7 @@ public class Raid {
+                         LivingEntity livingentity = (LivingEntity)entity;
+                         if (!entity.isSpectator()) {
+                            livingentity.addEffect(new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE, 48000, this.badOmenLevel - 1, false, false, true));
+-                           if (livingentity instanceof ServerPlayer) {
++                           if (livingentity instanceof ServerPlayer) { //дает игроку герой деревни
+                               ServerPlayer serverplayer = (ServerPlayer)livingentity;
+                               serverplayer.awardStat(Stats.RAID_WIN);
+                               CriteriaTriggers.RAID_WIN.trigger(serverplayer);
+@@ -621,7 +621,7 @@ public class Raid {
+    }
+ 
+    @Nullable
+-   private BlockPos findRandomSpawnPos(int p_37708_, int p_37709_) {
++   private BlockPos findRandomSpawnPos(int p_37708_, int p_37709_) { //ищет где заспанить
+       int i = p_37708_ == 0 ? 2 : 2 - p_37708_;
+       BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+ 
+-- 
+2.34.1
+

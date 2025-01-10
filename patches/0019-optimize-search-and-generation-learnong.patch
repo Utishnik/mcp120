@@ -1,0 +1,79 @@
+From a68638bdadced28e76db7536a81ece919d537e59 Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Mon, 19 Aug 2024 18:24:18 +0300
+Subject: [PATCH 19/22] optimize search and generation learnong
+
+---
+ .../net/minecraft/world/level/chunk/ChunkGenerator.java   | 1 -
+ .../world/level/levelgen/carver/CaveWorldCarver.java      | 2 +-
+ .../world/level/levelgen/feature/OreFeature.java          | 8 ++++----
+ 3 files changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java b/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
+index 6f1c476..9555bd4 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
++++ b/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
+@@ -284,7 +284,6 @@ public abstract class ChunkGenerator {
+             for(LevelChunkSection levelchunksection : chunkaccess.getSections()) {
+                levelchunksection.getBiomes().getAll(set::add);
+             }
+-
+          });
+          set.retainAll(this.biomeSource.possibleBiomes());
+          int j = list.size();
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/carver/CaveWorldCarver.java b/src/main/java/net/minecraft/world/level/levelgen/carver/CaveWorldCarver.java
+index 43fda22..f4e6e11 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/carver/CaveWorldCarver.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/carver/CaveWorldCarver.java
+@@ -50,7 +50,7 @@ public class CaveWorldCarver extends WorldCarver<CaveCarverConfiguration> {
+             float f2 = this.getThickness(p_224889_);
+             int i1 = i - p_224889_.nextInt(i / 4);
+             int j1 = 0;
+-            this.createTunnel(p_224885_, p_224886_, p_224887_, p_224888_, p_224889_.nextLong(), p_224890_, d0, d1, d2, d3, d4, f2, f, f3, 0, i1, this.getYScale(), p_224892_, worldcarver$carveskipchecker);
++            this.createTunnel(p_224885_, p_224886_, p_224887_, p_224888_, p_224889_.nextLong(), p_224890_, d0, d1, d2, d3, d4, f2, f, f3, 0, i1, this.getYScale(), p_224892_, worldcarver$carveskipchecker); //kakoyto tuneli
+          }
+       }
+ 
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java
+index 8d1d19b..5cb0bd4 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java
+@@ -62,7 +62,7 @@ public class OreFeature extends Feature<OreConfiguration> {
+          float f = (float)k / (float)j;
+          double d0 = Mth.lerp((double)f, p_225175_, p_225176_);
+          double d1 = Mth.lerp((double)f, p_225179_, p_225180_);
+-         double d2 = Mth.lerp((double)f, p_225177_, p_225178_);
++         double d2 = Mth.lerp((double)f, p_225177_, p_225178_);//можно вынести за цикл => оптимизация
+          double d3 = p_225173_.nextDouble() * (double)j / 16.0D;
+          double d4 = ((double)(Mth.sin((float)Math.PI * f) + 1.0F) * d3 + 1.0D) / 2.0D;
+          adouble[k * 4 + 0] = d0;
+@@ -73,7 +73,7 @@ public class OreFeature extends Feature<OreConfiguration> {
+ 
+       for(int l3 = 0; l3 < j - 1; ++l3) {
+          if (!(adouble[l3 * 4 + 3] <= 0.0D)) {
+-            for(int i4 = l3 + 1; i4 < j; ++i4) {
++            for(int i4 = l3 + 1; i4 < j; ++i4) {//i4 всегда больше i3 => оптимизация
+                if (!(adouble[i4 * 4 + 3] <= 0.0D)) {
+                   double d8 = adouble[l3 * 4 + 0] - adouble[i4 * 4 + 0];
+                   double d10 = adouble[l3 * 4 + 1] - adouble[i4 * 4 + 1];
+@@ -91,7 +91,7 @@ public class OreFeature extends Feature<OreConfiguration> {
+          }
+       }
+ 
+-      try (BulkSectionAccess bulksectionaccess = new BulkSectionAccess(p_225172_)) {
++      try (BulkSectionAccess bulksectionaccess = new BulkSectionAccess(p_225172_)) {//где catch сука
+          for(int j4 = 0; j4 < j; ++j4) {
+             double d9 = adouble[j4 * 4 + 3];
+             if (!(d9 < 0.0D)) {
+@@ -107,7 +107,7 @@ public class OreFeature extends Feature<OreConfiguration> {
+ 
+                for(int i2 = k4; i2 <= j1; ++i2) {
+                   double d5 = ((double)i2 + 0.5D - d11) / d9;
+-                  if (d5 * d5 < 1.0D) {
++                  if (d5 * d5 < 1.0D) {//тут много раз использется d5*d5 => оптимизация
+                      for(int j2 = l; j2 <= k1; ++j2) {
+                         double d6 = ((double)j2 + 0.5D - d13) / d9;
+                         if (d5 * d5 + d6 * d6 < 1.0D) {
+-- 
+2.34.1
+

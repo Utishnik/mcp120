@@ -1,0 +1,44 @@
+From 056c3ff4a8273b597a6862a68cb5211a28b0857e Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Sat, 15 Jun 2024 21:18:14 +0300
+Subject: [PATCH 13/22] =?UTF-8?q?=D0=B4=D0=BE=D0=B6=D0=B4=D1=8C=20=D0=BF?=
+ =?UTF-8?q?=D0=BE=D1=87=D1=82=D0=B8=20=D1=83=D0=B1=D1=80=D0=B0=D0=BB=20?=
+ =?UTF-8?q?=D0=B2=D1=81=D0=B5=20=D1=82=D0=B0=D0=BA=D0=B8=20=D0=BE=D1=81?=
+ =?UTF-8?q?=D1=82=D0=B0=D0=BB=D0=B8=D1=81=D1=8C=20=D0=BF=D0=B0=D1=80=D1=82?=
+ =?UTF-8?q?=D0=B8=D0=BA=D0=BB=D1=8B=20=D1=80=D0=B5=D0=B4=D0=BA=D0=BE=D0=BF?=
+ =?UTF-8?q?=D0=BE=D1=8F=D0=B2=D0=BB=D1=8F=D1=8E=D1=89=D0=B8=D0=B5=D1=81?=
+ =?UTF-8?q?=D1=8F=20=D1=82=D0=BF=D0=BE=20=D0=BA=D0=BE=D0=B3=D0=B4=D0=B0=20?=
+ =?UTF-8?q?=D0=BA=D1=80=D1=8B=D1=88=D0=B0=20=D0=BF=D1=80=D0=BE=D1=82=D0=B5?=
+ =?UTF-8?q?=D0=BA=D0=B0=D0=B5=D1=82=20=D0=BE=D1=82=20=D0=B2=D0=BE=D0=B4?=
+ =?UTF-8?q?=D1=8B=20=D0=B8=D0=BB=D0=B8=20=D0=BB=D0=B0=D0=B2=D1=8B?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../net/minecraft/client/renderer/LevelRenderer.java     | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+index 32c5287..87bd5e9 100644
+--- a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
++++ b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+@@ -392,8 +392,13 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+                   double d2 = voxelshape.max(Direction.Axis.Y, d0, d1);
+                   double d3 = (double)fluidstate.getHeight(levelreader, blockpos1);
+                   double d4 = Math.max(d2, d3);
+-                  ParticleOptions particleoptions = !fluidstate.is(FluidTags.LAVA) && !blockstate.is(Blocks.MAGMA_BLOCK) && !CampfireBlock.isLitCampfire(blockstate) ? ParticleTypes.RAIN : ParticleTypes.SMOKE;
+-                  this.minecraft.level.addParticle(particleoptions, (double)blockpos1.getX() + d0, (double)blockpos1.getY() + d4, (double)blockpos1.getZ() + d1, 0.0D, 0.0D, 0.0D);
++                  //проверка типо партиклы дождя не рендерятся на лаве и магма блоке
++                  boolean testtt=false;
++                  if(testtt)
++                  {
++                     ParticleOptions particleoptions = !fluidstate.is(FluidTags.LAVA) && !blockstate.is(Blocks.MAGMA_BLOCK) && !CampfireBlock.isLitCampfire(blockstate) ? ParticleTypes.RAIN : ParticleTypes.SMOKE;
++                     this.minecraft.level.addParticle(particleoptions, (double)blockpos1.getX() + d0, (double)blockpos1.getY() + d4, (double)blockpos1.getZ() + d1, 0.0D, 0.0D, 0.0D);
++                  }
+                }
+             }
+          }
+-- 
+2.34.1
+

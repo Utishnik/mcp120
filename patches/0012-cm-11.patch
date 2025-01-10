@@ -1,0 +1,62 @@
+From 5c19cf9a4d2bb74b15687e6f9f6418f583d2750b Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Sat, 15 Jun 2024 21:12:39 +0300
+Subject: [PATCH 12/22] cm 11
+
+---
+ .../minecraft/client/renderer/LevelRenderer.java  | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+index eb41399..32c5287 100644
+--- a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
++++ b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+@@ -1119,10 +1119,13 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+          }
+       }
+ 
++      boolean testtt=false;
++
+       if (this.transparencyChain != null) {
+          RenderStateShard.WEATHER_TARGET.setupRenderState();
+          profilerfiller.popPush("weather");
+-         this.renderSnowAndRain(p_109606_, p_109601_, d0, d1, d2);
++         if(testtt)
++            this.renderSnowAndRain(p_109606_, p_109601_, d0, d1, d2);
+          this.renderWorldBorder(p_109604_);
+          RenderStateShard.WEATHER_TARGET.clearRenderState();
+          this.transparencyChain.process(p_109601_);
+@@ -1130,7 +1133,8 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+       } else {
+          RenderSystem.depthMask(false);
+          profilerfiller.popPush("weather");
+-         this.renderSnowAndRain(p_109606_, p_109601_, d0, d1, d2);
++         if(testtt)
++            this.renderSnowAndRain(p_109606_, p_109601_, d0, d1, d2);
+          this.renderWorldBorder(p_109604_);
+          RenderSystem.depthMask(true);
+       }
+@@ -2207,7 +2211,10 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+       Camera camera = this.minecraft.gameRenderer.getMainCamera();
+       ParticleStatus particlestatus = this.calculateParticleLevel(p_109807_);
+       if (p_109806_) {
+-         return this.minecraft.particleEngine.createParticle(p_109805_, p_109808_, p_109809_, p_109810_, p_109811_, p_109812_, p_109813_);
++         if(p_109805_.getType() != ParticleTypes.RAIN) {// убрал рендер дождя но все же рендерятся капли на болках и воде (я хз почему после этого они все ровно рендерятся)
++            return this.minecraft.particleEngine.createParticle(p_109805_, p_109808_, p_109809_, p_109810_, p_109811_, p_109812_, p_109813_);
++         }
++         return null;
+       } else if (camera.getPosition().distanceToSqr(p_109808_, p_109809_, p_109810_) > 1024.0D) {
+          return null;
+       } else {
+@@ -2250,7 +2257,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+                   d5 += d1 / d3 * 2.0D;
+                   d6 += d2 / d3 * 2.0D;
+                }
+-
++               //звуки всякие
+                if (p_109507_ == 1023) {
+                   this.level.playLocalSound(d4, d5, d6, SoundEvents.WITHER_SPAWN, SoundSource.HOSTILE, 1.0F, 1.0F, false);
+                } else if (p_109507_ == 1038) {
+-- 
+2.34.1
+

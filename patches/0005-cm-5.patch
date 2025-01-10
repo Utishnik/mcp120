@@ -1,0 +1,306 @@
+From 6f6bb1d36b4e6b2b19ac5cb5ec4659a7d5ac0a67 Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Thu, 6 Jun 2024 19:15:45 +0300
+Subject: [PATCH 05/22] cm 5
+
+---
+ .../client/renderer/LevelRenderer.java        |  2 +-
+ .../java/net/minecraft/core/Direction.java    |  3 +++
+ .../java/net/minecraft/core/SectionPos.java   |  2 +-
+ .../server/commands/FillCommand.java          |  4 ++++
+ .../level/ExplosionDamageCalculator.java      |  2 +-
+ .../java/net/minecraft/world/level/Level.java | 24 +++++++++----------
+ .../level/levelgen/BelowZeroRetrogen.java     |  2 +-
+ .../levelgen/NoiseBasedChunkGenerator.java    |  2 +-
+ .../world/level/material/FlowingFluid.java    | 16 ++++++-------
+ .../world/level/material/FluidState.java      |  3 ++-
+ .../world/level/material/WaterFluid.java      |  2 +-
+ .../minecraft/world/phys/shapes/Shapes.java   |  2 +-
+ .../world/phys/shapes/VoxelShape.java         |  2 +-
+ 13 files changed, 37 insertions(+), 29 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+index 8499d7b..fe930ad 100644
+--- a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
++++ b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+@@ -2091,7 +2091,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+       this.setBlockDirty(p_109546_, (p_109549_ & 8) != 0);
+    }
+ 
+-   private void setBlockDirty(BlockPos p_109733_, boolean p_109734_) {
++   private void setBlockDirty(BlockPos p_109733_, boolean p_109734_) {//связанно с обновлением блока
+       for(int i = p_109733_.getZ() - 1; i <= p_109733_.getZ() + 1; ++i) {
+          for(int j = p_109733_.getX() - 1; j <= p_109733_.getX() + 1; ++j) {
+             for(int k = p_109733_.getY() - 1; k <= p_109733_.getY() + 1; ++k) {
+diff --git a/src/main/java/net/minecraft/core/Direction.java b/src/main/java/net/minecraft/core/Direction.java
+index 168fa13..cb29db4 100644
+--- a/src/main/java/net/minecraft/core/Direction.java
++++ b/src/main/java/net/minecraft/core/Direction.java
+@@ -136,6 +136,9 @@ public enum Direction implements StringRepresentable {
+          default:
+             throw new IncompatibleClassChangeError();
+       }
++      /*
++      quaternionf.rotationX((float)Math.PI/10);
++      qu*aternionf.rotationZ((float)Math.PI/5);   Вращаются шалкербоксы и как блоки и в инвенторе*/
+ 
+       return quaternionf;
+    }
+diff --git a/src/main/java/net/minecraft/core/SectionPos.java b/src/main/java/net/minecraft/core/SectionPos.java
+index 0a298cd..a5877f7 100644
+--- a/src/main/java/net/minecraft/core/SectionPos.java
++++ b/src/main/java/net/minecraft/core/SectionPos.java
+@@ -74,7 +74,7 @@ public class SectionPos extends Vec3i {
+    }
+ 
+    public static int blockToSectionCoord(int p_123172_) {
+-      return p_123172_ >> 4;
++      return p_123172_ >> 4;//просто делится на 16
+    }
+ 
+    public static int blockToSectionCoord(double p_235866_) {
+diff --git a/src/main/java/net/minecraft/server/commands/FillCommand.java b/src/main/java/net/minecraft/server/commands/FillCommand.java
+index 809b2df..4e05f74 100644
+--- a/src/main/java/net/minecraft/server/commands/FillCommand.java
++++ b/src/main/java/net/minecraft/server/commands/FillCommand.java
+@@ -73,14 +73,18 @@ public class FillCommand {
+                if (blockinput != null) {
+                   BlockEntity blockentity = serverlevel.getBlockEntity(blockpos);
+                   Clearable.tryClear(blockentity);
++
+                   if (blockinput.place(serverlevel, blockpos, 2)) {
+                      list.add(blockpos.immutable());
+                      ++k;
+                   }
++
++
+                }
+             }
+          }
+ 
++
+          for(BlockPos blockpos1 : list) {
+             Block block = serverlevel.getBlockState(blockpos1).getBlock();
+             serverlevel.blockUpdated(blockpos1, block);
+diff --git a/src/main/java/net/minecraft/world/level/ExplosionDamageCalculator.java b/src/main/java/net/minecraft/world/level/ExplosionDamageCalculator.java
+index 136aafc..f0aff54 100644
+--- a/src/main/java/net/minecraft/world/level/ExplosionDamageCalculator.java
++++ b/src/main/java/net/minecraft/world/level/ExplosionDamageCalculator.java
+@@ -7,7 +7,7 @@ import net.minecraft.world.level.material.FluidState;
+ 
+ public class ExplosionDamageCalculator {
+    public Optional<Float> getBlockExplosionResistance(Explosion p_46099_, BlockGetter p_46100_, BlockPos p_46101_, BlockState p_46102_, FluidState p_46103_) {
+-      return p_46102_.isAir() && p_46103_.isEmpty() ? Optional.empty() : Optional.of(Math.max(p_46102_.getBlock().getExplosionResistance(), p_46103_.getExplosionResistance()));
++      return p_46102_.isAir()  && p_46103_.isEmpty() ? Optional.empty() : Optional.of(Math.max(p_46102_.getBlock().getExplosionResistance(), p_46103_.getExplosionResistance()));
+    }
+ 
+    public boolean shouldBlockExplode(Explosion p_46094_, BlockGetter p_46095_, BlockPos p_46096_, BlockState p_46097_, float p_46098_) {
+diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
+index 342e437..635615b 100644
+--- a/src/main/java/net/minecraft/world/level/Level.java
++++ b/src/main/java/net/minecraft/world/level/Level.java
+@@ -168,7 +168,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+       return p_46725_ < -300000000 || p_46725_ >= 300000000;
+    }
+ 
+-   public LevelChunk getChunkAt(BlockPos p_46746_) {
++   public LevelChunk getChunkAt(BlockPos p_46746_) {//получение в каком чанке находится блок
+       return this.getChunk(SectionPos.blockToSectionCoord(p_46746_.getX()), SectionPos.blockToSectionCoord(p_46746_.getZ()));
+    }
+ 
+@@ -186,41 +186,41 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+       }
+    }
+ 
+-   public boolean setBlock(BlockPos p_46601_, BlockState p_46602_, int p_46603_) {
+-      return this.setBlock(p_46601_, p_46602_, p_46603_, 512);
++   public boolean setBlock(BlockPos p_46601_, BlockState p_46602_, int poebota) {
++      return this.setBlock(p_46601_, p_46602_, poebota, 512);
+    }
+ 
+-   public boolean setBlock(BlockPos p_46605_, BlockState p_46606_, int p_46607_/*bit mask?*/, int p_46608_) {
+-      if (this.isOutsideBuildHeight(p_46605_)) {
++   public boolean setBlock(BlockPos p_46605_, BlockState p_46606_, int xxx1/*bit mask?*/, int p_46608_) {//короче он вроде работает через замену состояния блока(щас блоки становятся аметистами но с предыдущей тестурой)
++      if (this.isOutsideBuildHeight(p_46605_)) {//проверка на максимальную высоту строительства
+          return false;
+       } else if (!this.isClientSide && this.isDebug()) {
+          return false;
+       } else {
+          LevelChunk levelchunk = this.getChunkAt(p_46605_);
+          Block block = p_46606_.getBlock();
+-         BlockState blockstate = levelchunk.setBlockState(p_46605_, p_46606_, (p_46607_ & 64) != 0);
++         BlockState blockstate = levelchunk.setBlockState(p_46605_, Blocks.AMETHYST_BLOCK.defaultBlockState(), (xxx1 & 64) != 0);
+          if (blockstate == null) {
+             return false;
+          } else {
+-            BlockState blockstate1 = this.getBlockState(p_46605_);
++            BlockState blockstate1 = /*this.getBlockState(p_46605_)*/Blocks.AMETHYST_BLOCK.defaultBlockState();
+             if (blockstate1 == p_46606_) {
+                if (blockstate != blockstate1) {
+                   this.setBlocksDirty(p_46605_, blockstate, blockstate1);
+                }
+ 
+-               if ((p_46607_ & 2) != 0 && (!this.isClientSide || (p_46607_ & 4) == 0) && (this.isClientSide || levelchunk.getFullStatus() != null && levelchunk.getFullStatus().isOrAfter(FullChunkStatus.BLOCK_TICKING))) {
+-                  this.sendBlockUpdated(p_46605_, blockstate, p_46606_, p_46607_);
++               if ((xxx1 & 2) != 0 && (!this.isClientSide || (xxx1 & 4) == 0) && (this.isClientSide || levelchunk.getFullStatus() != null && levelchunk.getFullStatus().isOrAfter(FullChunkStatus.BLOCK_TICKING))) {
++                  this.sendBlockUpdated(p_46605_, blockstate, p_46606_, xxx1);
+                }
+ 
+-               if ((p_46607_ & 1) != 0) {
++               if ((xxx1 & 1) != 0) {
+                   this.blockUpdated(p_46605_, blockstate.getBlock());
+                   if (!this.isClientSide && p_46606_.hasAnalogOutputSignal()) {
+                      this.updateNeighbourForOutputSignal(p_46605_, block);
+                   }
+                }
+ 
+-               if ((p_46607_ & 16) == 0 && p_46608_ > 0) {
+-                  int i = p_46607_ & -34;
++               if ((xxx1 & 16) == 0 && p_46608_ > 0) {
++                  int i = xxx1 & -34;
+                   blockstate.updateIndirectNeighbourShapes(this, p_46605_, i, p_46608_ - 1);
+                   p_46606_.updateNeighbourShapes(this, p_46605_, i, p_46608_ - 1);
+                   p_46606_.updateIndirectNeighbourShapes(this, p_46605_, i, p_46608_ - 1);
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/BelowZeroRetrogen.java b/src/main/java/net/minecraft/world/level/levelgen/BelowZeroRetrogen.java
+index 187a8d8..57cd05f 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/BelowZeroRetrogen.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/BelowZeroRetrogen.java
+@@ -100,7 +100,7 @@ public final class BelowZeroRetrogen {
+       return !this.missingBedrock.isEmpty();
+    }
+ 
+-   public boolean hasBedrockHole(int p_198215_, int p_198216_) {
++   public boolean hasBedrockHole(int p_198215_, int p_198216_) {//bedrock dirki
+       return this.missingBedrock.get((p_198216_ & 15) * 16 + (p_198215_ & 15));
+    }
+ 
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
+index 5763599..72e4646 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
+@@ -126,7 +126,7 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {
+       p_224304_.add("NoiseRouter T: " + decimalformat.format(noiserouter.temperature().compute(densityfunction$singlepointcontext)) + " V: " + decimalformat.format(noiserouter.vegetation().compute(densityfunction$singlepointcontext)) + " C: " + decimalformat.format(noiserouter.continents().compute(densityfunction$singlepointcontext)) + " E: " + decimalformat.format(noiserouter.erosion().compute(densityfunction$singlepointcontext)) + " D: " + decimalformat.format(noiserouter.depth().compute(densityfunction$singlepointcontext)) + " W: " + decimalformat.format(d0) + " PV: " + decimalformat.format((double)NoiseRouterData.peaksAndValleys((float)d0)) + " AS: " + decimalformat.format(noiserouter.initialDensityWithoutJaggedness().compute(densityfunction$singlepointcontext)) + " N: " + decimalformat.format(noiserouter.finalDensity().compute(densityfunction$singlepointcontext)));
+    }
+ 
+-   private OptionalInt iterateNoiseColumn(LevelHeightAccessor p_224240_, RandomState p_224241_, int p_224242_, int p_224243_, @Nullable MutableObject<NoiseColumn> p_224244_, @Nullable Predicate<BlockState> p_224245_) {
++   private OptionalInt iterateNoiseColumn(LevelHeightAccessor p_224240_, RandomState p_224241_, int p_224242_, int p_224243_, @Nullable MutableObject<NoiseColumn> p_224244_, @Nullable Predicate<BlockState> p_224245_) {//еще что то шумное
+       NoiseSettings noisesettings = this.settings.value().noiseSettings().clampToHeightAccessor(p_224240_);
+       int i = noisesettings.getCellHeight();
+       int j = noisesettings.minY();
+diff --git a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
+index 09d218b..16b03a3 100644
+--- a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
++++ b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
+@@ -255,7 +255,7 @@ public abstract class FlowingFluid extends Fluid {
+       return (short)((i + 128 & 255) << 8 | j + 128 & 255);
+    }
+ 
+-   protected int getSlopeDistance(LevelReader p_76027_, BlockPos p_76028_, int p_76029_, Direction p_76030_, BlockState p_76031_, BlockPos p_76032_, Short2ObjectMap<Pair<BlockState, FluidState>> p_76033_, Short2BooleanMap p_76034_) {
++   protected int getSlopeDistance(LevelReader p_76027_, BlockPos p_76028_, int zxc, Direction p_76030_, BlockState p_76031_, BlockPos p_76032_, Short2ObjectMap<Pair<BlockState, FluidState>> p_76033_, Short2BooleanMap p_76034_) {//рекурсия
+       int i = 1000;
+ 
+       for(Direction direction : Direction.Plane.HORIZONTAL) {
+@@ -275,11 +275,11 @@ public abstract class FlowingFluid extends Fluid {
+                   return this.isWaterHole(p_76027_, this.getFlowing(), blockpos, blockstate, blockpos1, blockstate1);
+                });
+                if (flag) {
+-                  return p_76029_;
++                  return zxc;
+                }
+ 
+-               if (p_76029_ < this.getSlopeFindDistance(p_76027_)) {
+-                  int j = this.getSlopeDistance(p_76027_, blockpos, p_76029_ + 1, direction.getOpposite(), blockstate, p_76032_, p_76033_, p_76034_);
++               if (zxc < this.getSlopeFindDistance(p_76027_)) {
++                  int j = this.getSlopeDistance(p_76027_, blockpos, zxc + 1, direction.getOpposite(), blockstate, p_76032_, p_76033_, p_76034_);
+                   if (j < i) {
+                      i = j;
+                   }
+@@ -392,7 +392,7 @@ public abstract class FlowingFluid extends Fluid {
+    }
+ 
+    public void tick(Level p_75995_, BlockPos p_75996_, FluidState p_75997_) { //tick vodi i lavi
+-      if (!p_75997_.isSource()) {
++       if (!p_75997_.isSource()) {
+          FluidState fluidstate = this.getNewLiquid(p_75995_, p_75996_, p_75995_.getBlockState(p_75996_));
+          int i = this.getSpreadDelay(p_75995_, p_75996_, p_75997_, fluidstate);
+          if (fluidstate.isEmpty()) {
+@@ -407,7 +407,7 @@ public abstract class FlowingFluid extends Fluid {
+          }
+       }
+ 
+-      this.spread(p_75995_, p_75996_, p_75997_);
++     this.spread(p_75995_, p_75996_, p_75997_);
+    }
+ 
+    protected static int getLegacyLevel(FluidState p_76093_) {
+@@ -423,12 +423,12 @@ public abstract class FlowingFluid extends Fluid {
+    }
+ 
+    public float getOwnHeight(FluidState p_76048_) {
+-      return (float)p_76048_.getAmount() / 9.0F;
++      return (float)p_76048_.getAmount() / 9.0F;//тю пиздят макс высота это 9 а не 8 как написаноe
+    }
+ 
+    public abstract int getAmount(FluidState p_164509_);
+ 
+-   public VoxelShape getShape(FluidState p_76084_, BlockGetter p_76085_, BlockPos p_76086_) {
++   public VoxelShape getShape(FluidState p_76084_, BlockGetter p_76085_, BlockPos p_76086_) {//создание формы для жидкости зависит от ее высоты
+       return p_76084_.getAmount() == 9 && hasSameAbove(p_76084_, p_76085_, p_76086_) ? Shapes.block() : this.shapes.computeIfAbsent(p_76084_, (p_76073_) -> {
+          return Shapes.box(0.0D, 0.0D, 0.0D, 1.0D, (double)p_76073_.getHeight(p_76085_, p_76086_), 1.0D);
+       });
+diff --git a/src/main/java/net/minecraft/world/level/material/FluidState.java b/src/main/java/net/minecraft/world/level/material/FluidState.java
+index 865abb9..18df5e7 100644
+--- a/src/main/java/net/minecraft/world/level/material/FluidState.java
++++ b/src/main/java/net/minecraft/world/level/material/FluidState.java
+@@ -55,7 +55,8 @@ public final class FluidState extends StateHolder<Fluid, FluidState> {
+    }
+ 
+    public int getAmount() {
+-      return this.getType().getAmount(this);
++      /*return this.getType().getAmount(this);*/
++      return 1;
+    }
+ 
+    public boolean shouldRenderBackwardUpFace(BlockGetter p_76172_, BlockPos p_76173_) {
+diff --git a/src/main/java/net/minecraft/world/level/material/WaterFluid.java b/src/main/java/net/minecraft/world/level/material/WaterFluid.java
+index 4975772..40b7906 100644
+--- a/src/main/java/net/minecraft/world/level/material/WaterFluid.java
++++ b/src/main/java/net/minecraft/world/level/material/WaterFluid.java
+@@ -112,7 +112,7 @@ public abstract class WaterFluid extends FlowingFluid {
+ 
+    public static class Source extends WaterFluid {
+       public int getAmount(FluidState p_76485_) {
+-         return 8;
++         return p_76485_.getAmount();
+       }
+ 
+       public boolean isSource(FluidState p_76483_) {
+diff --git a/src/main/java/net/minecraft/world/phys/shapes/Shapes.java b/src/main/java/net/minecraft/world/phys/shapes/Shapes.java
+index 946ae00..191e631 100644
+--- a/src/main/java/net/minecraft/world/phys/shapes/Shapes.java
++++ b/src/main/java/net/minecraft/world/phys/shapes/Shapes.java
+@@ -214,7 +214,7 @@ public final class Shapes {
+       }
+    }
+ 
+-   public static boolean mergedFaceOccludes(VoxelShape p_83153_, VoxelShape p_83154_, Direction p_83155_) {
++   public static boolean mergedFaceOccludes(VoxelShape p_83153_, VoxelShape p_83154_, Direction p_83155_) { //
+       if (p_83153_ != block() && p_83154_ != block()) {
+          Direction.Axis direction$axis = p_83155_.getAxis();
+          Direction.AxisDirection direction$axisdirection = p_83155_.getAxisDirection();
+diff --git a/src/main/java/net/minecraft/world/phys/shapes/VoxelShape.java b/src/main/java/net/minecraft/world/phys/shapes/VoxelShape.java
+index 2285a83..4d5cfb9 100644
+--- a/src/main/java/net/minecraft/world/phys/shapes/VoxelShape.java
++++ b/src/main/java/net/minecraft/world/phys/shapes/VoxelShape.java
+@@ -179,7 +179,7 @@ public abstract class VoxelShape {
+       }
+    }
+ 
+-   public double collide(Direction.Axis p_83260_, AABB p_83261_, double p_83262_) {
++   public double collide(Direction.Axis p_83260_, AABB p_83261_, double p_83262_) { //наверное столкновение shape
+       return this.collideX(AxisCycle.between(p_83260_, Direction.Axis.X), p_83261_, p_83262_);
+    }
+ 
+-- 
+2.34.1
+

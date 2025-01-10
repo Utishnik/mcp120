@@ -1,0 +1,206 @@
+From b4c9d4d2fb873db0f382cd7a6f3a245cad30291c Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Sun, 30 Jun 2024 15:41:31 +0300
+Subject: [PATCH 16/22] cm 12
+
+---
+ .../net/minecraft/data/worldgen/DimensionTypes.java    |  1 +
+ .../minecraft/data/worldgen/biome/OverworldBiomes.java |  4 +++-
+ .../data/worldgen/placement/CavePlacements.java        |  2 +-
+ .../java/net/minecraft/world/entity/raid/Raid.java     |  2 +-
+ src/main/java/net/minecraft/world/level/Explosion.java | 10 +++++-----
+ .../world/level/biome/OverworldBiomeBuilder.java       |  1 +
+ .../java/net/minecraft/world/level/block/Block.java    |  2 +-
+ .../minecraft/world/level/dimension/DimensionType.java |  2 +-
+ .../world/level/levelgen/feature/BlueIceFeature.java   |  2 +-
+ .../world/level/levelgen/feature/DiskFeature.java      |  4 ++--
+ .../world/level/levelgen/feature/KelpFeature.java      |  2 +-
+ 11 files changed, 18 insertions(+), 14 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/data/worldgen/DimensionTypes.java b/src/main/java/net/minecraft/data/worldgen/DimensionTypes.java
+index 1c05f6c..2ae198c 100644
+--- a/src/main/java/net/minecraft/data/worldgen/DimensionTypes.java
++++ b/src/main/java/net/minecraft/data/worldgen/DimensionTypes.java
+@@ -8,6 +8,7 @@ import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+ import net.minecraft.world.level.dimension.DimensionType;
+ 
+ public class DimensionTypes {
++   //с измерения свзяано
+    public static void bootstrap(BootstapContext<DimensionType> p_256376_) {
+       p_256376_.register(BuiltinDimensionTypes.OVERWORLD, new DimensionType(OptionalLong.empty(), true, false, false, true, 1.0D, true, false, -64, 384, 384, BlockTags.INFINIBURN_OVERWORLD, BuiltinDimensionTypes.OVERWORLD_EFFECTS, 0.0F, new DimensionType.MonsterSettings(false, true, UniformInt.of(0, 7), 0)));
+       p_256376_.register(BuiltinDimensionTypes.NETHER, new DimensionType(OptionalLong.of(18000L), false, true, true, false, 8.0D, false, true, 0, 256, 128, BlockTags.INFINIBURN_NETHER, BuiltinDimensionTypes.NETHER_EFFECTS, 0.1F, new DimensionType.MonsterSettings(true, false, ConstantInt.of(7), 15)));
+diff --git a/src/main/java/net/minecraft/data/worldgen/biome/OverworldBiomes.java b/src/main/java/net/minecraft/data/worldgen/biome/OverworldBiomes.java
+index 6c3ed26..10273dd 100644
+--- a/src/main/java/net/minecraft/data/worldgen/biome/OverworldBiomes.java
++++ b/src/main/java/net/minecraft/data/worldgen/biome/OverworldBiomes.java
+@@ -672,7 +672,7 @@ public class OverworldBiomes {
+       BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder(p_256253_, p_255644_);
+       globalOverworldGeneration(biomegenerationsettings$builder);
+       BiomeDefaultFeatures.addPlainGrass(biomegenerationsettings$builder);
+-      BiomeDefaultFeatures.addDefaultOres(biomegenerationsettings$builder, true);
++      BiomeDefaultFeatures.addDefaultOres(biomegenerationsettings$builder, true);//генерация руда
+       BiomeDefaultFeatures.addDefaultSoftDisks(biomegenerationsettings$builder);
+       BiomeDefaultFeatures.addPlainVegetation(biomegenerationsettings$builder);
+       BiomeDefaultFeatures.addDefaultMushrooms(biomegenerationsettings$builder);
+@@ -682,6 +682,8 @@ public class OverworldBiomes {
+       return biome(true, 0.8F, 0.4F, mobspawnsettings$builder, biomegenerationsettings$builder, music);
+    }
+ 
++
++//dik pik
+    public static Biome deepDark(HolderGetter<PlacedFeature> p_256073_, HolderGetter<ConfiguredWorldCarver<?>> p_256212_) {
+       MobSpawnSettings.Builder mobspawnsettings$builder = new MobSpawnSettings.Builder();
+       BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder(p_256073_, p_256212_);
+diff --git a/src/main/java/net/minecraft/data/worldgen/placement/CavePlacements.java b/src/main/java/net/minecraft/data/worldgen/placement/CavePlacements.java
+index a28a00d..ab34c45 100644
+--- a/src/main/java/net/minecraft/data/worldgen/placement/CavePlacements.java
++++ b/src/main/java/net/minecraft/data/worldgen/placement/CavePlacements.java
+@@ -87,6 +87,6 @@ public class CavePlacements {
+       PlacementUtils.register(p_256565_, AMETHYST_GEODE, holder15, RarityFilter.onAverageOnceEvery(24), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(30)), BiomeFilter.biome());
+       PlacementUtils.register(p_256565_, SCULK_PATCH_DEEP_DARK, holder16, CountPlacement.of(ConstantInt.of(256)), InSquarePlacement.spread(), PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT, BiomeFilter.biome());
+       PlacementUtils.register(p_256565_, SCULK_PATCH_ANCIENT_CITY, holder17);
+-      PlacementUtils.register(p_256565_, SCULK_VEIN, holder18, CountPlacement.of(UniformInt.of(204, 250)), InSquarePlacement.spread(), PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT, BiomeFilter.biome());
++      PlacementUtils.register(p_256565_, SCULK_VEIN, holder18, CountPlacement.of(UniformInt.of(204, 250)), InSquarePlacement.spread(), PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT, BiomeFilter.biome());//типо  спавнятся в горах макс террариан высота
+    }
+ }
+\ No newline at end of file
+diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+index 42c432c..03107d6 100644
+--- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
++++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
+@@ -109,7 +109,7 @@ public class Raid {
+       this.level = p_37693_;
+       this.active = true;
+       this.raidCooldownTicks = 300;
+-      this.raidEvent.setProgress(0.0F);
++      this.raidEvent.setProgress(0.0F);//прогресс рейда
+       this.center = p_37694_;
+       this.numGroups = this.getNumGroups(p_37693_.getDifficulty());
+       this.status = Raid.RaidStatus.ONGOING;
+diff --git a/src/main/java/net/minecraft/world/level/Explosion.java b/src/main/java/net/minecraft/world/level/Explosion.java
+index 9162c4f..5d2369f 100644
+--- a/src/main/java/net/minecraft/world/level/Explosion.java
++++ b/src/main/java/net/minecraft/world/level/Explosion.java
+@@ -121,7 +121,7 @@ public class Explosion {
+    }
+ 
+    public void explode() { //esho chto to so vzrivovm
+-      this.level.gameEvent(this.source, GameEvent.EXPLODE, new Vec3(this.x, this.y, this.z));
++      this.level.gameEvent(this.source, GameEvent.EXPLODE, new Vec3(this.x, this.y, this.z));//записует гей ивент
+       Set<BlockPos> set = Sets.newHashSet();
+       int i = 16;
+ 
+@@ -144,12 +144,12 @@ public class Explosion {
+                   for(float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
+                      BlockPos blockpos = BlockPos.containing(d4, d6, d8);
+                      BlockState blockstate = this.level.getBlockState(blockpos);
+-                     FluidState fluidstate = this.level.getFluidState(blockpos);//blokirovKA VZRIVA H2O ???
+-                     if (!this.level.isInWorldBounds(blockpos)) {
++                     FluidState fluidstate = this.level.getFluidState(blockpos);//blokirovKA VZRIVA H2O ??? бля если чо у пустой жидкости лава и воды ресистент 100 одинковвй
++                     if (!this.level.isInWorldBounds(blockpos)) {//за барьером типо нет взрива
+                         break;
+                      }
+ 
+-                     Optional<Float> optional = this.damageCalculator.getBlockExplosionResistance(this, this.level, blockpos, blockstate, fluidstate);
++                     Optional<Float> optional = this.damageCalculator.getBlockExplosionResistance(this, this.level, blockpos, blockstate, fluidstate);//получает защиту блока от взрыва
+                      if (optional.isPresent()) {
+                         f -= (optional.get() + 0.3F) * 0.3F;
+                      }
+@@ -236,7 +236,7 @@ public class Explosion {
+       if (flag) {
+          ObjectArrayList<Pair<ItemStack, BlockPos>> objectarraylist = new ObjectArrayList<>();
+          boolean flag1 = this.getIndirectSourceEntity() instanceof Player;
+-         Util.shuffle(this.toBlow, this.level.random);
++         Util.shuffle(this.toBlow, this.level.random);//to blow это блоки которые записаны как типо взорваные
+ 
+          for(BlockPos blockpos : this.toBlow) {
+             BlockState blockstate = this.level.getBlockState(blockpos);
+diff --git a/src/main/java/net/minecraft/world/level/biome/OverworldBiomeBuilder.java b/src/main/java/net/minecraft/world/level/biome/OverworldBiomeBuilder.java
+index 54887d0..8b6d413 100644
+--- a/src/main/java/net/minecraft/world/level/biome/OverworldBiomeBuilder.java
++++ b/src/main/java/net/minecraft/world/level/biome/OverworldBiomeBuilder.java
+@@ -122,6 +122,7 @@ public final class OverworldBiomeBuilder {
+       this.addMidSlice(p_187216_, Climate.Parameter.span(0.93333334F, 1.0F));
+    }
+ 
++   //генерация биома
+    private void addPeaks(Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> p_187178_, Climate.Parameter p_187179_) {
+       for(int i = 0; i < this.temperatures.length; ++i) {
+          Climate.Parameter climate$parameter = this.temperatures[i];
+diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
+index 6050abe..5c50cd8 100644
+--- a/src/main/java/net/minecraft/world/level/block/Block.java
++++ b/src/main/java/net/minecraft/world/level/block/Block.java
+@@ -331,7 +331,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+       return this.explosionResistance;
+    }
+ 
+-   public void wasExploded(Level p_49844_, BlockPos p_49845_, Explosion p_49846_) {
++   public void wasExploded(Level p_49844_, BlockPos p_49845_, Explosion p_49846_) { //типо из за взрыва сам взрывается тнт например
+    }
+ 
+    public void stepOn(Level p_152431_, BlockPos p_152432_, BlockState p_152433_, Entity p_152434_) {
+diff --git a/src/main/java/net/minecraft/world/level/dimension/DimensionType.java b/src/main/java/net/minecraft/world/level/dimension/DimensionType.java
+index dd49712..dc75093 100644
+--- a/src/main/java/net/minecraft/world/level/dimension/DimensionType.java
++++ b/src/main/java/net/minecraft/world/level/dimension/DimensionType.java
+@@ -71,7 +71,7 @@ public record DimensionType(OptionalLong fixedTime, boolean hasSkyLight, boolean
+ 
+       return Level.RESOURCE_KEY_CODEC.parse(p_63912_);
+    }
+-
++//изменение коордианат при телепортации
+    public static double getTeleportationScale(DimensionType p_63909_, DimensionType p_63910_) {
+       double d0 = p_63909_.coordinateScale();
+       double d1 = p_63910_.coordinateScale();
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/BlueIceFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/BlueIceFeature.java
+index 0f0669a..012236c 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/feature/BlueIceFeature.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/feature/BlueIceFeature.java
+@@ -51,7 +51,7 @@ public class BlueIceFeature extends Feature<NoneFeatureConfiguration> {
+                      for(Direction direction1 : Direction.values()) {
+                         BlockState blockstate1 = worldgenlevel.getBlockState(blockpos1.relative(direction1));
+                         if (blockstate1.is(Blocks.BLUE_ICE)) {
+-                           worldgenlevel.setBlock(blockpos1, Blocks.BLUE_ICE.defaultBlockState(), 2);
++                           worldgenlevel.setBlock(blockpos1, Blocks.BLUE_ICE.defaultBlockState(), 2);//устнавливает синий лед при генерации мира
+                            break;
+                         }
+                      }
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/DiskFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/DiskFeature.java
+index 1baaec7..4b35633 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/feature/DiskFeature.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/feature/DiskFeature.java
+@@ -27,7 +27,7 @@ public class DiskFeature extends Feature<DiskConfiguration> {
+       for(BlockPos blockpos1 : BlockPos.betweenClosed(blockpos.offset(-l, 0, -l), blockpos.offset(l, 0, l))) {
+          int i1 = blockpos1.getX() - blockpos.getX();
+          int j1 = blockpos1.getZ() - blockpos.getZ();
+-         if (i1 * i1 + j1 * j1 <= l * l) {
++         if (i1 * i1 + j1 * j1 <= l * l) {//это такая типо залупа из блоков
+             flag |= this.placeColumn(diskconfiguration, worldgenlevel, randomsource, j, k, blockpos$mutableblockpos.set(blockpos1));
+          }
+       }
+@@ -39,7 +39,7 @@ public class DiskFeature extends Feature<DiskConfiguration> {
+       boolean flag = false;
+ 
+       for(int i = p_224999_; i > p_225000_; --i) {
+-         p_225001_.setY(i);
++         p_225001_.setY(i);//генерация каких то дисков
+          if (p_224996_.target().test(p_224997_, p_225001_)) {
+             BlockState blockstate = p_224996_.stateProvider().getState(p_224997_, p_224998_, p_225001_);
+             p_224997_.setBlock(p_225001_, blockstate, 2);
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/KelpFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/KelpFeature.java
+index 68bb19a..051f07d 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/feature/KelpFeature.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/feature/KelpFeature.java
+@@ -15,7 +15,7 @@ public class KelpFeature extends Feature<NoneFeatureConfiguration> {
+       super(p_66219_);
+    }
+ 
+-   public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159956_) {
++   public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> p_159956_) { //ламинарии
+       int i = 0;
+       WorldGenLevel worldgenlevel = p_159956_.level();
+       BlockPos blockpos = p_159956_.origin();
+-- 
+2.34.1
+

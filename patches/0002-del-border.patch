@@ -1,0 +1,102 @@
+From 49be6505c60c3f27749980347cd381ccd72b165b Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Fri, 31 May 2024 18:15:28 +0300
+Subject: [PATCH 02/22] =?UTF-8?q?del=20border=20=D0=BD=D0=BE=20=D0=B8?=
+ =?UTF-8?q?=D0=B3=D1=80=D0=BE=D0=BA=D0=B0=20=D0=BD=D0=B5=20=D0=BF=D1=83?=
+ =?UTF-8?q?=D1=81=D0=BA=D0=B0=D0=B5=D1=82=20=D0=BD=D0=B0=D0=B4=D0=BE=20?=
+ =?UTF-8?q?=D0=B8=D1=81=D0=BA=D0=B0=D1=82=D1=8C=20=D0=BF=D1=80=D0=BE=D0=B2?=
+ =?UTF-8?q?=D0=B5=D1=80=D0=BA=D1=83=20=D0=B8=D0=BB=D0=B8=20=D1=85=D0=B7=20?=
+ =?UTF-8?q?=D1=87=D1=82=D0=BE=20=D1=8D=D1=82=D0=BE=20=D0=B2=D1=81=D0=B5=20?=
+ =?UTF-8?q?=D0=BC=D0=BE=D0=B1=D1=8B=20=D0=BF=D1=80=D0=BE=D0=BF=D1=83=D1=81?=
+ =?UTF-8?q?=D0=BA=D0=B0=D1=8E=D1=82=D1=81=D1=8F=20=D1=82=D0=BD=D1=82=20?=
+ =?UTF-8?q?=D0=B2=D0=B7=D1=80=D1=8B=D0=B2=D0=B0=D0=B5=D1=82=D1=81=D1=8F?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../java/net/minecraft/core/BlockPos.java     |  2 +-
+ .../world/level/border/WorldBorder.java       | 23 +++++++++++--------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/core/BlockPos.java b/src/main/java/net/minecraft/core/BlockPos.java
+index fb40b51..83924e3 100644
+--- a/src/main/java/net/minecraft/core/BlockPos.java
++++ b/src/main/java/net/minecraft/core/BlockPos.java
+@@ -37,7 +37,7 @@ public class BlockPos extends Vec3i {
+    }).stable();
+    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final BlockPos ZERO = new BlockPos(0, 0, 0);
+-   private static final int PACKED_X_LENGTH = 1 + Mth.log2(Mth.smallestEncompassingPowerOfTwo(309000000));
++   private static final int PACKED_X_LENGTH = 1 + Mth.log2(Mth.smallestEncompassingPowerOfTwo(30000000));
+    private static final int PACKED_Z_LENGTH = PACKED_X_LENGTH;
+    public static final int PACKED_Y_LENGTH = 64 - PACKED_X_LENGTH - PACKED_Z_LENGTH;
+    private static final long PACKED_X_MASK = (1L << PACKED_X_LENGTH) - 1L;
+diff --git a/src/main/java/net/minecraft/world/level/border/WorldBorder.java b/src/main/java/net/minecraft/world/level/border/WorldBorder.java
+index 51d70d1..2c5d9c7 100644
+--- a/src/main/java/net/minecraft/world/level/border/WorldBorder.java
++++ b/src/main/java/net/minecraft/world/level/border/WorldBorder.java
+@@ -15,8 +15,8 @@ import net.minecraft.world.phys.shapes.Shapes;
+ import net.minecraft.world.phys.shapes.VoxelShape;
+ 
+ public class WorldBorder {
+-   public static final double MAX_SIZE = (double)5.999997E7F;
+-   public static final double MAX_CENTER_COORDINATE = 2.9999984E7D;
++   public static final double MAX_SIZE = (double)5.999997E8F;
++   public static final double MAX_CENTER_COORDINATE = 2.9999984E8D;
+    private final List<BorderChangeListener> listeners = Lists.newArrayList();
+    private double damagePerBlock = 0.2D;
+    private double damageSafeZone = 5.0D;
+@@ -24,9 +24,9 @@ public class WorldBorder {
+    private int warningBlocks = 5;
+    private double centerX;
+    private double centerZ;
+-   int absoluteMaxSize = 29999984;
+-   private WorldBorder.BorderExtent extent = new WorldBorder.StaticBorderExtent((double)5.999997E7F);
+-   public static final WorldBorder.Settings DEFAULT_SETTINGS = new WorldBorder.Settings(0.0D, 0.0D, 0.2D, 5.0D, 5, 15, (double)5.999997E7F, 0L, 0.0D);
++   int absoluteMaxSize = 299999984;
++   private WorldBorder.BorderExtent extent = new WorldBorder.StaticBorderExtent((double)5.999997E8F);
++   public static final WorldBorder.Settings DEFAULT_SETTINGS = new WorldBorder.Settings(0.0D, 0.0D, 0.2D, 5.0D, 5, 15, (double)5.999997E8F, 0L, 0.0D);
+ 
+    public boolean isWithinBounds(BlockPos p_61938_) {
+       return (double)(p_61938_.getX() + 1) > this.getMinX() && (double)p_61938_.getX() < this.getMaxX() && (double)(p_61938_.getZ() + 1) > this.getMinZ() && (double)p_61938_.getZ() < this.getMaxZ();
+@@ -410,8 +410,8 @@ public class WorldBorder {
+       }
+ 
+       public static WorldBorder.Settings read(DynamicLike<?> p_62038_, WorldBorder.Settings p_62039_) {
+-         double d0 = Mth.clamp(p_62038_.get("BorderCenterX").asDouble(p_62039_.centerX), -2.9999984E7D, 2.9999984E7D);
+-         double d1 = Mth.clamp(p_62038_.get("BorderCenterZ").asDouble(p_62039_.centerZ), -2.9999984E7D, 2.9999984E7D);
++         double d0 = Mth.clamp(p_62038_.get("BorderCenterX").asDouble(p_62039_.centerX), -2.9999984E8D, 2.9999984E8D);
++         double d1 = Mth.clamp(p_62038_.get("BorderCenterZ").asDouble(p_62039_.centerZ), -2.9999984E8D, 2.9999984E8D);
+          double d2 = p_62038_.get("BorderSize").asDouble(p_62039_.size);
+          long i = p_62038_.get("BorderSizeLerpTime").asLong(p_62039_.sizeLerpTime);
+          double d3 = p_62038_.get("BorderSizeLerpTarget").asDouble(p_62039_.sizeLerpTarget);
+@@ -453,7 +453,8 @@ public class WorldBorder {
+       }
+ 
+       public double getMaxX() {
+-         return this.maxX;
++         /*return this.maxX;*/
++         return 300000000;
+       }
+ 
+       public double getMinZ() {
+@@ -461,11 +462,13 @@ public class WorldBorder {
+       }
+ 
+       public double getMaxZ() {
+-         return this.maxZ;
++         //return this.maxZ;
++         return 300000000;
+       }
+ 
+       public double getSize() {
+-         return this.size;
++         //return this.size;
++         return 300000000;
+       }
+ 
+       public BorderStatus getStatus() {
+-- 
+2.34.1
+

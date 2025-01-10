@@ -1,0 +1,367 @@
+From 5e67744a2cc5850431fdfa46b69acb9ec6497c2c Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Tue, 11 Jun 2024 14:29:14 +0300
+Subject: [PATCH 07/22] fix bug and cm 6
+
+---
+ .../mojang/blaze3d/vertex/VertexConsumer.java |  2 +-
+ .../java/net/minecraft/client/Camera.java     |  2 +-
+ .../entity/player/PlayerRenderer.java         |  6 +++---
+ .../net/minecraft/server/level/ChunkMap.java  |  4 ++--
+ .../net/minecraft/world/entity/Entity.java    | 21 ++++++++++---------
+ .../minecraft/world/entity/EntityType.java    |  4 ++--
+ .../minecraft/world/entity/player/Player.java |  6 +++---
+ .../world/level/block/ObserverBlock.java      |  2 +-
+ .../levelgen/NoiseGeneratorSettings.java      |  4 ++--
+ .../world/level/levelgen/NoiseRouterData.java |  4 ++--
+ .../world/level/levelgen/NoiseSettings.java   |  2 +-
+ .../level/levelgen/synth/PerlinNoise.java     |  2 +-
+ .../world/level/material/FlowingFluid.java    |  2 +-
+ .../world/level/material/FluidState.java      |  1 -
+ .../world/level/material/WaterFluid.java      |  2 +-
+ .../world/level/portal/PortalForcer.java      |  2 +-
+ 16 files changed, 33 insertions(+), 33 deletions(-)
+
+diff --git a/src/main/java/com/mojang/blaze3d/vertex/VertexConsumer.java b/src/main/java/com/mojang/blaze3d/vertex/VertexConsumer.java
+index a70c3f1..a1a9595 100644
+--- a/src/main/java/com/mojang/blaze3d/vertex/VertexConsumer.java
++++ b/src/main/java/com/mojang/blaze3d/vertex/VertexConsumer.java
+@@ -102,7 +102,7 @@ public interface VertexConsumer {
+             int l = aint[k];
+             float f9 = bytebuffer.getFloat(16);
+             float f10 = bytebuffer.getFloat(20);
+-            Vector4f vector4f = matrix4f.transform(new Vector4f(f, f1, f2, 1.0F));
++            Vector4f vector4f = matrix4f.transform(new Vector4f(f, f1, f2, 1.0F));//тут можно вращать уменьшать блоки и тд
+             this.vertex(vector4f.x(), vector4f.y(), vector4f.z(), f3, f4, f5, 1.0F, f9, f10, p_86003_, l, vector3f.x(), vector3f.y(), vector3f.z());
+          }
+       }
+diff --git a/src/main/java/net/minecraft/client/Camera.java b/src/main/java/net/minecraft/client/Camera.java
+index cb495b0..1a19fdb 100644
+--- a/src/main/java/net/minecraft/client/Camera.java
++++ b/src/main/java/net/minecraft/client/Camera.java
+@@ -93,7 +93,7 @@ public class Camera {
+       double d0 = (double)this.forwards.x() * p_90569_ + (double)this.up.x() * p_90570_ + (double)this.left.x() * p_90571_;
+       double d1 = (double)this.forwards.y() * p_90569_ + (double)this.up.y() * p_90570_ + (double)this.left.y() * p_90571_;
+       double d2 = (double)this.forwards.z() * p_90569_ + (double)this.up.z() * p_90570_ + (double)this.left.z() * p_90571_;
+-      this.setPosition(new Vec3(this.position.x + d0, this.position.y + d1, this.position.z + d2));
++      this.setPosition(new Vec3(this.position.x+5+ d0, this.position.y + d1+10, this.position.z + d2));
+    }
+ 
+    protected void setRotation(float p_90573_, float p_90574_) {
+diff --git a/src/main/java/net/minecraft/client/renderer/entity/player/PlayerRenderer.java b/src/main/java/net/minecraft/client/renderer/entity/player/PlayerRenderer.java
+index fb2dbef..7c49e0d 100644
+--- a/src/main/java/net/minecraft/client/renderer/entity/player/PlayerRenderer.java
++++ b/src/main/java/net/minecraft/client/renderer/entity/player/PlayerRenderer.java
+@@ -45,7 +45,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
+ @OnlyIn(Dist.CLIENT)
+ public class PlayerRenderer extends LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
+    public PlayerRenderer(EntityRendererProvider.Context p_174557_, boolean p_174558_) {
+-      super(p_174557_, new PlayerModel<>(p_174557_.bakeLayer(p_174558_ ? ModelLayers.PLAYER_SLIM : ModelLayers.PLAYER), p_174558_), 0.5F);
++      super(p_174557_, new PlayerModel<>(p_174557_.bakeLayer(p_174558_ ? ModelLayers.PLAYER_SLIM : ModelLayers.PLAYER), p_174558_), 4.5F);
+       this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidArmorModel(p_174557_.bakeLayer(p_174558_ ? ModelLayers.PLAYER_SLIM_INNER_ARMOR : ModelLayers.PLAYER_INNER_ARMOR)), new HumanoidArmorModel(p_174557_.bakeLayer(p_174558_ ? ModelLayers.PLAYER_SLIM_OUTER_ARMOR : ModelLayers.PLAYER_OUTER_ARMOR)), p_174557_.getModelManager()));
+       this.addLayer(new PlayerItemInHandLayer<>(this, p_174557_.getItemInHandRenderer()));
+       this.addLayer(new ArrowLayer<>(p_174557_, this));
+@@ -146,8 +146,8 @@ public class PlayerRenderer extends LivingEntityRenderer<AbstractClientPlayer, P
+    }
+ 
+    protected void scale(AbstractClientPlayer p_117798_, PoseStack p_117799_, float p_117800_) {
+-      float f = 0.9375F;
+-      p_117799_.scale(0.9375F, 0.9375F, 0.9375F);
++      float f = 8;
++      p_117799_.scale(f, f, f);
+    }
+ 
+    protected void renderNameTag(AbstractClientPlayer p_117808_, Component p_117809_, PoseStack p_117810_, MultiBufferSource p_117811_, int p_117812_) {
+diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
+index e0d63ee..58f49dc 100644
+--- a/src/main/java/net/minecraft/server/level/ChunkMap.java
++++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
+@@ -84,7 +84,7 @@ import net.minecraft.world.level.chunk.storage.ChunkSerializer;
+ import net.minecraft.world.level.chunk.storage.ChunkStorage;
+ import net.minecraft.world.level.entity.ChunkStatusUpdateListener;
+ import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
++import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;//использует шумы
+ import net.minecraft.world.level.levelgen.RandomState;
+ import net.minecraft.world.level.levelgen.blending.BlendingData;
+ import net.minecraft.world.level.levelgen.structure.StructureStart;
+@@ -996,7 +996,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+    }
+ 
+    private boolean skipPlayer(ServerPlayer p_140330_) {
+-      return p_140330_.isSpectator() && !this.level.getGameRules().getBoolean(GameRules.RULE_SPECTATORSGENERATECHUNKS);
++      return p_140330_.isSpectator() && !this.level.getGameRules().getBoolean(GameRules.RULE_SPECTATORSGENERATECHUNKS);//игроки в спектаторе не прогружают чанкт
+    }
+ 
+    void updatePlayerStatus(ServerPlayer p_140193_, boolean p_140194_) {
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index b74ab15..a866d77 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -514,7 +514,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+    }
+ 
+    public void lavaHurt() {
+-      if (!this.fireImmune()) {
++      if (!this.fireImmune()) {//короче я же хочу подлодки сделать и нужно 1)отрубить рендер в местах где типо не может быть лава 2)имунитет к огню
+          this.setSecondsOnFire(15);
+          if (this.hurt(this.damageSources().lava(), 4.0F)) {
+             this.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + this.random.nextFloat() * 0.4F);
+@@ -573,7 +573,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+       return this.mainSupportingBlockPos.isPresent() && this.mainSupportingBlockPos.get().equals(p_287613_);
+    }
+ 
+-   protected void checkSupportingBlock(boolean p_289694_, @Nullable Vec3 p_289680_) {
++   protected void checkSupportingBlock(boolean p_289694_, @Nullable Vec3 p_289680_) {//чето с проверкой на земле ты или нет
+       if (p_289694_) {
+          AABB aabb = this.getBoundingBox();
+          AABB aabb1 = new AABB(aabb.minX, aabb.minY - 1.0E-6D, aabb.minZ, aabb.maxX, aabb.minY, aabb.maxZ);
+@@ -1025,7 +1025,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+ 
+    }
+ 
+-   protected void waterSwimSound() {
++   protected void waterSwimSound() {//звуки воды
+       Entity entity = Objects.requireNonNullElse(this.getControllingPassenger(), this);
+       float f = entity == this ? 0.35F : 0.4F;
+       Vec3 vec3 = entity.getDeltaMovement();
+@@ -1193,7 +1193,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+ 
+    }
+ 
+-   protected boolean updateInWaterStateAndDoFluidPushing() {
++   protected boolean updateInWaterStateAndDoFluidPushing() {//проверка типо тушет если ты в огне и в воду стал
+       this.fluidHeight.clear();
+       this.updateInWaterStateAndDoWaterCurrentPushing();
+       double d0 = this.level().dimensionType().ultraWarm() ? 0.007D : 0.0023333333333333335D;
+@@ -1313,7 +1313,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+ 
+    public boolean isInLava() {
+       return !this.firstTick && this.fluidHeight.getDouble(FluidTags.LAVA) > 0.0D;
+-   }
++   }//чето с лавой
+ 
+    public void moveRelative(float p_19921_, Vec3 p_19922_) {
+       Vec3 vec3 = getInputVector(p_19922_, p_19921_, this.getYRot());
+@@ -1501,7 +1501,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+       return new Vec3(this.getX(), this.getEyeY(), this.getZ());
+    }
+ 
+-   public final Vec3 getEyePosition(float p_20300_) {
++   public final Vec3 getEyePosition(float p_20300_) {//с позицие глаз связано
+       double d0 = Mth.lerp((double)p_20300_, this.xo, this.getX());
+       double d1 = Mth.lerp((double)p_20300_, this.yo, this.getY()) + (double)this.getEyeHeight();
+       double d2 = Mth.lerp((double)p_20300_, this.zo, this.getZ());
+@@ -1883,7 +1883,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+       return this instanceof LivingEntity;
+    }
+ 
+-   public boolean startRiding(Entity p_19966_, boolean p_19967_) {
++   public boolean startRiding(Entity p_19966_, boolean p_19967_) {//задит на this.entity p_19966_
+       if (p_19966_ == this.vehicle) {
+          return false;
+       } else if (!p_19966_.couldAcceptPassenger()) {
+@@ -2447,7 +2447,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+    }
+ 
+    @Nullable
+-   public Entity changeDimension(ServerLevel p_20118_) {
++   public Entity changeDimension(ServerLevel p_20118_) { //чото с измерентями
+       if (this.level() instanceof ServerLevel && !this.isRemoved()) {
+          this.level().getProfiler().push("changeDimension");
+          this.unRide();
+@@ -2634,7 +2634,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+       return this.entityData.get(DATA_CUSTOM_NAME_VISIBLE);
+    }
+ 
+-   public final void teleportToWithTicket(double p_20325_, double p_20326_, double p_20327_) {
++   public final void teleportToWithTicket(double p_20325_, double p_20326_, double p_20327_) {//tp
+       if (this.level() instanceof ServerLevel) {
+          ChunkPos chunkpos = new ChunkPos(BlockPos.containing(p_20325_, p_20326_, p_20327_));
+          ((ServerLevel)this.level()).getChunkSource().addRegionTicket(TicketType.POST_TELEPORT, chunkpos, 0, this.getId());
+@@ -2643,6 +2643,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+       }
+    }
+ 
++   //tp2
+    public boolean teleportTo(ServerLevel p_265257_, double p_265407_, double p_265727_, double p_265410_, Set<RelativeMovement> p_265083_, float p_265573_, float p_265094_) {
+       float f = Mth.clamp(p_265094_, -90.0F, 90.0F);
+       if (p_265257_ == this.level()) {
+@@ -3010,7 +3011,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+       this.yRotO = this.getYRot();
+    }
+ 
+-   public boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> p_204032_, double p_204033_) {
++   public boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> p_204032_, double p_204033_) {//что то с жидкостями
+       if (this.touchingUnloadedChunk()) {
+          return false;
+       } else {
+diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
+index bae062b..bffd261 100644
+--- a/src/main/java/net/minecraft/world/entity/EntityType.java
++++ b/src/main/java/net/minecraft/world/entity/EntityType.java
+@@ -287,8 +287,8 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+    public static final EntityType<Zombie> ZOMBIE = register("zombie", EntityType.Builder.<Zombie>of(Zombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8));
+    public static final EntityType<ZombieHorse> ZOMBIE_HORSE = register("zombie_horse", EntityType.Builder.of(ZombieHorse::new, MobCategory.CREATURE).sized(1.3964844F, 1.6F).clientTrackingRange(10));
+    public static final EntityType<ZombieVillager> ZOMBIE_VILLAGER = register("zombie_villager", EntityType.Builder.of(ZombieVillager::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(8));
+-   public static final EntityType<ZombifiedPiglin> ZOMBIFIED_PIGLIN = register("zombified_piglin", EntityType.Builder.of(ZombifiedPiglin::new, MobCategory.MONSTER).fireImmune().sized(0.6F, 1.95F).clientTrackingRange(8));
+-   public static final EntityType<Player> PLAYER = register("player", EntityType.Builder.<Player>createNothing(MobCategory.MISC).noSave().noSummon().sized(0.6F, 1.8F).clientTrackingRange(32).updateInterval(2));
++   public static final EntityType<ZombifiedPiglin> ZOMBIFIED_PIGLIN = register("zombified_piglin", EntityType.Builder.of(ZombifiedPiglin::new, MobCategory.MONSTER).fireImmune().sized(3.6F, 5.95F).clientTrackingRange(8));
++   public static final EntityType<Player> PLAYER = register("player", EntityType.Builder.<Player>createNothing(MobCategory.MISC).noSave().noSummon().sized(4.6F, 6F).clientTrackingRange(32).updateInterval(2));
+    public static final EntityType<FishingHook> FISHING_BOBBER = register("fishing_bobber", EntityType.Builder.<FishingHook>of(FishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5));
+    private final EntityType.EntityFactory<T> factory;
+    private final MobCategory category;
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index 670383f..d0932ef 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -127,7 +127,7 @@ public abstract class Player extends LivingEntity {
+    public static final float SWIMMING_BB_WIDTH = 0.6F;
+    public static final float SWIMMING_BB_HEIGHT = 0.6F;
+    public static final float DEFAULT_EYE_HEIGHT = 1.62F;
+-   public static final EntityDimensions STANDING_DIMENSIONS = EntityDimensions.scalable(0.6F, 1.8F);
++   public static final EntityDimensions STANDING_DIMENSIONS = EntityDimensions.scalable(9.6F, 9.8F);
+    private static final Map<Pose, EntityDimensions> POSES = ImmutableMap.<Pose, EntityDimensions>builder().put(Pose.STANDING, STANDING_DIMENSIONS).put(Pose.SLEEPING, SLEEPING_DIMENSIONS).put(Pose.FALL_FLYING, EntityDimensions.scalable(0.6F, 0.6F)).put(Pose.SWIMMING, EntityDimensions.scalable(0.6F, 0.6F)).put(Pose.SPIN_ATTACK, EntityDimensions.scalable(0.6F, 0.6F)).put(Pose.CROUCHING, EntityDimensions.scalable(0.6F, 1.5F)).put(Pose.DYING, EntityDimensions.fixed(0.2F, 0.2F)).build();
+    private static final int FLY_ACHIEVEMENT_SPEED = 25;
+    private static final EntityDataAccessor<Float> DATA_PLAYER_ABSORPTION_ID = SynchedEntityData.defineId(Player.class, EntityDataSerializers.FLOAT);
+@@ -259,8 +259,8 @@ public abstract class Player extends LivingEntity {
+       }
+ 
+       int i = 29999999;
+-      double d0 = Mth.clamp(this.getX(), -2.9999999E7D, 2.9999999E7D);
+-      double d1 = Mth.clamp(this.getZ(), -2.9999999E7D, 2.9999999E7D);
++      double d0 = Mth.clamp(this.getX(), -2.9999999E9D, 2.9999999E9D);
++      double d1 = Mth.clamp(this.getZ(), -2.9999999E9D, 2.9999999E9D);
+       if (d0 != this.getX() || d1 != this.getZ()) {
+          this.setPos(d0, this.getY(), d1);
+       }
+diff --git a/src/main/java/net/minecraft/world/level/block/ObserverBlock.java b/src/main/java/net/minecraft/world/level/block/ObserverBlock.java
+index d4825b8..80f670e 100644
+--- a/src/main/java/net/minecraft/world/level/block/ObserverBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/ObserverBlock.java
+@@ -79,7 +79,7 @@ public class ObserverBlock extends DirectionalBlock {
+       return p_55101_.getValue(POWERED) && p_55101_.getValue(FACING) == p_55104_ ? 15 : 0;
+    }
+ 
+-   public void onPlace(BlockState p_55132_, Level p_55133_, BlockPos p_55134_, BlockState p_55135_, boolean p_55136_) {
++   public void onPlace(BlockState p_55132_, Level p_55133_, BlockPos p_55134_, BlockState p_55135_, boolean p_55136_) { // проверка обсервера
+       if (!p_55132_.is(p_55135_.getBlock())) {
+          if (!p_55133_.isClientSide() && p_55132_.getValue(POWERED) && !p_55133_.getBlockTicks().hasScheduledTick(p_55134_, this)) {
+             BlockState blockstate = p_55132_.setValue(POWERED, Boolean.valueOf(false));
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/NoiseGeneratorSettings.java b/src/main/java/net/minecraft/world/level/levelgen/NoiseGeneratorSettings.java
+index 7bc9538..1e29390 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/NoiseGeneratorSettings.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/NoiseGeneratorSettings.java
+@@ -50,8 +50,8 @@ public record NoiseGeneratorSettings(NoiseSettings noiseSettings, BlockState def
+       p_256365_.register(FLOATING_ISLANDS, floatingIslands(p_256365_));
+    }
+ 
+-   private static NoiseGeneratorSettings end(BootstapContext<?> p_256478_) {
+-      return new NoiseGeneratorSettings(NoiseSettings.END_NOISE_SETTINGS, Blocks.END_STONE.defaultBlockState(), Blocks.AIR.defaultBlockState(), NoiseRouterData.end(p_256478_.lookup(Registries.DENSITY_FUNCTION)), SurfaceRuleData.end(), List.of(), 0, true, false, false, true);
++   private static NoiseGeneratorSettings end(BootstapContext<?> p_256478_) {//end gen
++      return new NoiseGeneratorSettings(NoiseSettings.END_NOISE_SETTINGS, Blocks.END_STONE.defaultBlockState(), Blocks.BEDROCK.defaultBlockState(), NoiseRouterData.end(p_256478_.lookup(Registries.DENSITY_FUNCTION)), SurfaceRuleData.end(), List.of(), 0, true, false, false, true);
+    }
+ 
+    private static NoiseGeneratorSettings nether(BootstapContext<?> p_256180_) {
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/NoiseRouterData.java b/src/main/java/net/minecraft/world/level/levelgen/NoiseRouterData.java
+index 5a72b35..07d9c5e 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/NoiseRouterData.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/NoiseRouterData.java
+@@ -63,7 +63,7 @@ public class NoiseRouterData {
+       return ResourceKey.create(Registries.DENSITY_FUNCTION, new ResourceLocation(p_209537_));
+    }
+ 
+-   public static Holder<? extends DensityFunction> bootstrap(BootstapContext<DensityFunction> p_256220_) {
++   public static Holder<? extends DensityFunction> bootstrap(BootstapContext<DensityFunction> p_256220_) {//всякие шумы
+       HolderGetter<NormalNoise.NoiseParameters> holdergetter = p_256220_.lookup(Registries.NOISE);
+       HolderGetter<DensityFunction> holdergetter1 = p_256220_.lookup(Registries.DENSITY_FUNCTION);
+       p_256220_.register(ZERO, DensityFunctions.zero());
+@@ -266,7 +266,7 @@ public class NoiseRouterData {
+       return slideEndLike(p_224506_, 0, 128);
+    }
+ 
+-   protected static NoiseRouter end(HolderGetter<DensityFunction> p_256079_) {
++   protected static NoiseRouter end(HolderGetter<DensityFunction> p_256079_) { // end шум
+       DensityFunction densityfunction = DensityFunctions.cache2d(DensityFunctions.endIslands(0L));
+       DensityFunction densityfunction1 = postProcess(slideEnd(getFunction(p_256079_, SLOPED_CHEESE_END)));
+       return new NoiseRouter(DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), densityfunction, DensityFunctions.zero(), DensityFunctions.zero(), slideEnd(DensityFunctions.add(densityfunction, DensityFunctions.constant(-0.703125D))), densityfunction1, DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero());
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/NoiseSettings.java b/src/main/java/net/minecraft/world/level/levelgen/NoiseSettings.java
+index 03fb2f0..f50d1e8 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/NoiseSettings.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/NoiseSettings.java
+@@ -34,7 +34,7 @@ public record NoiseSettings(int minY, int height, int noiseSizeHorizontal, int n
+       }
+    }
+ 
+-   public static NoiseSettings create(int p_224526_, int p_224527_, int p_224528_, int p_224529_) {
++   public static NoiseSettings create(int p_224526_, int p_224527_, int p_224528_, int p_224529_) {//создает шумы
+       NoiseSettings noisesettings = new NoiseSettings(p_224526_, p_224527_, p_224528_, p_224529_);
+       guardY(noisesettings).error().ifPresent((p_158719_) -> {
+          throw new IllegalStateException(p_158719_.message());
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
+index 403f2c8..a5846fa 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
+@@ -163,7 +163,7 @@ public class PerlinNoise {
+          d2 /= 2.0D;
+       }
+ 
+-     // return (int)(Mth.sin((float)p_75418_)*50);
++      //return (int)(Mth.sin((float)p_75418_)*50);
+       return d0;
+    }
+ 
+diff --git a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
+index 5e1f407..aaa0fdb 100644
+--- a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
++++ b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
+@@ -182,7 +182,7 @@ public abstract class FlowingFluid extends Fluid {
+       if (!fluidstate2.isEmpty() && fluidstate2.getType().isSame(this) && this.canPassThroughWall(Direction.UP, p_256464_, p_76037_, p_76038_, blockpos1, blockstate2)) {
+          return this.getFlowing(8, true);
+       } else {
+-         int k = i - this.getDropOff(p_256464_);
++         int k = /*i - this.getDropOff(p_256464_)*/0;
+          return k <= 0 ? Fluids.EMPTY.defaultFluidState() : this.getFlowing(k, false);
+       }
+    }
+diff --git a/src/main/java/net/minecraft/world/level/material/FluidState.java b/src/main/java/net/minecraft/world/level/material/FluidState.java
+index a7d4a06..865abb9 100644
+--- a/src/main/java/net/minecraft/world/level/material/FluidState.java
++++ b/src/main/java/net/minecraft/world/level/material/FluidState.java
+@@ -56,7 +56,6 @@ public final class FluidState extends StateHolder<Fluid, FluidState> {
+ 
+    public int getAmount() {
+       return this.getType().getAmount(this);
+-      //return 1;
+    }
+ 
+    public boolean shouldRenderBackwardUpFace(BlockGetter p_76172_, BlockPos p_76173_) {
+diff --git a/src/main/java/net/minecraft/world/level/material/WaterFluid.java b/src/main/java/net/minecraft/world/level/material/WaterFluid.java
+index 40b7906..b375fd6 100644
+--- a/src/main/java/net/minecraft/world/level/material/WaterFluid.java
++++ b/src/main/java/net/minecraft/world/level/material/WaterFluid.java
+@@ -112,7 +112,7 @@ public abstract class WaterFluid extends FlowingFluid {
+ 
+    public static class Source extends WaterFluid {
+       public int getAmount(FluidState p_76485_) {
+-         return p_76485_.getAmount();
++         return 9;
+       }
+ 
+       public boolean isSource(FluidState p_76483_) {
+diff --git a/src/main/java/net/minecraft/world/level/portal/PortalForcer.java b/src/main/java/net/minecraft/world/level/portal/PortalForcer.java
+index 178a471..467502d 100644
+--- a/src/main/java/net/minecraft/world/level/portal/PortalForcer.java
++++ b/src/main/java/net/minecraft/world/level/portal/PortalForcer.java
+@@ -153,7 +153,7 @@ public class PortalForcer {
+       for(int k2 = 0; k2 < 2; ++k2) {
+          for(int l2 = 0; l2 < 3; ++l2) {
+             blockpos$mutableblockpos.setWithOffset(blockpos, k2 * direction.getStepX(), l2, k2 * direction.getStepZ());
+-            this.level.setBlock(blockpos$mutableblockpos, blockstate, 18);
++            this.level.setBlock(blockpos$mutableblockpos, blockstate, 18);//set nether portal
+          }
+       }
+ 
+-- 
+2.34.1
+

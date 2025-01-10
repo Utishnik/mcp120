@@ -1,0 +1,222 @@
+From c8dc787dcf7727bd94a5c544b43bc390842491e8 Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Sat, 15 Jun 2024 19:39:33 +0300
+Subject: [PATCH 11/22] cm 9
+
+---
+ src/main/java/net/minecraft/client/player/LocalPlayer.java  | 2 ++
+ .../java/net/minecraft/client/renderer/FogRenderer.java     | 1 +
+ .../java/net/minecraft/client/renderer/GameRenderer.java    | 2 +-
+ .../java/net/minecraft/client/renderer/LevelRenderer.java   | 6 +++++-
+ src/main/java/net/minecraft/client/renderer/RenderType.java | 1 +
+ .../minecraft/client/renderer/block/model/BlockElement.java | 2 +-
+ .../client/renderer/chunk/SectionRenderDispatcher.java      | 4 +++-
+ src/main/java/net/minecraft/world/entity/Entity.java        | 5 +++--
+ src/main/java/net/minecraft/world/entity/vehicle/Boat.java  | 6 ++++--
+ .../world/level/gameevent/vibrations/VibrationSystem.java   | 2 +-
+ todolist.txt                                                | 1 +
+ 11 files changed, 23 insertions(+), 9 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/client/player/LocalPlayer.java b/src/main/java/net/minecraft/client/player/LocalPlayer.java
+index 4c9b12c..6c5c79a 100644
+--- a/src/main/java/net/minecraft/client/player/LocalPlayer.java
++++ b/src/main/java/net/minecraft/client/player/LocalPlayer.java
+@@ -564,6 +564,8 @@ public class LocalPlayer extends AbstractClientPlayer {
+       this.minecraft.particleEngine.createTrackingEmitter(p_108665_, ParticleTypes.CRIT);
+    }
+ 
++
++   //sho nahui
+    public void magicCrit(Entity p_108710_) {
+       this.minecraft.particleEngine.createTrackingEmitter(p_108710_, ParticleTypes.ENCHANTED_HIT);
+    }
+diff --git a/src/main/java/net/minecraft/client/renderer/FogRenderer.java b/src/main/java/net/minecraft/client/renderer/FogRenderer.java
+index bd673d0..2600153 100644
+--- a/src/main/java/net/minecraft/client/renderer/FogRenderer.java
++++ b/src/main/java/net/minecraft/client/renderer/FogRenderer.java
+@@ -163,6 +163,7 @@ public class FogRenderer {
+       }
+ 
+       float f7;
++      //render тумана под водой
+       if (fogtype == FogType.WATER) {
+          if (entity instanceof LocalPlayer) {
+             f7 = ((LocalPlayer)entity).getWaterVision();
+diff --git a/src/main/java/net/minecraft/client/renderer/GameRenderer.java b/src/main/java/net/minecraft/client/renderer/GameRenderer.java
+index f37d1df..a15d3b7 100644
+--- a/src/main/java/net/minecraft/client/renderer/GameRenderer.java
++++ b/src/main/java/net/minecraft/client/renderer/GameRenderer.java
+@@ -876,7 +876,7 @@ public class GameRenderer implements AutoCloseable {
+       MobEffectInstance mobeffectinstance = p_109109_.getEffect(MobEffects.NIGHT_VISION);
+       return !mobeffectinstance.endsWithin(200) ? 1.0F : 0.7F + Mth.sin(((float)mobeffectinstance.getDuration() - p_109110_) * (float)Math.PI * 0.2F) * 0.3F;
+    }
+-
++//game render
+    public void render(float p_109094_, long p_109095_, boolean p_109096_) {
+       if (!this.minecraft.isWindowActive() && this.minecraft.options.pauseOnLostFocus && (!this.minecraft.options.touchscreen().get() || !this.minecraft.mouseHandler.isRightPressed())) {
+          if (Util.getMillis() - this.lastActiveTime > 500L) {
+diff --git a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+index f7e6f32..eb41399 100644
+--- a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
++++ b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+@@ -510,6 +510,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+ 
+    }
+ 
++   //may
+    public void doEntityOutline() {
+       if (this.shouldShowEntityOutlines()) {
+          RenderSystem.enableBlend();
+@@ -819,6 +820,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+       this.sectionOcclusionGraph.onSectionCompiled(p_301248_);
+    }
+ 
++   //fignya kakarto frustum
+    private void captureFrustum(Matrix4f p_253756_, Matrix4f p_253787_, double p_254187_, double p_253833_, double p_254547_, Frustum p_253954_) {
+       this.capturedFrustum = p_253954_;
+       Matrix4f matrix4f = new Matrix4f(p_253787_);
+@@ -852,7 +854,8 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+       this.cullingFrustum.prepare(d0, d1, d2);
+    }
+ 
+-   public void renderLevel(PoseStack p_109600_, float p_109601_, long p_109602_, boolean p_109603_, Camera p_109604_, GameRenderer p_109605_, LightTexture p_109606_, Matrix4f p_254120_) {
++   public void renderLevel(PoseStack p_109600_, float p_109601_, long p_109602_, boolean p_109603_, Camera p_109604_, GameRenderer p_109605_, LightTexture p_109606_, Matrix4f p_254120_)
++   {
+       RenderSystem.setShaderGameTime(this.level.getGameTime(), p_109601_);
+       this.blockEntityRenderDispatcher.prepare(this.level, p_109604_, this.minecraft.hitResult);
+       this.entityRenderDispatcher.prepare(this.level, p_109604_, this.minecraft.crosshairPickEntity);
+@@ -1606,6 +1609,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+       }
+    }
+ 
++   //render oblaka
+    public void renderClouds(PoseStack p_254145_, Matrix4f p_254537_, float p_254364_, double p_253843_, double p_253663_, double p_253795_) {
+       float f = this.level.effects().getCloudHeight();
+       if (!Float.isNaN(f)) {
+diff --git a/src/main/java/net/minecraft/client/renderer/RenderType.java b/src/main/java/net/minecraft/client/renderer/RenderType.java
+index 5123a3d..bfd6f91 100644
+--- a/src/main/java/net/minecraft/client/renderer/RenderType.java
++++ b/src/main/java/net/minecraft/client/renderer/RenderType.java
+@@ -20,6 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
+ 
+ @OnlyIn(Dist.CLIENT)
+ public abstract class RenderType extends RenderStateShard {
++   //тоже что то с рендером
+    private static final int BYTES_IN_INT = 4;
+    private static final int MEGABYTE = 1048576;
+    public static final int BIG_BUFFER_SIZE = 2097152;
+diff --git a/src/main/java/net/minecraft/client/renderer/block/model/BlockElement.java b/src/main/java/net/minecraft/client/renderer/block/model/BlockElement.java
+index 6dbec99..6cf5923 100644
+--- a/src/main/java/net/minecraft/client/renderer/block/model/BlockElement.java
++++ b/src/main/java/net/minecraft/client/renderer/block/model/BlockElement.java
+@@ -46,7 +46,7 @@ public class BlockElement {
+ 
+    }
+ 
+-   private float[] uvsByFace(Direction p_111321_) {
++   private float[] uvsByFace(Direction p_111321_) { //render block
+       switch (p_111321_) {
+          case DOWN:
+             return new float[]{this.from.x(), 16.0F - this.to.z(), this.to.x(), 16.0F - this.from.z()};
+diff --git a/src/main/java/net/minecraft/client/renderer/chunk/SectionRenderDispatcher.java b/src/main/java/net/minecraft/client/renderer/chunk/SectionRenderDispatcher.java
+index 9fc1257..f4420f8 100644
+--- a/src/main/java/net/minecraft/client/renderer/chunk/SectionRenderDispatcher.java
++++ b/src/main/java/net/minecraft/client/renderer/chunk/SectionRenderDispatcher.java
+@@ -565,6 +565,7 @@ public class SectionRenderDispatcher {
+             }
+          }
+ 
++         //что связаное с рендером разбираюсь
+          private SectionRenderDispatcher.RenderSection.RebuildTask.CompileResults compile(float p_297372_, float p_300511_, float p_298415_, SectionBufferBuilderPack p_300020_) {
+             SectionRenderDispatcher.RenderSection.RebuildTask.CompileResults sectionrenderdispatcher$rendersection$rebuildtask$compileresults = new SectionRenderDispatcher.RenderSection.RebuildTask.CompileResults();
+             int i = 1;
+@@ -594,7 +595,8 @@ public class SectionRenderDispatcher {
+                   }
+ 
+                   FluidState fluidstate = blockstate.getFluidState();
+-                  if (!fluidstate.isEmpty()) {
++                  boolean testtt=false;//отрабает рендер воды(но она все еще рендеится елси ты под водой)
++                  if (!fluidstate.isEmpty() && testtt) {
+                      RenderType rendertype = ItemBlockRenderTypes.getRenderLayer(fluidstate);
+                      BufferBuilder bufferbuilder = p_300020_.builder(rendertype);
+                      if (set.add(rendertype)) {
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index a866d77..ae8b340 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -441,7 +441,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+       this.updateSwimming();
+       if (this.level().isClientSide) {
+          this.clearFire();
+-      } else if (this.remainingFireTicks > 0) {
++      } else if (this.remainingFireTicks > 0) { //отсчет тиков (из за этого при заходи дается временный имунетет)
+          if (this.fireImmune()) {
+             this.setRemainingFireTicks(this.remainingFireTicks - 4);
+             if (this.remainingFireTicks < 0) {
+@@ -1244,6 +1244,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+ 
+    }
+ 
++   //чето общее с игроком слаймама и ентити вроде просто партиклы
+    protected void doWaterSplashEffect() {
+       Entity entity = Objects.requireNonNullElse(this.getControllingPassenger(), this);
+       float f = entity == this ? 0.2F : 0.9F;
+@@ -1883,7 +1884,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+       return this instanceof LivingEntity;
+    }
+ 
+-   public boolean startRiding(Entity p_19966_, boolean p_19967_) {//задит на this.entity p_19966_
++   public boolean startRiding(Entity p_19966_, boolean p_19967_) {//садит на this.entity p_19966_
+       if (p_19966_ == this.vehicle) {
+          return false;
+       } else if (!p_19966_.couldAcceptPassenger()) {
+diff --git a/src/main/java/net/minecraft/world/entity/vehicle/Boat.java b/src/main/java/net/minecraft/world/entity/vehicle/Boat.java
+index c0b6279..65b4e30 100644
+--- a/src/main/java/net/minecraft/world/entity/vehicle/Boat.java
++++ b/src/main/java/net/minecraft/world/entity/vehicle/Boat.java
+@@ -566,7 +566,7 @@ public class Boat extends Entity implements VariantHolder<Boat.Type> {
+    }
+ 
+    @Nullable
+-   private Boat.Status isUnderwater() {
++   private Boat.Status isUnderwater() {//проверка под водой или нет
+       AABB aabb = this.getBoundingBox();
+       double d0 = aabb.maxY + 0.001D;
+       int i = Mth.floor(aabb.minX);
+@@ -871,7 +871,9 @@ public class Boat extends Entity implements VariantHolder<Boat.Type> {
+    }
+ 
+    public boolean isUnderWater() {
+-      return this.status == Boat.Status.UNDER_WATER || this.status == Boat.Status.UNDER_FLOWING_WATER;
++      boolean testttt=false;
++      return testttt;
++      //return this.status == Boat.Status.UNDER_WATER || this.status == Boat.Status.UNDER_FLOWING_WATER;
+    }
+ 
+    public ItemStack getPickResult() {
+diff --git a/src/main/java/net/minecraft/world/level/gameevent/vibrations/VibrationSystem.java b/src/main/java/net/minecraft/world/level/gameevent/vibrations/VibrationSystem.java
+index 7c1b3f1..5909579 100644
+--- a/src/main/java/net/minecraft/world/level/gameevent/vibrations/VibrationSystem.java
++++ b/src/main/java/net/minecraft/world/level/gameevent/vibrations/VibrationSystem.java
+@@ -28,7 +28,7 @@ import net.minecraft.world.level.gameevent.PositionSource;
+ import net.minecraft.world.phys.HitResult;
+ import net.minecraft.world.phys.Vec3;
+ 
+-public interface VibrationSystem {
++public interface VibrationSystem {//я же хочу Warden Energistics это понадобится
+    GameEvent[] RESONANCE_EVENTS = new GameEvent[]{GameEvent.RESONATE_1, GameEvent.RESONATE_2, GameEvent.RESONATE_3, GameEvent.RESONATE_4, GameEvent.RESONATE_5, GameEvent.RESONATE_6, GameEvent.RESONATE_7, GameEvent.RESONATE_8, GameEvent.RESONATE_9, GameEvent.RESONATE_10, GameEvent.RESONATE_11, GameEvent.RESONATE_12, GameEvent.RESONATE_13, GameEvent.RESONATE_14, GameEvent.RESONATE_15};
+    ToIntFunction<GameEvent> VIBRATION_FREQUENCY_FOR_EVENT = Util.make(new Object2IntOpenHashMap<>(), (p_282267_) -> {
+       p_282267_.defaultReturnValue(0);
+diff --git a/todolist.txt b/todolist.txt
+index 1f55753..c46c110 100644
+--- a/todolist.txt
++++ b/todolist.txt
+@@ -1,3 +1,4 @@
+ 1.мод на смену цвета хитбоксов 
+ 2.api render transform block(api для рисование блоков повернутыми и тд)
+ 3.world gen fix (пофикстить что после примерно 30 000 100 мир перестает прогружатся и если игрок станет на землю его тепнет)
++4.(pzdc slojno) сделать create на этом api
+\ No newline at end of file
+-- 
+2.34.1
+

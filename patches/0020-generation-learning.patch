@@ -1,0 +1,207 @@
+From 15ca7ca8c61af7f361b6d16da8ea672c3e9e93b7 Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Tue, 20 Aug 2024 14:10:23 +0300
+Subject: [PATCH 20/22] generation learning
+
+---
+ .../java/net/minecraft/server/level/WorldGenRegion.java   | 2 +-
+ src/main/java/net/minecraft/world/level/LevelReader.java  | 8 ++++----
+ .../java/net/minecraft/world/level/block/LiquidBlock.java | 1 +
+ .../java/net/minecraft/world/level/chunk/ChunkAccess.java | 6 +++---
+ .../java/net/minecraft/world/level/chunk/LevelChunk.java  | 5 +++--
+ .../minecraft/world/level/chunk/LevelChunkSection.java    | 2 +-
+ .../java/net/minecraft/world/level/chunk/ProtoChunk.java  | 7 ++++---
+ .../world/level/levelgen/feature/OreFeature.java          | 4 ++--
+ .../net/minecraft/world/level/material/FlowingFluid.java  | 2 +-
+ 9 files changed, 20 insertions(+), 17 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/server/level/WorldGenRegion.java b/src/main/java/net/minecraft/server/level/WorldGenRegion.java
+index 691a93d..fe49c53 100644
+--- a/src/main/java/net/minecraft/server/level/WorldGenRegion.java
++++ b/src/main/java/net/minecraft/server/level/WorldGenRegion.java
+@@ -371,7 +371,7 @@ public class WorldGenRegion implements WorldGenLevel {
+    }
+ 
+    public int getHeight(Heightmap.Types p_9535_, int p_9536_, int p_9537_) {
+-      return this.getChunk(SectionPos.blockToSectionCoord(p_9536_), SectionPos.blockToSectionCoord(p_9537_)).getHeight(p_9535_, p_9536_ & 15, p_9537_ & 15) + 1;//БИТОВЫЕ операции для высоть получает только 5 бит(вроде)
++      return this.getChunk(SectionPos.blockToSectionCoord(p_9536_), SectionPos.blockToSectionCoord(p_9537_)).getHeight(p_9535_, p_9536_ & 15, p_9537_ & 15) + 1;//bit operation  height get  5 bit(vrode)
+    }
+ 
+    public void playSound(@Nullable Player p_9528_, BlockPos p_9529_, SoundEvent p_9530_, SoundSource p_9531_, float p_9532_, float p_9533_) {
+diff --git a/src/main/java/net/minecraft/world/level/LevelReader.java b/src/main/java/net/minecraft/world/level/LevelReader.java
+index 75b01bf..caa8634 100644
+--- a/src/main/java/net/minecraft/world/level/LevelReader.java
++++ b/src/main/java/net/minecraft/world/level/LevelReader.java
+@@ -111,7 +111,7 @@ public interface LevelReader extends BlockAndTintGetter, CollisionGetter, Signal
+ 
+    /** @deprecated */
+    @Deprecated
+-   default float getLightLevelDependentMagicValue(BlockPos p_220418_) {
++   default float getLightLevelDependentMagicValue(BlockPos p_220418_) {//уровень света
+       float f = (float)this.getMaxLocalRawBrightness(p_220418_) / 15.0F;
+       float f1 = f / (4.0F - 3.0F * f);
+       return Mth.lerp(this.dimensionType().ambientLight(), f1, 1.0F);
+@@ -138,7 +138,7 @@ public interface LevelReader extends BlockAndTintGetter, CollisionGetter, Signal
+       return this.getFluidState(p_46802_).is(FluidTags.WATER);
+    }
+ 
+-   default boolean containsAnyLiquid(AABB p_46856_) {
++   default boolean containsAnyLiquid(AABB p_46856_) { //что то с блоками
+       int i = Mth.floor(p_46856_.minX);
+       int j = Mth.ceil(p_46856_.maxX);
+       int k = Mth.floor(p_46856_.minY);
+@@ -165,8 +165,8 @@ public interface LevelReader extends BlockAndTintGetter, CollisionGetter, Signal
+       return this.getMaxLocalRawBrightness(p_46804_, this.getSkyDarken());
+    }
+ 
+-   default int getMaxLocalRawBrightness(BlockPos p_46850_, int p_46851_) {
+-      return p_46850_.getX() >= -30000000 && p_46850_.getZ() >= -30000000 && p_46850_.getX() < 30000000 && p_46850_.getZ() < 30000000 ? this.getRawBrightness(p_46850_, p_46851_) : 15;
++   default int getMaxLocalRawBrightness(BlockPos p_46850_, int p_46851_) { // аааааа сучка как ты со мной разговариваешь
++      return p_46850_.getX() >= -300000000 && p_46850_.getZ() >= -300000000 && p_46850_.getX() < 300000000 && p_46850_.getZ() < 300000000 ? this.getRawBrightness(p_46850_, p_46851_) : 15;
+    }
+ 
+    /** @deprecated */
+diff --git a/src/main/java/net/minecraft/world/level/block/LiquidBlock.java b/src/main/java/net/minecraft/world/level/block/LiquidBlock.java
+index 562f34c..d6964ba 100644
+--- a/src/main/java/net/minecraft/world/level/block/LiquidBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/LiquidBlock.java
+@@ -99,6 +99,7 @@ public class LiquidBlock extends Block implements BucketPickup {
+ 
+    }
+ 
++   //обновление формы блока
+    public BlockState updateShape(BlockState p_54723_, Direction p_54724_, BlockState p_54725_, LevelAccessor p_54726_, BlockPos p_54727_, BlockPos p_54728_) {
+       if (p_54723_.getFluidState().isSource() || p_54725_.getFluidState().isSource()) {
+          p_54726_.scheduleTick(p_54727_, p_54723_.getFluidState().getType(), this.fluid.getTickDelay(p_54726_));
+diff --git a/src/main/java/net/minecraft/world/level/chunk/ChunkAccess.java b/src/main/java/net/minecraft/world/level/chunk/ChunkAccess.java
+index d949fbd..fd1ab2f 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/ChunkAccess.java
++++ b/src/main/java/net/minecraft/world/level/chunk/ChunkAccess.java
+@@ -307,7 +307,7 @@ public abstract class ChunkAccess implements BlockGetter, BiomeManager.NoiseBiom
+    public void findBlocks(Predicate<BlockState> p_285343_, BiConsumer<BlockPos, BlockState> p_285030_) {
+       BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+ 
+-      for(int i = this.getMinSection(); i < this.getMaxSection(); ++i) {
++      for(int i = this.getMinSection(); i < this.getMaxSection(); ++i) {//мы тут по секциям этерируемся
+          LevelChunkSection levelchunksection = this.getSection(this.getSectionIndexFromSectionY(i));
+          if (levelchunksection.maybeHas(p_285343_)) {
+             BlockPos blockpos = SectionPos.of(this.chunkPos, i).origin();
+@@ -315,9 +315,9 @@ public abstract class ChunkAccess implements BlockGetter, BiomeManager.NoiseBiom
+             for(int j = 0; j < 16; ++j) {
+                for(int k = 0; k < 16; ++k) {
+                   for(int l = 0; l < 16; ++l) {
+-                     BlockState blockstate = levelchunksection.getBlockState(l, j, k);
++                     BlockState blockstate = levelchunksection.getBlockState(l, j, k);//типо секция это 16 на 16 на 16
+                      if (p_285343_.test(blockstate)) {
+-                        p_285030_.accept(blockpos$mutableblockpos.setWithOffset(blockpos, l, j, k), blockstate);
++                        p_285030_.accept(blockpos$mutableblockpos.setWithOffset(blockpos, l, j, k), blockstate);//мы позицию блока в вектор превратили
+                      }
+                   }
+                }
+diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+index 57aaa40..ac69cdc 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
++++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+@@ -187,7 +187,7 @@ public class LevelChunk extends ChunkAccess {
+       return this.getFluidState(p_62895_.getX(), p_62895_.getY(), p_62895_.getZ());
+    }
+ 
+-   public FluidState getFluidState(int p_62815_, int p_62816_, int p_62817_) {
++   public FluidState getFluidState(int p_62815_, int p_62816_, int p_62817_) { // с  водярой чекну позже
+       try {
+          int i = this.getSectionIndex(p_62816_);
+          if (i >= 0 && i < this.sections.length) {
+@@ -437,6 +437,7 @@ public class LevelChunk extends ChunkAccess {
+       return false;
+    }
+ 
++   //с пакетами чото
+    public void replaceWithPacketData(FriendlyByteBuf p_187972_, CompoundTag p_187973_, Consumer<ClientboundLevelChunkPacketData.BlockEntityTagOutput> p_187974_) {
+       this.clearAllBlockEntities();
+ 
+@@ -490,7 +491,7 @@ public class LevelChunk extends ChunkAccess {
+                BlockState blockstate = this.getBlockState(blockpos);
+                FluidState fluidstate = blockstate.getFluidState();
+                if (!fluidstate.isEmpty()) {
+-                  fluidstate.tick(this.level, blockpos);
++                  fluidstate.tick(this.level, blockpos);//тик мачи
+                }
+ 
+                if (!(blockstate.getBlock() instanceof LiquidBlock)) {
+diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunkSection.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunkSection.java
+index 8dd48a6..abdde58 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/LevelChunkSection.java
++++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunkSection.java
+@@ -16,7 +16,7 @@ import net.minecraft.world.level.material.FluidState;
+ public class LevelChunkSection {
+    public static final int SECTION_WIDTH = 16;
+    public static final int SECTION_HEIGHT = 16;
+-   public static final int SECTION_SIZE = 4096;
++   public static final int SECTION_SIZE = 4096;//я понял что это за хуня это 16*16*16
+    public static final int BIOME_CONTAINER_BITS = 2;
+    private short nonEmptyBlockCount;
+    private short tickingBlockCount;
+diff --git a/src/main/java/net/minecraft/world/level/chunk/ProtoChunk.java b/src/main/java/net/minecraft/world/level/chunk/ProtoChunk.java
+index c86ec22..12748a6 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/ProtoChunk.java
++++ b/src/main/java/net/minecraft/world/level/chunk/ProtoChunk.java
+@@ -94,7 +94,7 @@ public class ProtoChunk extends ChunkAccess {
+       int i = p_63217_.getX();
+       int j = p_63217_.getY();
+       int k = p_63217_.getZ();
+-      if (j >= this.getMinBuildHeight() && j < this.getMaxBuildHeight()) {
++      /*if (j >= this.getMinBuildHeight() && j < this.getMaxBuildHeight())*/ {
+          int l = this.getSectionIndex(j);
+          LevelChunkSection levelchunksection = this.getSection(l);
+          boolean flag = levelchunksection.hasOnlyAir();
+@@ -141,9 +141,10 @@ public class ProtoChunk extends ChunkAccess {
+ 
+             return blockstate;
+          }
+-      } else {
+-         return Blocks.VOID_AIR.defaultBlockState();
+       }
++      /*else {
++         return Blocks.VOID_AIR.defaultBlockState();
++      }*/
+    }
+ 
+    public void setBlockEntity(BlockEntity p_156488_) {
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java
+index 5cb0bd4..8a5f7a5 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/feature/OreFeature.java
+@@ -121,7 +121,7 @@ public class OreFeature extends Feature<OreConfiguration> {
+                                     if (p_225172_.ensureCanWrite(blockpos$mutableblockpos)) {
+                                        LevelChunkSection levelchunksection = bulksectionaccess.getSection(blockpos$mutableblockpos);
+                                        if (levelchunksection != null) {
+-                                          int i3 = SectionPos.sectionRelative(i2);
++                                          int i3 = SectionPos.sectionRelative(i2);//чуть позже чекну
+                                           int j3 = SectionPos.sectionRelative(j2);
+                                           int k3 = SectionPos.sectionRelative(k2);
+                                           BlockState blockstate = levelchunksection.getBlockState(i3, j3, k3);
+@@ -152,7 +152,7 @@ public class OreFeature extends Feature<OreConfiguration> {
+    public static boolean canPlaceOre(BlockState p_225187_, Function<BlockPos, BlockState> p_225188_, RandomSource p_225189_, OreConfiguration p_225190_, OreConfiguration.TargetBlockState p_225191_, BlockPos.MutableBlockPos p_225192_) {
+       if (!p_225191_.target.test(p_225187_, p_225189_)) {
+          return false;
+-      } else if (shouldSkipAirCheck(p_225189_, p_225190_.discardChanceOnAirExposure)) {
++      } else if (shouldSkipAirCheck(p_225189_, p_225190_.discardChanceOnAirExposure)) {//проверка воздуха для руды
+          return true;
+       } else {
+          return !isAdjacentToAir(p_225188_, p_225192_);
+diff --git a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
+index aaa0fdb..7611f5c 100644
+--- a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
++++ b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
+@@ -182,7 +182,7 @@ public abstract class FlowingFluid extends Fluid {
+       if (!fluidstate2.isEmpty() && fluidstate2.getType().isSame(this) && this.canPassThroughWall(Direction.UP, p_256464_, p_76037_, p_76038_, blockpos1, blockstate2)) {
+          return this.getFlowing(8, true);
+       } else {
+-         int k = /*i - this.getDropOff(p_256464_)*/0;
++         int k = /*i - this.getDropOff(p_256464_)*/0;//хахаха яч только щас вспомнил по идие у меня в мире не должно быть
+          return k <= 0 ? Fluids.EMPTY.defaultFluidState() : this.getFlowing(k, false);
+       }
+    }
+-- 
+2.34.1
+

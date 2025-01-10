@@ -1,0 +1,192 @@
+From 4790d0913eb064f3f3c3236a00a1b69eb9d7546a Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Thu, 13 Jun 2024 18:37:17 +0300
+Subject: [PATCH 10/22] cm 9
+
+---
+ src/main/java/com/mojang/blaze3d/audio/OpenAlUtil.java    | 4 ++--
+ .../java/net/minecraft/client/renderer/LevelRenderer.java | 7 +++++--
+ .../client/renderer/block/BlockRenderDispatcher.java      | 4 ++++
+ .../client/renderer/block/LiquidBlockRenderer.java        | 1 +
+ .../client/renderer/chunk/SectionRenderDispatcher.java    | 4 +++-
+ .../client/renderer/entity/EntityRenderDispatcher.java    | 8 ++++----
+ todolist.txt                                              | 3 +++
+ 7 files changed, 22 insertions(+), 9 deletions(-)
+ create mode 100644 todolist.txt
+
+diff --git a/src/main/java/com/mojang/blaze3d/audio/OpenAlUtil.java b/src/main/java/com/mojang/blaze3d/audio/OpenAlUtil.java
+index b067531..47f81b2 100644
+--- a/src/main/java/com/mojang/blaze3d/audio/OpenAlUtil.java
++++ b/src/main/java/com/mojang/blaze3d/audio/OpenAlUtil.java
+@@ -13,7 +13,7 @@ import org.slf4j.Logger;
+ public class OpenAlUtil {
+    private static final Logger LOGGER = LogUtils.getLogger();
+ 
+-   private static String alErrorToString(int p_83783_) {
++   private static String alErrorToString(int p_83783_) { //error list 1
+       switch (p_83783_) {
+          case 40961:
+             return "Invalid name parameter.";
+@@ -40,7 +40,7 @@ public class OpenAlUtil {
+       }
+    }
+ 
+-   private static String alcErrorToString(int p_83792_) {
++   private static String alcErrorToString(int p_83792_) {//error list 1
+       switch (p_83792_) {
+          case 40961:
+             return "Invalid device.";
+diff --git a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+index 458b657..f7e6f32 100644
+--- a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
++++ b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+@@ -363,7 +363,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+       }
+    }
+ 
+-   public void tickRain(Camera p_109694_) {
++   public void tickRain(Camera p_109694_) { //rain tick
+       float f = this.minecraft.level.getRainLevel(1.0F) / (Minecraft.useFancyGraphics() ? 1.0F : 2.0F);
+       if (!(f <= 0.0F)) {
+          RandomSource randomsource = RandomSource.create((long)this.ticks * 312987231L);
+@@ -1041,6 +1041,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+       }
+ 
+       this.checkPoseStack(p_109600_);
++      //hit result
+       HitResult hitresult = this.minecraft.hitResult;
+       if (p_109603_ && hitresult != null && hitresult.getType() == HitResult.Type.BLOCK) {
+          profilerfiller.popPush("outline");
+@@ -1927,8 +1928,9 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+       }
+    }
+ 
++   //это рендер то серой хуни хотарая отображет типо хит бокс блока
+    private void renderHitOutline(PoseStack p_109638_, VertexConsumer p_109639_, Entity p_109640_, double p_109641_, double p_109642_, double p_109643_, BlockPos p_109644_, BlockState p_109645_) {
+-      renderShape(p_109638_, p_109639_, p_109645_.getShape(this.level, p_109644_, CollisionContext.of(p_109640_)), (double)p_109644_.getX() - p_109641_, (double)p_109644_.getY() - p_109642_, (double)p_109644_.getZ() - p_109643_, 0.0F, 0.0F, 0.0F, 0.4F);
++      renderShape(p_109638_, p_109639_, p_109645_.getShape(this.level, p_109644_, CollisionContext.of(p_109640_)), (double)p_109644_.getX() - p_109641_, (double)p_109644_.getY() - p_109642_, (double)p_109644_.getZ() - p_109643_, 0.5F, 0.25F, 0.34F, 0.9F);
+    }
+ 
+    private static Vec3 mixColor(float p_286899_) {
+@@ -1997,6 +1999,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+          f /= f3;
+          f1 /= f3;
+          f2 /= f3;
++         //color shape
+          p_109784_.vertex(posestack$pose.pose(), (float)(p_234280_ + p_109786_), (float)(p_234281_ + p_109787_), (float)(p_234282_ + p_109788_)).color(p_109789_, p_109790_, p_109791_, p_109792_).normal(posestack$pose.normal(), f, f1, f2).endVertex();
+          p_109784_.vertex(posestack$pose.pose(), (float)(p_234283_ + p_109786_), (float)(p_234284_ + p_109787_), (float)(p_234285_ + p_109788_)).color(p_109789_, p_109790_, p_109791_, p_109792_).normal(posestack$pose.normal(), f, f1, f2).endVertex();
+       });
+diff --git a/src/main/java/net/minecraft/client/renderer/block/BlockRenderDispatcher.java b/src/main/java/net/minecraft/client/renderer/block/BlockRenderDispatcher.java
+index f19772f..538be53 100644
+--- a/src/main/java/net/minecraft/client/renderer/block/BlockRenderDispatcher.java
++++ b/src/main/java/net/minecraft/client/renderer/block/BlockRenderDispatcher.java
+@@ -18,6 +18,7 @@ import net.minecraft.util.RandomSource;
+ import net.minecraft.world.item.ItemDisplayContext;
+ import net.minecraft.world.item.ItemStack;
+ import net.minecraft.world.level.BlockAndTintGetter;
++import net.minecraft.world.level.block.Blocks;
+ import net.minecraft.world.level.block.RenderShape;
+ import net.minecraft.world.level.block.state.BlockState;
+ import net.minecraft.world.level.material.FluidState;
+@@ -97,7 +98,10 @@ public class BlockRenderDispatcher implements ResourceManagerReloadListener {
+                float f = (float)(i >> 16 & 255) / 255.0F;
+                float f1 = (float)(i >> 8 & 255) / 255.0F;
+                float f2 = (float)(i & 255) / 255.0F;
++
++
+                this.modelRenderer.renderModel(p_110914_.last(), p_110915_.getBuffer(ItemBlockRenderTypes.getRenderType(p_110913_, false)), p_110913_, bakedmodel, f, f1, f2, p_110916_, p_110917_);
++
+                break;
+             case ENTITYBLOCK_ANIMATED:
+                this.blockEntityRenderer.renderByItem(new ItemStack(p_110913_.getBlock()), ItemDisplayContext.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
+diff --git a/src/main/java/net/minecraft/client/renderer/block/LiquidBlockRenderer.java b/src/main/java/net/minecraft/client/renderer/block/LiquidBlockRenderer.java
+index 8666bf5..9fb815d 100644
+--- a/src/main/java/net/minecraft/client/renderer/block/LiquidBlockRenderer.java
++++ b/src/main/java/net/minecraft/client/renderer/block/LiquidBlockRenderer.java
+@@ -66,6 +66,7 @@ public class LiquidBlockRenderer {
+       return !isFaceOccludedBySelf(p_203167_, p_203168_, p_203170_, p_203171_) && !isNeighborSameFluid(p_203169_, p_203172_);
+    }
+ 
++   //render block
+    public void tesselate(BlockAndTintGetter p_234370_, BlockPos p_234371_, VertexConsumer p_234372_, BlockState p_234373_, FluidState p_234374_) {
+       boolean flag = p_234374_.is(FluidTags.LAVA);
+       TextureAtlasSprite[] atextureatlassprite = flag ? this.lavaIcons : this.waterIcons;
+diff --git a/src/main/java/net/minecraft/client/renderer/chunk/SectionRenderDispatcher.java b/src/main/java/net/minecraft/client/renderer/chunk/SectionRenderDispatcher.java
+index af621a8..9fc1257 100644
+--- a/src/main/java/net/minecraft/client/renderer/chunk/SectionRenderDispatcher.java
++++ b/src/main/java/net/minecraft/client/renderer/chunk/SectionRenderDispatcher.java
+@@ -47,11 +47,14 @@ import net.minecraft.core.Direction;
+ import net.minecraft.core.SectionPos;
+ import net.minecraft.util.RandomSource;
+ import net.minecraft.util.thread.ProcessorMailbox;
++import net.minecraft.world.level.block.Blocks;
+ import net.minecraft.world.level.block.RenderShape;
+ import net.minecraft.world.level.block.entity.BlockEntity;
+ import net.minecraft.world.level.block.state.BlockState;
+ import net.minecraft.world.level.chunk.ChunkStatus;
+ import net.minecraft.world.level.material.FluidState;
++import net.minecraft.world.level.material.Fluids;
++import net.minecraft.world.level.material.WaterFluid;
+ import net.minecraft.world.phys.AABB;
+ import net.minecraft.world.phys.Vec3;
+ import net.minecraftforge.api.distmarker.Dist;
+@@ -597,7 +600,6 @@ public class SectionRenderDispatcher {
+                      if (set.add(rendertype)) {
+                         RenderSection.this.beginLayer(bufferbuilder);
+                      }
+-
+                      blockrenderdispatcher.renderLiquid(blockpos2, renderchunkregion, bufferbuilder, blockstate, fluidstate);
+                   }
+ 
+diff --git a/src/main/java/net/minecraft/client/renderer/entity/EntityRenderDispatcher.java b/src/main/java/net/minecraft/client/renderer/entity/EntityRenderDispatcher.java
+index 35671c4..2c92307 100644
+--- a/src/main/java/net/minecraft/client/renderer/entity/EntityRenderDispatcher.java
++++ b/src/main/java/net/minecraft/client/renderer/entity/EntityRenderDispatcher.java
+@@ -151,7 +151,7 @@ public class EntityRenderDispatcher implements ResourceManagerReloadListener {
+                renderShadow(p_114391_, p_114392_, p_114385_, f, p_114390_, this.level, Math.min(entityrenderer.shadowRadius, 32.0F));
+             }
+          }
+-
++         //f3+(не помню шо) рендер хит бокса у ентити
+          if (this.renderHitBoxes && !p_114385_.isInvisible() && !Minecraft.getInstance().showOnlyReducedInfo()) {
+             renderHitbox(p_114391_, p_114392_.getBuffer(RenderType.lines()), p_114385_, p_114390_);
+          }
+@@ -172,7 +172,7 @@ public class EntityRenderDispatcher implements ResourceManagerReloadListener {
+ 
+    private static void renderHitbox(PoseStack p_114442_, VertexConsumer p_114443_, Entity p_114444_, float p_114445_) {
+       AABB aabb = p_114444_.getBoundingBox().move(-p_114444_.getX(), -p_114444_.getY(), -p_114444_.getZ());
+-      LevelRenderer.renderLineBox(p_114442_, p_114443_, aabb, 1.0F, 1.0F, 1.0F, 1.0F);
++      LevelRenderer.renderLineBox(p_114442_, p_114443_, aabb, 1.0F, 0.0F, 0.0F, 1.0F);
+       if (p_114444_ instanceof EnderDragon) {
+          double d0 = -Mth.lerp((double)p_114445_, p_114444_.xOld, p_114444_.getX());
+          double d1 = -Mth.lerp((double)p_114445_, p_114444_.yOld, p_114444_.getY());
+@@ -191,7 +191,7 @@ public class EntityRenderDispatcher implements ResourceManagerReloadListener {
+ 
+       if (p_114444_ instanceof LivingEntity) {
+          float f1 = 0.01F;
+-         LevelRenderer.renderLineBox(p_114442_, p_114443_, aabb.minX, (double)(p_114444_.getEyeHeight() - 0.01F), aabb.minZ, aabb.maxX, (double)(p_114444_.getEyeHeight() + 0.01F), aabb.maxZ, 1.0F, 0.0F, 0.0F, 1.0F);
++         LevelRenderer.renderLineBox(p_114442_, p_114443_, aabb.minX, (double)(p_114444_.getEyeHeight() - 0.01F), aabb.minZ, aabb.maxX, (double)(p_114444_.getEyeHeight() + 0.01F), aabb.maxZ, 0.0F, 1.0F, 0.0F, 1.0F);
+       }
+ 
+       Entity entity = p_114444_.getVehicle();
+@@ -199,7 +199,7 @@ public class EntityRenderDispatcher implements ResourceManagerReloadListener {
+          float f = Math.min(entity.getBbWidth(), p_114444_.getBbWidth()) / 2.0F;
+          float f2 = 0.0625F;
+          Vec3 vec3 = entity.getPassengerRidingPosition(p_114444_).subtract(p_114444_.position());
+-         LevelRenderer.renderLineBox(p_114442_, p_114443_, vec3.x - (double)f, vec3.y, vec3.z - (double)f, vec3.x + (double)f, vec3.y + 0.0625D, vec3.z + (double)f, 1.0F, 1.0F, 0.0F, 1.0F);
++         LevelRenderer.renderLineBox(p_114442_, p_114443_, vec3.x - (double)f, vec3.y, vec3.z - (double)f, vec3.x + (double)f, vec3.y + 0.0625D, vec3.z + (double)f, 1.0F, 0.0F, 0.0F, 1.0F);
+       }
+ 
+       Vec3 vec31 = p_114444_.getViewVector(p_114445_);
+diff --git a/todolist.txt b/todolist.txt
+new file mode 100644
+index 0000000..1f55753
+--- /dev/null
++++ b/todolist.txt
+@@ -0,0 +1,3 @@
++1.мод на смену цвета хитбоксов 
++2.api render transform block(api для рисование блоков повернутыми и тд)
++3.world gen fix (пофикстить что после примерно 30 000 100 мир перестает прогружатся и если игрок станет на землю его тепнет)
+-- 
+2.34.1
+

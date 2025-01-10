@@ -1,0 +1,219 @@
+From e0c802203c612226fc488f66756658f02e719ea0 Mon Sep 17 00:00:00 2001
+From: Utishnik <ykokoyto@bk.ru>
+Date: Wed, 21 Aug 2024 01:46:18 +0300
+Subject: [PATCH 21/22] cam
+
+---
+ .../net/minecraft/client/renderer/LevelRenderer.java   |  8 ++++----
+ .../java/net/minecraft/client/renderer/ViewArea.java   | 10 +++++-----
+ .../minecraft/client/resources/model/ModelManager.java |  2 +-
+ .../java/net/minecraft/server/level/ServerLevel.java   |  2 +-
+ src/main/java/net/minecraft/world/level/Level.java     |  3 ++-
+ .../net/minecraft/world/level/LevelHeightAccessor.java |  3 ++-
+ .../net/minecraft/world/level/chunk/ChunkAccess.java   |  2 +-
+ .../net/minecraft/world/level/chunk/ProtoChunk.java    |  4 ++--
+ .../minecraft/world/level/dimension/DimensionType.java |  2 +-
+ .../world/level/levelgen/blending/Blender.java         |  2 +-
+ .../world/level/levelgen/feature/LakeFeature.java      |  2 +-
+ 11 files changed, 21 insertions(+), 19 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+index 87bd5e9..11de16c 100644
+--- a/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
++++ b/src/main/java/net/minecraft/client/renderer/LevelRenderer.java
+@@ -2122,14 +2122,14 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+       for(int i = p_109497_ - 1; i <= p_109500_ + 1; ++i) {
+          for(int j = p_109495_ - 1; j <= p_109498_ + 1; ++j) {
+             for(int k = p_109496_ - 1; k <= p_109499_ + 1; ++k) {
+-               this.setSectionDirty(SectionPos.blockToSectionCoord(j), SectionPos.blockToSectionCoord(k), SectionPos.blockToSectionCoord(i));
++               this.setSectionDirty(SectionPos.blockToSectionCoord(j), SectionPos.blockToSectionCoord(k), SectionPos.blockToSectionCoord(i));//возмно можно оптимизровать найти позицую типо как то прибовлять жадые 16 итераций
+             }
+          }
+       }
+ 
+    }
+ 
+-   public void setBlockDirty(BlockPos p_109722_, BlockState p_109723_, BlockState p_109724_) {
++   public void setBlockDirty(BlockPos p_109722_, BlockState p_109723_, BlockState p_109724_) {//
+       if (this.minecraft.getModelManager().requiresRender(p_109723_, p_109724_)) {
+          this.setBlocksDirty(p_109722_.getX(), p_109722_.getY(), p_109722_.getZ(), p_109722_.getX(), p_109722_.getY(), p_109722_.getZ());
+       }
+@@ -2148,10 +2148,10 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
+    }
+ 
+    public void setSectionDirty(int p_109771_, int p_109772_, int p_109773_) {
+-      this.setSectionDirty(p_109771_, p_109772_, p_109773_, false);
++      this.setSectionDirty(p_109771_, p_109772_, p_109773_, false);//бля как будто если убрать эту ебаную иерархию хотя бы при компиляции то в майн можно на % 20-30 ускорить слишком много ее
+    }
+ 
+-   private void setSectionDirty(int p_109502_, int p_109503_, int p_109504_, boolean p_109505_) {
++   private void setSectionDirty(int p_109502_, int p_109503_, int p_109504_, boolean p_109505_) { //это тоже можно вроде оптимизировать всего два использывания сделать вызов на прямую без доп функции
+       this.viewArea.setDirty(p_109502_, p_109503_, p_109504_, p_109505_);
+    }
+ 
+diff --git a/src/main/java/net/minecraft/client/renderer/ViewArea.java b/src/main/java/net/minecraft/client/renderer/ViewArea.java
+index 7cedbae..2a7bc2b 100644
+--- a/src/main/java/net/minecraft/client/renderer/ViewArea.java
++++ b/src/main/java/net/minecraft/client/renderer/ViewArea.java
+@@ -15,7 +15,7 @@ public class ViewArea {
+    protected final LevelRenderer levelRenderer;
+    protected final Level level;
+    protected int sectionGridSizeY;
+-   protected int sectionGridSizeX;
++   protected int sectionGridSizeX;//о четь интересное
+    protected int sectionGridSizeZ;
+    private int viewDistance;
+    public SectionRenderDispatcher.RenderSection[] sections;
+@@ -100,16 +100,16 @@ public class ViewArea {
+ 
+    }
+ 
+-   public void setDirty(int p_110860_, int p_110861_, int p_110862_, boolean p_110863_) {
++   public void setDirty(int p_110860_, int p_110861_, int p_110862_, boolean p_110863_) {//это из set block в лвл сюда приходим
+       int i = Math.floorMod(p_110860_, this.sectionGridSizeX);
+       int j = Math.floorMod(p_110861_ - this.level.getMinSection(), this.sectionGridSizeY);
+-      int k = Math.floorMod(p_110862_, this.sectionGridSizeZ);
+-      SectionRenderDispatcher.RenderSection sectionrenderdispatcher$rendersection = this.sections[this.getSectionIndex(i, j, k)];
++      int k = Math.floorMod(p_110862_, this.sectionGridSizeZ);//sectionGridSizeZ это дальность виденья * 2 + 1
++      SectionRenderDispatcher.RenderSection sectionrenderdispatcher$rendersection = this.sections[this.getSectionIndex(i, j, k)];//о вот что array секция
+       sectionrenderdispatcher$rendersection.setDirty(p_110863_);
+    }
+ 
+    @Nullable
+-   protected SectionRenderDispatcher.RenderSection getRenderSectionAt(BlockPos p_299271_) {
++   protected SectionRenderDispatcher.RenderSection getRenderSectionAt(BlockPos p_299271_) {//нада чекнуть
+       int i = Mth.floorDiv(p_299271_.getY() - this.level.getMinBuildHeight(), 16);
+       if (i >= 0 && i < this.sectionGridSizeY) {
+          int j = Mth.positiveModulo(Mth.floorDiv(p_299271_.getX(), 16), this.sectionGridSizeX);
+diff --git a/src/main/java/net/minecraft/client/resources/model/ModelManager.java b/src/main/java/net/minecraft/client/resources/model/ModelManager.java
+index 72ddce6..a3955ad 100644
+--- a/src/main/java/net/minecraft/client/resources/model/ModelManager.java
++++ b/src/main/java/net/minecraft/client/resources/model/ModelManager.java
+@@ -199,7 +199,7 @@ public class ModelManager implements PreparableReloadListener, AutoCloseable {
+       p_251960_.endTick();
+    }
+ 
+-   public boolean requiresRender(BlockState p_119416_, BlockState p_119417_) {
++   public boolean requiresRender(BlockState p_119416_, BlockState p_119417_) {//страная фигня
+       if (p_119416_ == p_119417_) {
+          return false;
+       } else {
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index 40ba1a4..b82ba16 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -909,7 +909,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+    }
+ 
+    public void sendBlockUpdated(BlockPos p_8755_, BlockState p_8756_, BlockState p_8757_, int p_8758_) {
+-      if (this.isUpdatingNavigations) {
++      if (this.isUpdatingNavigations) { //вроде обновляется навигация у мобов
+          String s = "recursive call to sendBlockUpdated";
+          Util.logAndPauseIfInIde("recursive call to sendBlockUpdated", new IllegalStateException("recursive call to sendBlockUpdated"));
+       }
+diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
+index 3137364..d33fd32 100644
+--- a/src/main/java/net/minecraft/world/level/Level.java
++++ b/src/main/java/net/minecraft/world/level/Level.java
+@@ -204,7 +204,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+          } else {
+             BlockState blockstate1 = this.getBlockState(p_46605_);
+             if (blockstate1 == p_46606_) { //*2
+-               if (blockstate != blockstate1) {
++               if (blockstate != blockstate1) { //OPTIMIZTACIYA короче в файле ModelManager проверка иф
++                  // начале ее можно как то в отдльную функцию и типо в параметры добавить флаг и так целую проверку сыкономим
+                   this.setBlocksDirty(p_46605_, blockstate, blockstate1);
+                }
+ 
+diff --git a/src/main/java/net/minecraft/world/level/LevelHeightAccessor.java b/src/main/java/net/minecraft/world/level/LevelHeightAccessor.java
+index 5606230..6621b30 100644
+--- a/src/main/java/net/minecraft/world/level/LevelHeightAccessor.java
++++ b/src/main/java/net/minecraft/world/level/LevelHeightAccessor.java
+@@ -28,8 +28,9 @@ public interface LevelHeightAccessor {
+       return this.isOutsideBuildHeight(p_151571_.getY());
+    }
+ 
+-   default boolean isOutsideBuildHeight(int p_151563_) {
++   default boolean isOutsideBuildHeight(int p_151563_) {//true если пытаещься построить там где нельзя
+       return p_151563_ < this.getMinBuildHeight() || p_151563_ >= this.getMaxBuildHeight();
++      //return false; если такое сделать и построить высоко то вылетит майн
+    }
+ 
+    default int getSectionIndex(int p_151565_) {
+diff --git a/src/main/java/net/minecraft/world/level/chunk/ChunkAccess.java b/src/main/java/net/minecraft/world/level/chunk/ChunkAccess.java
+index fd1ab2f..f0e895e 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/ChunkAccess.java
++++ b/src/main/java/net/minecraft/world/level/chunk/ChunkAccess.java
+@@ -422,7 +422,7 @@ public abstract class ChunkAccess implements BlockGetter, BiomeManager.NoiseBiom
+       }
+    }
+ 
+-   public void fillBiomesFromNoise(BiomeResolver p_187638_, Climate.Sampler p_187639_) {
++   public void fillBiomesFromNoise(BiomeResolver p_187638_, Climate.Sampler p_187639_) {//заполнение биома по шуму
+       ChunkPos chunkpos = this.getPos();
+       int i = QuartPos.fromBlock(chunkpos.getMinBlockX());
+       int j = QuartPos.fromBlock(chunkpos.getMinBlockZ());
+diff --git a/src/main/java/net/minecraft/world/level/chunk/ProtoChunk.java b/src/main/java/net/minecraft/world/level/chunk/ProtoChunk.java
+index 12748a6..6e32bf4 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/ProtoChunk.java
++++ b/src/main/java/net/minecraft/world/level/chunk/ProtoChunk.java
+@@ -79,7 +79,7 @@ public class ProtoChunk extends ChunkAccess {
+       }
+    }
+ 
+-   public FluidState getFluidState(BlockPos p_63239_) {
++   public FluidState getFluidState(BlockPos p_63239_) {//состояние мачи
+       int i = p_63239_.getY();
+       if (this.isOutsideBuildHeight(i)) {
+          return Fluids.EMPTY.defaultFluidState();
+@@ -95,7 +95,7 @@ public class ProtoChunk extends ChunkAccess {
+       int j = p_63217_.getY();
+       int k = p_63217_.getZ();
+       /*if (j >= this.getMinBuildHeight() && j < this.getMaxBuildHeight())*/ {
+-         int l = this.getSectionIndex(j);
++         int l = this.getSectionIndex(j);//получает секцию в чанке по высоте блока
+          LevelChunkSection levelchunksection = this.getSection(l);
+          boolean flag = levelchunksection.hasOnlyAir();
+          if (flag && p_63218_.is(Blocks.AIR)) {
+diff --git a/src/main/java/net/minecraft/world/level/dimension/DimensionType.java b/src/main/java/net/minecraft/world/level/dimension/DimensionType.java
+index dc75093..363fa96 100644
+--- a/src/main/java/net/minecraft/world/level/dimension/DimensionType.java
++++ b/src/main/java/net/minecraft/world/level/dimension/DimensionType.java
+@@ -71,7 +71,7 @@ public record DimensionType(OptionalLong fixedTime, boolean hasSkyLight, boolean
+ 
+       return Level.RESOURCE_KEY_CODEC.parse(p_63912_);
+    }
+-//изменение коордианат при телепортации
++//изменение коордианат при телепортации в портале
+    public static double getTeleportationScale(DimensionType p_63909_, DimensionType p_63910_) {
+       double d0 = p_63909_.coordinateScale();
+       double d1 = p_63910_.coordinateScale();
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/blending/Blender.java b/src/main/java/net/minecraft/world/level/levelgen/blending/Blender.java
+index 4be45f2..68e9ecc 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/blending/Blender.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/blending/Blender.java
+@@ -237,7 +237,7 @@ public class Blender {
+       }
+    }
+ 
+-   public static void generateBorderTicks(WorldGenRegion p_197032_, ChunkAccess p_197033_) {
++   public static void generateBorderTicks(WorldGenRegion p_197032_, ChunkAccess p_197033_) {//чо эта такое
+       ChunkPos chunkpos = p_197033_.getPos();
+       boolean flag = p_197033_.isOldNoiseGeneration();
+       BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/LakeFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/LakeFeature.java
+index 8b7549c..577e0d5 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/feature/LakeFeature.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/feature/LakeFeature.java
+@@ -21,7 +21,7 @@ public class LakeFeature extends Feature<LakeFeature.Configuration> {
+       super(p_66259_);
+    }
+ 
+-   public boolean place(FeaturePlaceContext<LakeFeature.Configuration> p_159958_) {
++   public boolean place(FeaturePlaceContext<LakeFeature.Configuration> p_159958_) {//чето еще
+       BlockPos blockpos = p_159958_.origin();
+       WorldGenLevel worldgenlevel = p_159958_.level();
+       RandomSource randomsource = p_159958_.random();
+-- 
+2.34.1
+
